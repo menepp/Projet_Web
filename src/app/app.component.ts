@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { EmployeesComponent } from './components/employees/employees.component';
+import { ButtonComponent } from './components/button/button.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [SearchBarComponent, EmployeesComponent, ButtonComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'ProjetWeb';
+  title = 'Projet-Web';
 }
