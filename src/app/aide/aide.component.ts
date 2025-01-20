@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './aide.component.css'
 })
 export class AideComponent {
-
+  onHelpClick(): void {
+    alert('Besoin d\'aide ? Contactez-nous ou consultez la documentation.');
+   
+  }
 }

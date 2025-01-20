@@ -1,44 +1,53 @@
 .menu-container {
-    position: relative;
-    width: 200px;
-    background-color: #f2f2f2;
+    width: 250px;
+    background-color: #ffffff;
+    border: 2px solid #e6e6e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   .menu-icon {
     cursor: pointer;
     font-size: 24px;
     padding: 10px;
-    background-color: #333;
-    color: #fff;
+    background-color: #f9f9f9;
+    color: #4d4d4d;
     text-align: center;
+    border-bottom: 2px solid #ff6700;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-weight: bold;
   }
   
   .menu {
     list-style: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     max-height: 0; /* Caché par défaut */
+    overflow: hidden;
     transition: max-height 0.3s ease-out;
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
   }
   
   .menu.open {
-    max-height: 500px; /* Suffisamment grand pour afficher tous les éléments */
+    max-height: 300px; /* Ajustez selon le contenu */
   }
   
   .menu-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e6e6e6;
   }
   
   .menu-item a {
-    text-decoration: none;
-    color: #333;
+    display: block;
+    padding: 12px 15px;
+    color: #4d4d4d;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, border-left 0.3s ease;
+    border-left: 4px solid transparent; /* Effet de survol */
   }
   
   .menu-item a:hover {
-    background-color: #ddd;
+    background-color: #f9f9f9;
+    border-left: 4px solid #ff6700;
+    color: #ff6700;
   }
   
