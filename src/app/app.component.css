@@ -1,5 +1,9 @@
 app-search-bar{
     display: block;
     justify-items: center;
-    margin-top: 10%;
+    margin-top: 3%;
+}
+app-menu{
+    display : block;
+    margin-top: 15px;
 }
