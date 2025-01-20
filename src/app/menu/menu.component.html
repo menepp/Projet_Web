@@ -1,1 +1,14 @@
-<p>menu works!</p>
+<div class="menu-container">
+    <!-- Icône pour ouvrir/fermer le menu -->
+    <div class="menu-icon" (click)="toggleMenu()">
+      ☰ <!-- Icône hamburger -->
+    </div>
+  
+    <!-- Menu déroulant -->
+    <ul class="menu" [class.open]="menuOpen">
+      <li class="menu-item"><a href="#">Accueil</a></li>
+      <li class="menu-item"><a href="#">Missions</a></li>
+      <li class="menu-item"><a href="#">Personnels</a></li>
+    </ul>
+  </div>
+  
