@@ -1,3 +1,15 @@
 <app-search-bar/>
-<app-menu></app-menu>
+<app-menu (pageChange)="onPageChange($event)"></app-menu>
+
+<div class="page-content">
+  <!-- Afficher la page en fonction de currentPage -->
+  <div *ngIf="currentPage === 'accueil'">
+    <h2>Bienvenue sur la page d'accueil</h2>
+    <p>Contenu de la page d'accueil...</p>
+  </div>
+
+  <app-mission *ngIf="currentPage === 'missions'"></app-mission>
+  <app-employes *ngIf="currentPage === 'employes'"></app-employes>
+</div>
+
 <app-aide></app-aide>
