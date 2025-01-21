@@ -1,0 +1,103 @@
+/* Conteneur pour les cartes d'employés */
+.employee-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  /* Style pour chaque carte d'employé */
+  .employee-card {
+    width: 180px;
+    padding: 20px;
+    background-color: orange;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+  }
+  
+  .employee-card:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Style pour les actions sous chaque employé (boutons) */
+  .employee-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 180px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .edit-btn, .delete-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 80px; /* Largeur des boutons */
+  }
+  
+  .edit-btn {
+    background-color: green;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: red;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: darkgreen;
+  }
+  
+  .delete-btn:hover {
+    background-color: darkred;
+  }
+  
+  /* Style pour le popup */
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    text-align: left;
+    position: relative; /* Pour que la croix soit positionnée à l'intérieur */
+  }
+  
+  .popup-content h2 {
+    margin-top: 0;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+  }
+  
+  .close:hover {
+    color: darkred;
+  }
+  
