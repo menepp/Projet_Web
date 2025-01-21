@@ -1,5 +1,23 @@
-<div class="employe-page">
-    <h2>Liste des Employés</h2>
-    <p>Voici la liste des employés...</p>
-  </div>
-  
+<div [style.display]="isLoading ? 'block' : 'none'">Chargement en cours...</div>
+
+<div [style.display]="!isLoading && employes.length > 0 ? 'block' : 'none'">
+  <table border="1" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Itérer sur les employés et afficher chaque ligne -->
+      <tr *ngFor="let employe of employes">
+        <td>{{ employe.nom }}</td>
+        <td>{{ employe.prenom }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div [style.display]="!isLoading && employes.length === 0 ? 'block' : 'none'">
+  Aucun employé trouvé.
+</div>

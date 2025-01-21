@@ -3,14 +3,14 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 
 import { MenuComponent } from './menu/menu.component';
 import { AideComponent } from './aide/aide.component';
-import { EmployesComponent } from './employes/employes.component';
+import { EmployeComponent } from './employes/employes.component';
 import { MissionComponent } from './mission/mission.component';
 
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [SearchBarComponent, MenuComponent, AideComponent, EmployesComponent,MissionComponent, CommonModule ],
+  imports: [SearchBarComponent, MenuComponent, AideComponent, EmployeComponent,MissionComponent, CommonModule ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
