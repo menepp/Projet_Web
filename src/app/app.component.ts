@@ -19,6 +19,6 @@ export class AppComponent {
   currentPage = 'accueil'; // Par défaut, on affiche l'accueil
 
   onPageChange(page: string) {
-    this.currentPage = page; // Met à jour la page active
+    this.currentPage = page; 
   }
 }

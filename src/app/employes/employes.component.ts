@@ -4,50 +4,60 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-employes',
   imports: [CommonModule],
-  templateUrl: './employes.component.html', // Utilisation d'un fichier HTML séparé
+  templateUrl: './employes.component.html',
   styleUrls: ['./employes.component.css']
 })
 
 export class EmployeComponent implements OnInit {
-  employes: { nom: string; prenom: string; date_entree: string }[] = [];
+  employes: {
+    nom: string;
+    prenom: string;
+    poste: string;
+    description: string;
+    date_entree: string;
+  }[] = [];
   isLoading = true;
   selectedEmployee: any = null;
 
   ngOnInit(): void {
-    // Appeler l'API pour récupérer les employés
-    fetch('http://localhost:3000/api/employes')
-      .then((response) => response.json())
+    this.fetchEmployees(); // Charger les employés dès le chargement du composant
+  }
+
+  // Fonction pour récupérer les employés depuis l'API
+  fetchEmployees() {
+    fetch('http://localhost:3000/api/employes') // Assurez-vous que l'URL est correcte
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des employés');
+        }
+        return response.json();
+      })
       .then((data) => {
-        this.employes = data; // Stocker les données dans le tableau
-        this.isLoading = false; // Masquer l'indicateur de chargement
+        // Supposons que la réponse de l'API renvoie un tableau d'objets employés
+        this.employes = data.map((employe: any) => ({
+          nom: employe.nom,
+          prenom: employe.prenom,
+          poste: employe.poste || 'Poste non défini',
+          description: employe.description || 'Pas de description disponible.',
+          date_entree: employe.date_entree || 'Non renseignée',
+        }));
+        this.isLoading = false;
       })
       .catch((error) => {
-        console.error('Erreur lors de la récupération des employés:', error);
-        this.isLoading = false; // Masquer l'indicateur même en cas d'erreur
+        console.error('Erreur :', error);
+        this.isLoading = false; // Même en cas d'erreur, on arrête le chargement
       });
   }
 
-  // Méthode pour ouvrir les détails d'un employé
+  // Fonction pour afficher les détails d'un employé
   openEmployeeDetails(employee: any) {
     this.selectedEmployee = employee;
   }
 
-  // Méthode pour fermer le popup
+  // Fonction pour fermer la popup des détails
   closePopup() {
     this.selectedEmployee = null;
   }
 
-  // Méthode pour modifier un employé (exemple)
-  editEmployee(employee: any, event: Event) {
-    event.stopPropagation(); // Empêcher l'événement de clic de se propager au niveau du cadre
-    console.log('Modifier l\'employé:', employee);
-    // Ajouter votre logique de modification ici, comme ouvrir un formulaire de modification
-  }
-
-  // Méthode pour supprimer un employé (exemple)
-  deleteEmployee(employee: any, event: Event) {
-    event.stopPropagation(); // Empêcher l'événement de clic de se propager au niveau du cadre
-    console.log('Supprimer l\'employé:', employee);
-    // Ajouter votre logique de suppression ici, comme appeler une API pour supprimer l'employé
-  }
+  
 }

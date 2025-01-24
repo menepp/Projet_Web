@@ -22,7 +22,7 @@ pool.connect((err, client, release) => {
 router.get('/api/employes', async (req, res) => {
     try {
       console.log('Endpoint /api/employes appelé'); // Log
-      const result = await pool.query('SELECT nom, prenom FROM liste_personnel'); // Requête SQL
+      const result = await pool.query('SELECT nom, prenom, date_entree FROM liste_personnel'); // Requête SQL
       console.log('Résultats de la requête SQL :', result.rows); // Log
       if (result.rows.length === 0) {
         console.log('Aucun employé trouvé dans la table');
