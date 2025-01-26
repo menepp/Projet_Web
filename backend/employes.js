@@ -34,5 +34,26 @@ router.get('/api/employes', async (req, res) => {
     }
   });
   
-
+// Endpoint pour trier les employés
+router.get('/api/employes/sort', async (req, res) => {
+    const { criterion, order } = req.query; // Récupération des paramètres de tri
+    try {
+      let query = 'SELECT nom, prenom, date_entree FROM liste_personnel';
+      if (criterion === 'nom') {
+        query += ` ORDER BY nom ${order}`;
+      } else if (criterion === 'prenom') {
+        query += ` ORDER BY prenom ${order}`;
+      } else if (criterion === 'date_entree') {
+        query += ` ORDER BY date_entree ${order}`;
+      }
+  
+      console.log('Requête SQL exécutée pour tri :', query); // Log
+      const result = await pool.query(query); // Requête SQL
+      res.status(200).json(result.rows); // Renvoie les employés triés au client
+    } catch (err) {
+      console.error('Erreur lors du tri des employés:', err);
+      res.status(500).send('Erreur serveur lors du tri des employés');
+    }
+  });
+  
 module.exports = router;

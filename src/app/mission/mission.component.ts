@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { SearchBarComponent } from '../components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-mission',
-  imports: [],
+  imports: [SearchBarComponent ],
   templateUrl: './mission.component.html',
   styleUrl: './mission.component.css'
 })
