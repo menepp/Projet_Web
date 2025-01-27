@@ -10,6 +10,6 @@ export class SearchBarComponent  implements OnInit {
   imageURL! : string;
 
 ngOnInit() {
-  this.imageURL = 'https://e7.pngegg.com/pngimages/306/24/png-clipart-google-search-android-search-box-search-engine-optimization-loupe-technic-symbol-thumbnail.png';
+  this.imageURL = 'https://i.pinimg.com/originals/a0/88/10/a0881023763e13874bf497e680a3594a.png';
 
 }}

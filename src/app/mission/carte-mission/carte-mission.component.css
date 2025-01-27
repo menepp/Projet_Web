@@ -1,0 +1,66 @@
+.container-card {
+    display: flex;
+    background-color: #ffffffbb;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 800px;
+    font-family: Arial, sans-serif;
+    gap: 20px;
+}
+
+.left{
+    display: flex;
+}
+
+h1 {
+    font-size: 20px;
+    padding: 5px 0 20px 10px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.description {
+    color: #555;
+    font-size: 16px;
+    justify-content: left;
+}
+
+.right {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.information, .date {
+    display: flex;
+    flex-direction: column;
+    color: #555;
+    font-size: 14px;
+    gap: 5px;
+}
+
+.button {
+    text-align: right;
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
+button#modifier {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button#modifier:hover {
+    background-color: #45a049;
+}

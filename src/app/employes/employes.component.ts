@@ -20,6 +20,7 @@ export class EmployeComponent implements OnInit {
       .then((data) => {
         this.employes = data; // Stocker les données dans le tableau
         this.isLoading = false; // Masquer l'indicateur de chargement
+        console.log(this.employes);
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération des employés:', error);
