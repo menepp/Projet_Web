@@ -16,9 +16,12 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'Projet-Web';
-  currentPage = 'accueil'; // Par défaut, on affiche l'accueil
+  currentPage = 'accueil'; 
 
   onPageChange(page: string) {
-    this.currentPage = page; // Met à jour la page active
+    this.currentPage = page; 
   }
+
+
+  
 }

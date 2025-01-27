@@ -1,32 +1,66 @@
-<div *ngIf="isLoading">Chargement en cours...</div>
 
-<div *ngIf="!isLoading && employes.length === 0">Aucun employé trouvé.</div>
-
-<div *ngIf="!isLoading && employes.length > 0">
-  <div class="employee-container">
-    <!-- Afficher chaque employé dans un cadre -->
-    <div *ngFor="let employe of employes" class="employee-card" (click)="openEmployeeDetails(employe)">
-      <div class="employee-name">
-        <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
+  <div class="search-and-sort">
+    <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
+    <button class="btn-sort" (click)="openSortPopup()">Trier</button>
+  </div>
+  <!-- Titre de la page -->
+  <div class="page-header">
+    <h1>Employés de Techna</h1>
+  </div>
+  
+  @if(isLoading){
+    <div  class="loading-message">
+    Chargement en cours...
+  </div>}
+  
+  @if(!isLoading && filteredEmployees.length===0){
+    <div class="no-employees-message">
+        Aucun employé trouvé.
       </div>
+  }
+  
+  
 
-      <!-- Ajouter un bouton modifier et un bouton retirer sous chaque employé -->
-      <div class="employee-actions">
-        <button class="edit-btn" (click)="editEmployee(employe, $event)">Modifier</button>
-        <button class="delete-btn" (click)="deleteEmployee(employe, $event)">Retirer</button>
+  @if(!isLoading && filteredEmployees.length > 0){
+    <div class="employee-container">
+        <div *ngFor="let employe of filteredEmployees" class="employee-card">
+          <div class="employee-avatar">
+            <img src="/assets/img/avatarimg.jpg" alt="Avatar" />
+          </div>
+          <div class="employee-details">
+            <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
+            <p class="employee-entree">
+              <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
+            </p>
+            <p class="employee-description">{{ employe.description }}</p>
+          </div>
+          <div class="button-container">
+            
+            <button class="btn btn-success" >Modifier</button>
+            <button class="btn btn-danger">Supprimer</button>
+          </div>
+        </div>
       </div>
+  }
+   
+  
+  
+  <div class="sort-popup" *ngIf="isSortPopupOpen">
+    <div class="popup-content">
+      <h3>Trier les employés</h3>
+      <div class="sort-options">
+        <label>
+          <input type="radio" name="sort" value="nom" (change)="setSortBy('nom')" /> Par Nom
+        </label>
+        <label>
+          <input type="radio" name="sort" value="prenom" (change)="setSortBy('prenom')" /> Par Prénom
+        </label>
+        <label>
+          <input type="radio" name="sort" value="date_entree" (change)="setSortBy('date_entree')" /> Par Date d'entrée
+        </label>
+      </div>
+      <button class="btn-apply" (click)="applySort()">Appliquer</button>
+      <button class="btn-close" (click)="closeSortPopup()">Fermer</button>
     </div>
   </div>
-</div>
-
-<!-- Popup avec les informations détaillées d'un employé -->
-<div *ngIf="selectedEmployee" class="popup">
-  <div class="popup-content">
-    <span class="close" (click)="closePopup()">&#10006;</span>
-    <h2>Informations de l'employé</h2>
-    <p><strong>Nom :</strong> {{ selectedEmployee.nom }}</p>
-    <p><strong>Prénom :</strong> {{ selectedEmployee.prenom }}</p>
-    <p><strong>Date d'entrée :</strong> {{ selectedEmployee.date_entree | date }}</p>
-    <!-- Ajouter d'autres informations ici -->
-  </div>
-</div>
+  

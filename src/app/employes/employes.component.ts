@@ -1,54 +1,93 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SearchBarComponent } from '../components/search-bar/search-bar.component';
+
 
 @Component({
   selector: 'app-employes',
-  imports: [CommonModule],
-  templateUrl: './employes.component.html', // Utilisation d'un fichier HTML séparé
+  imports: [CommonModule, SearchBarComponent ],
+  templateUrl: './employes.component.html',
   styleUrls: ['./employes.component.css']
 })
-
 export class EmployeComponent implements OnInit {
-  employes: { nom: string; prenom: string; date_entree: string }[] = [];
+  employes: {
+    nom: string;
+    prenom: string;
+    poste: string;
+    description: string;
+    date_entree: Date;
+  }[] = [];
   isLoading = true;
   selectedEmployee: any = null;
+  filteredEmployees: typeof this.employes = [];  
+  isSortPopupOpen: boolean = false;
+  sortBy: string = ''; 
 
   ngOnInit(): void {
-    // Appeler l'API pour récupérer les employés
+    this.fetchEmployees();
+  }
+
+  fetchEmployees() {
     fetch('http://localhost:3000/api/employes')
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des employés');
+        }
+        return response.json();
+      })
       .then((data) => {
-        this.employes = data; // Stocker les données dans le tableau
-        this.isLoading = false; // Masquer l'indicateur de chargement
-        console.log(this.employes);
+this.employes = data.map((employe: any) => ({
+          nom: employe.nom,
+          prenom: employe.prenom,
+          date_entree: employe.date_entree,
+          description: employe.description || 'Pas de description disponible.',
+        }));
+        this.filteredEmployees = [...this.employes];  // Affecter la liste complète au début
+        this.isLoading = false;
       })
       .catch((error) => {
-        console.error('Erreur lors de la récupération des employés:', error);
-        this.isLoading = false; // Masquer l'indicateur même en cas d'erreur
+        console.error('Erreur :', error);
+        this.isLoading = false;
       });
   }
 
-  // Méthode pour ouvrir les détails d'un employé
   openEmployeeDetails(employee: any) {
     this.selectedEmployee = employee;
   }
 
-  // Méthode pour fermer le popup
   closePopup() {
     this.selectedEmployee = null;
   }
 
-  // Méthode pour modifier un employé (exemple)
-  editEmployee(employee: any, event: Event) {
-    event.stopPropagation(); // Empêcher l'événement de clic de se propager au niveau du cadre
-    console.log('Modifier l\'employé:', employee);
-    // Ajouter votre logique de modification ici, comme ouvrir un formulaire de modification
+  filterEmployees(searchTerm: string) {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    this.filteredEmployees = this.employes.filter((employe) =>
+      `${employe.nom} ${employe.prenom}`.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  }
+  
+
+  openSortPopup() {
+    this.isSortPopupOpen = true;
   }
 
-  // Méthode pour supprimer un employé (exemple)
-  deleteEmployee(employee: any, event: Event) {
-    event.stopPropagation(); // Empêcher l'événement de clic de se propager au niveau du cadre
-    console.log('Supprimer l\'employé:', employee);
-    // Ajouter votre logique de suppression ici, comme appeler une API pour supprimer l'employé
+  closeSortPopup() {
+    this.isSortPopupOpen = false;
   }
+
+  setSortBy(criterion: string) {
+    this.sortBy = criterion;
+  }
+
+  applySort() {
+    if (this.sortBy === 'nom') {
+      this.employes.sort((a, b) => a.nom.localeCompare(b.nom));
+    } else if (this.sortBy === 'prenom') {
+      this.employes.sort((a, b) => a.prenom.localeCompare(b.prenom));
+    } else if (this.sortBy === 'date_entree') {
+      this.employes.sort((a, b) => new Date(a.date_entree).getTime() - new Date(b.date_entree).getTime());
+    }
+    this.closeSortPopup();
+  }
+  
 }
