@@ -2,8 +2,36 @@
   <div class="search-and-sort">
     <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
     <button class="btn-sort" (click)="openSortPopup()">Trier</button>
+    <button class="btn-add" (click)="openAddEmployeePopup()">Ajouter</button> 
   </div>
-  <!-- Titre de la page -->
+ 
+  @if(isAddEmployeePopupOpen){
+    <div class="add-employee-popup">
+        <div class="popup-content">
+          <h3>Ajouter un Employé</h3>
+          <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
+            <div>
+              <label for="prenom">Prénom : </label>
+              <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required />
+            </div>
+            <div>
+              <label for="nom">Nom : </label>
+              <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required />
+            </div>
+            <div>
+              <label for="date_entree">Date d'entrée : </label>
+              <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required />
+            </div>
+            <div>
+              <button type="submit" [disabled]="!employeeForm.form.valid">Ajouter</button>
+            </div>
+          </form>
+          <button class="btn-close" (click)="closeAddEmployeePopup()">Fermer</button>
+        </div>
+      </div>
+  }
+
+
   <div class="page-header">
     <h1>Employés de Techna</h1>
   </div>

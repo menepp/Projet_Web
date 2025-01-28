@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from '../components/search-bar/search-bar.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-employes',
-  imports: [CommonModule, SearchBarComponent ],
+  imports: [CommonModule, SearchBarComponent, FormsModule ],
   templateUrl: './employes.component.html',
   styleUrls: ['./employes.component.css']
 })
@@ -22,6 +23,9 @@ export class EmployeComponent implements OnInit {
   filteredEmployees: typeof this.employes = [];  
   isSortPopupOpen: boolean = false;
   sortBy: string = ''; 
+
+  isAddEmployeePopupOpen: boolean = false;
+  newEmployee: { nom: string; prenom: string; date_entree: string } = { nom: '', prenom: '', date_entree: '' };
 
   ngOnInit(): void {
     this.fetchEmployees();
@@ -42,7 +46,7 @@ this.employes = data.map((employe: any) => ({
           date_entree: employe.date_entree,
           description: employe.description || 'Pas de description disponible.',
         }));
-        this.filteredEmployees = [...this.employes];  // Affecter la liste complète au début
+        this.filteredEmployees = [...this.employes];  
         this.isLoading = false;
       })
       .catch((error) => {
@@ -89,5 +93,42 @@ this.employes = data.map((employe: any) => ({
     }
     this.closeSortPopup();
   }
+  openAddEmployeeForm() {
+    
+  }
   
-}
+    openAddEmployeePopup() {
+      this.isAddEmployeePopupOpen = true;
+    }
+  
+    closeAddEmployeePopup() {
+      this.isAddEmployeePopupOpen = false;
+      this.newEmployee = { nom: '', prenom: '', date_entree: '' }; 
+    }
+  
+    addEmployee() {
+      fetch('http://localhost:3000/api/employes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.newEmployee),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erreur lors de l\'ajout de l\'employé');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.employes.push(data);  
+          this.filteredEmployees = [...this.employes];
+          this.closeAddEmployeePopup();
+        })
+        .catch((error) => {
+          console.error('Erreur :', error);
+        });
+    }
+  }
+
+
