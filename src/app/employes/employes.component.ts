@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class EmployeComponent implements OnInit {
   employes: {
+    identifiant : number;
     nom: string;
     prenom: string;
     poste: string;
@@ -41,6 +42,7 @@ export class EmployeComponent implements OnInit {
       })
       .then((data) => {
 this.employes = data.map((employe: any) => ({
+          identifiant : employe.identifiant,
           nom: employe.nom,
           prenom: employe.prenom,
           date_entree: employe.date_entree,
@@ -129,6 +131,29 @@ this.employes = data.map((employe: any) => ({
           console.error('Erreur :', error);
         });
     }
+    deleteEmployee(employeeId: number) {
+      console.log('Tentative de suppression avec ID :', employeeId); // Log
+    
+      if (confirm('Voulez-vous vraiment supprimer cet employé ?')) {
+        fetch(`http://localhost:3000/api/employes/${employeeId}`, {
+          method: 'DELETE',
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Erreur lors de la suppression de l\'employé');
+            }
+            this.employes = this.employes.filter((employe) => employe.identifiant !== employeeId);
+            this.filteredEmployees = [...this.employes];
+            alert('Employé supprimé avec succès.');
+          })
+          .catch((error) => {
+            console.error('Erreur :', error);
+            alert('Erreur lors de la suppression de l\'employé.');
+          });
+      }
+    }
+    
+    
   }
 
 

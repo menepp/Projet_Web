@@ -23,7 +23,7 @@ pool.connect((err, client, release) => {
 router.get('/', async (req, res) => {
   try {
     console.log('Endpoint /api/employes appelé'); // Log
-    const result = await pool.query('SELECT nom, prenom, date_entree FROM liste_personnel'); // Requête SQL
+    const result = await pool.query('SELECT identifiant, nom, prenom, date_entree FROM liste_personnel'); // Requête SQL
     console.log('Résultats de la requête SQL :', result.rows); // Log
     if (result.rows.length === 0) {
       console.log('Aucun employé trouvé dans la table');
@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Ajout de l'employé à la base de données
+// Ajout employé à la base de données
 router.post('/', async (req, res) => {
     const { prenom, nom, date_entree } = req.body;
     const query = 'INSERT INTO liste_personnel (prenom, nom, date_entree) VALUES ($1, $2, $3) RETURNING *';
@@ -50,7 +50,32 @@ router.post('/', async (req, res) => {
       res.status(500).send('Erreur serveur lors de l\'ajout de l\'employé');
     }
   });
+  //supprimer employe
+  router.delete('/:id', async (req, res) => {
+    const employeeId = req.params.id;
+    console.log('ID reçu pour suppression :', employeeId); // Log
   
+    if (!employeeId) {
+      return res.status(400).send('ID de l\'employé non fourni');
+    }
+  
+    try {
+      const query = 'DELETE FROM liste_personnel WHERE identifiant = $1';
+      const values = [employeeId];
+      const result = await pool.query(query, values);
+  
+      if (result.rowCount === 0) {
+        return res.status(404).send('Employé non trouvé');
+      }
+  
+      res.status(200).send('Employé supprimé avec succès');
+    } catch (err) {
+      console.error('Erreur lors de la suppression de l\'employé :', err);
+      res.status(500).send('Erreur serveur lors de la suppression de l\'employé');
+    }
+  });
+  
+    
   
 
 module.exports = router;

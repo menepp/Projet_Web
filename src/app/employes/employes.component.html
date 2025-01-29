@@ -65,30 +65,32 @@
           <div class="button-container">
             
             <button class="btn btn-success" >Modifier</button>
-            <button class="btn btn-danger">Supprimer</button>
+            <button class="btn btn-danger" (click)="deleteEmployee(employe.identifiant)">Supprimer</button>
           </div>
         </div>
       </div>
   }
    
   
-  
-  <div class="sort-popup" *ngIf="isSortPopupOpen">
-    <div class="popup-content">
-      <h3>Trier les employés</h3>
-      <div class="sort-options">
-        <label>
-          <input type="radio" name="sort" value="nom" (change)="setSortBy('nom')" /> Par Nom
-        </label>
-        <label>
-          <input type="radio" name="sort" value="prenom" (change)="setSortBy('prenom')" /> Par Prénom
-        </label>
-        <label>
-          <input type="radio" name="sort" value="date_entree" (change)="setSortBy('date_entree')" /> Par Date d'entrée
-        </label>
+  @if(isSortPopupOpen){
+    <div class="sort-popup">
+      <div class="popup-content">
+        <h3>Trier les employés</h3>
+        <div class="sort-options">
+          <label>
+            <input type="radio" name="sort" value="nom" (change)="setSortBy('nom')" /> Par Nom
+          </label>
+          <label>
+            <input type="radio" name="sort" value="prenom" (change)="setSortBy('prenom')" /> Par Prénom
+          </label>
+          <label>
+            <input type="radio" name="sort" value="date_entree" (change)="setSortBy('date_entree')" /> Par Date d'entrée
+          </label>
+        </div>
+        <button class="btn-apply" (click)="applySort()">Appliquer</button>
+        <button class="btn-close" (click)="closeSortPopup()">Fermer</button>
       </div>
-      <button class="btn-apply" (click)="applySort()">Appliquer</button>
-      <button class="btn-close" (click)="closeSortPopup()">Fermer</button>
     </div>
-  </div>
+  }
+  
   
