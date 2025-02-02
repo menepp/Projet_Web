@@ -23,6 +23,10 @@
               <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required />
             </div>
             <div>
+              <label for="competences"> Compétences : </label>
+              <input type="text" id="competences" [(ngModel)]="newEmployee.competences" name="competences" required />
+            </div>
+            <div>
               <button type="submit" [disabled]="!employeeForm.form.valid">Ajouter</button>
             </div>
           </form>
@@ -47,7 +51,35 @@
       </div>
   }
   
-  
+  @if(isEditEmployeePopupOpen){
+    <div class="edit-employee-popup">
+      <div class="popup-content">
+        <h3>Modifier un Employé</h3>
+        <form (ngSubmit)="saveEmployee()" #editEmployeeForm="ngForm">
+          <div>
+            <label for="prenom">Prénom : </label>
+            <input type="text" id="prenom" [(ngModel)]="editEmployee.prenom" name="prenom" required />
+          </div>
+          <div>
+            <label for="nom">Nom : </label>
+            <input type="text" id="nom" [(ngModel)]="editEmployee.nom" name="nom" required />
+          </div>
+          <div>
+            <label for="date_entree">Date d'entrée : </label>
+            <input type="date" id="date_entree" [(ngModel)]="editEmployee.date_entree" name="date_entree" required />
+          </div>
+          <div>
+            <label for="competences"> Compétences : </label>
+            <input type="text" id="competences" [(ngModel)]="editEmployee.competences" name="competences" required />
+          </div>
+          <div>
+            <button type="submit" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
+          </div>
+        </form>
+        <button class="btn-close" (click)="closeEditEmployeePopup()">Fermer</button>
+      </div>
+    </div>
+  }
 
   @if(!isLoading && filteredEmployees.length > 0){
     <div class="employee-container">
@@ -60,11 +92,17 @@
             <p class="employee-entree">
               <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
             </p>
+            <p class="employee-competences">
+              <strong>Compétences : </strong>
+            </p>
+            <ul>
+              <li *ngFor="let comp of employe.competences">{{ comp }}</li>
+            </ul>
             <p class="employee-description">{{ employe.description }}</p>
           </div>
           <div class="button-container">
             
-            <button class="btn btn-success" >Modifier</button>
+            <button class="btn btn-success" (click)="openEditEmployeePopup(employe)" >Modifier</button>
             <button class="btn btn-danger" (click)="deleteEmployee(employe.identifiant)">Supprimer</button>
           </div>
         </div>
