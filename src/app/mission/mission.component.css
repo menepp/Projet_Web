@@ -1,15 +1,28 @@
-.mission-page {
+.search{
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    background-color: #f5f5f5; /* Fond léger pour la page */
+    align-items: center;
+}
+
+.page-header{
+    text-align: center;
+}
+
+.mission-page {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 20px;
     padding: 20px;
-    min-height: 100vh; /* S'étend pour couvrir toute la hauteur de l'écran */
+    background-color: #f5f5f5;
+    justify-items: center;
+    align-content: flex-start;
+    min-height: 100vh;
     font-family: Arial, sans-serif;
 }
 
 .mission-page h2 {
+    grid-column: 1 / -1; 
+    text-align: center;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -17,19 +30,82 @@
 }
 
 .mission-page p {
+    grid-column: 1 / -1; 
+    text-align: center;
     font-size: 16px;
     color: #555;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-app-carte-mission {
+.container-card {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 800px;
-    border-radius: 15px;
-    padding: 20px;
-    margin: 10px 0;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 300px; 
+    height: 350px; 
+    font-family: 'Roboto', sans-serif;
+    gap: 10px;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.container-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.container-card h1 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #212121;
+    margin: 0 0 5px 0;
+    border-bottom: 2px solid #ff6700;
+    padding-bottom: 5px;
+}
+
+.container-card .description {
+    color: #616161;
+    font-size: 14px;
+    margin-bottom: 5px;
+    flex-grow: 1; 
+}
+
+.container-card .information,
+.container-card .date {
+    display: flex;
+    flex-direction: column;
+    color: #424242;
+    font-size: 12px;
+    gap: 3px;
+}
+
+.container-card .button {
+    text-align: right;
+}
+
+button#modifier {
+    padding: 5px 8px;
+    background-color: #ff6700;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button#modifier:hover {
+    background-color: #e65b00;
+    transform: translateY(-2px);
+}
+
+button#modifier:active {
+    background-color: #cc5200;
+    transform: translateY(1px);
 }

@@ -1,6 +1,21 @@
 <div class="search">
-    <app-search-bar ></app-search-bar>
-  </div>
+  <app-search-bar></app-search-bar>
+</div>
+
+<div class="page-header">
+  <h1>Employés de Techna</h1>
+</div>
+
+@if(isLoading){
+  <div  class="loading-message">
+  Chargement en cours...
+</div>}
+
+@if(!isLoading && missions.length===0){
+  <div class="no-mission-message">
+      Aucune mission trouvé.
+    </div>
+}
 
 <div class="mission-page">
   <h2>Liste des Missions</h2>
