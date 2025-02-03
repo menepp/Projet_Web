@@ -1,66 +1,74 @@
 .container-card {
     display: flex;
-    background-color: #ffffffbb;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px 0;
-    width: 100%;
-    max-width: 800px;
-    font-family: Arial, sans-serif;
-    gap: 20px;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    margin: 10px auto;
+    width: 300px; 
+    height: 250px;
+    font-family: 'Roboto', sans-serif;
+    gap: 10px;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.left{
-    display: flex;
+.container-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 h1 {
-    font-size: 20px;
-    padding: 5px 0 20px 10px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #212121;
+    margin: 0 0 5px 0;
+    border-bottom: 2px solid #ff6700;
+    padding-bottom: 5px;
 }
 
 .description {
-    color: #555;
+    color: #424242;
     font-size: 16px;
-    justify-content: left;
-}
-
-.right {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
 }
 
 .information, .date {
     display: flex;
     flex-direction: column;
-    color: #555;
-    font-size: 14px;
-    gap: 5px;
+    color: #424242;
+    font-size: 15px;
+    gap: 3px;
+}
+
+.date p, .information p {
+    margin: 0;
 }
 
 .button {
     text-align: right;
-    margin-top: 10px;
     align-self: flex-end;
 }
 
 button#modifier {
-    padding: 8px 16px;
-    background-color: #4caf50;
+    padding: 5px 10px;
+    background-color: #ff6700;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 14px;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 button#modifier:hover {
-    background-color: #45a049;
+    background-color: #ff6700;
+    transform: translateY(-2px);
+}
+
+button#modifier:active {
+    background-color: #ff6700;
+    transform: translateY(1px);
 }
