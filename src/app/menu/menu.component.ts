@@ -1,22 +1,19 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+// menu.component.ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
   menuOpen = false;
 
-  @Output() pageChange = new EventEmitter<string>(); // Événement pour notifier le parent de la page sélectionnée
-
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-  }
-
-  navigateTo(page: string) {
-    this.pageChange.emit(page); // Notifie le parent du changement de page
-    this.menuOpen = false; // Ferme le menu après la navigation
   }
 }

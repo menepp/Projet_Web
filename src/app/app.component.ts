@@ -1,27 +1,17 @@
+// app.component.ts
 import { Component } from '@angular/core';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
-
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
 import { AideComponent } from './aide/aide.component';
-import { EmployeComponent } from './employes/employes.component';
-import { MissionComponent } from './mission/mission.component';
-
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [SearchBarComponent, MenuComponent, AideComponent, EmployeComponent,MissionComponent, CommonModule ],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, MenuComponent, AideComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']  // Notez le "styleUrls" (avec "s")
 })
 export class AppComponent {
   title = 'Projet-Web';
-  currentPage = 'accueil'; 
-
-  onPageChange(page: string) {
-    this.currentPage = page; 
-  }
-
-
-  
 }

@@ -1,17 +1,17 @@
+<!-- menu.component.html -->
 <div class="menu-container">
   <div class="menu-icon" (click)="toggleMenu()">
     ☰ 
   </div>
-
   <ul class="menu" [class.open]="menuOpen">
     <li class="menu-item">
-      <a href="#" (click)="navigateTo('accueil')">Accueil</a>
+      <a routerLink="/accueil" (click)="toggleMenu()">Accueil</a>
     </li>
     <li class="menu-item">
-      <a href="#" (click)="navigateTo('missions')">Missions</a>
+      <a routerLink="/missions" (click)="toggleMenu()">Missions</a>
     </li>
     <li class="menu-item">
-      <a href="#" (click)="navigateTo('employes')">Personnels</a>
+      <a routerLink="/employes" (click)="toggleMenu()">Personnels</a>
     </li>
   </ul>
 </div>
