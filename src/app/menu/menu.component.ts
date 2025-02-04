@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class MenuComponent {
   menuOpen = false;
-
+  
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }

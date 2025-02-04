@@ -232,19 +232,7 @@
   background-color: #a71d2a;
 }
 
-.btn-add {
-  background-color: #D9A566; /* or */
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 10px; /* Pour l'espacement entre les boutons */
-}
 
-.btn-add:hover {
-  background-color: #bd8542; /* Changement de couleur au survol */
-}
 
 
 form div {

@@ -1,121 +1,9 @@
 <div class="search-and-sort">
-  <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
-  <button class="btn-sort" (click)="openSortPopup()">Trier</button>
-  <button class="btn-add" (click)="openAddEmployeePopup()">Ajouter</button>
+  <app-trier></app-trier>
+  <app-ajouter></app-ajouter>
 </div>
+<app-cadre-employe></app-cadre-employe>
 
-@if (isAddEmployeePopupOpen) {
-  <div class="add-employee-popup">
-    <div class="popup-content">
-      <h3>Ajouter un Employé</h3>
-      <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
-        <div>
-          <label for="prenom">Prénom : </label>
-          <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required/>
-        </div>
-        <div>
-          <label for="nom">Nom : </label>
-          <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required/>
-        </div>
-        <div>
-          <label for="date_entree">Date d'entrée : </label>
-          <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required/>
-        </div>
-        <div>
-          <label for="competences"> Compétences : </label>
-          <input type="text" id="competences" [(ngModel)]="newEmployee.competences" name="competences" required/>
-        </div>
-        <div>
-          <button type="submit" class="btn-apply" [disabled]="!employeeForm.form.valid">Ajouter</button>
-        </div>
-      </form>
-      <button class="btn-close" (click)="closeAddEmployeePopup()">Fermer</button>
-    </div>
-  </div>
-}
-
-<!--pop up d'édition -->
-
-@if (isEditEmployeePopupOpen) {
-  <div class="edit-employee-popup">
-    <div class="popup-content">
-
-      <h3>Modifier un Employé</h3>
-      <form (ngSubmit)="saveEmployee()" #editEmployeeForm="ngForm">
-        <div>
-          <label for="prenom">Prénom : </label>
-          <input type="text" id="prenom" [(ngModel)]="editEmployee.prenom" name="prenom" required/>
-        </div>
-        <div>
-          <label for="nom">Nom : </label>
-          <input type="text" id="nom" [(ngModel)]="editEmployee.nom" name="nom" required/>
-        </div>
-        <div>
-          <label for="date_entree">Date d'entrée : </label>
-          <input type="date" id="date_entree" [(ngModel)]="editEmployee.date_entree" name="date_entree" required/>
-        </div>
-        <div>
-          <label for="competences"> Compétences : </label>
-          <input type="text" id="competences" [(ngModel)]="editEmployee.competences" name="competences" required/>
-        </div>
-        <div>
-          <button type="submit" class="btn-apply" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
-          <button type="button" class="btn-close" (click)="closeEditEmployeePopup()">Fermer</button>
-        </div>
-      </form>
-
-    </div>
-  </div>
-}
-
-<!--pop up de tri-->
-@if (isSortPopupOpen) {
-  <div class="sort-popup">
-    <div class="popup-content">
-      <h3>Trier les employés</h3>
-      <div class="sort-options">
-        <label>
-          <input type="radio" name="sort" value="nom" (change)="setSortBy('nom')"/> Par Nom
-        </label>
-        <label>
-          <input type="radio" name="sort" value="prenom" (change)="setSortBy('prenom')"/> Par Prénom
-        </label>
-        <label>
-          <input type="radio" name="sort" value="date_entree" (change)="setSortBy('date_entree')"/> Par Date d'entrée
-        </label>
-      </div>
-      <button class="btn-apply" (click)="applySort()">Appliquer</button>
-      <button class="btn-close" (click)="closeSortPopup()">Fermer</button>
-    </div>
-  </div>
-}
-
-
-@if (isDeletePopupOpen) {
-  <div class="delete-popup">
-    <div class="popup-content">
-      <h3> Supprimer {{ delEmployee.nom + " " + delEmployee.prenom }}</h3>
-      <p>Voulez vous vraiment supprimer cet(te) employé(e) ?</p>
-      <button type="submit" class="btn-apply" (click)="deleteEmployee()">Confirmer</button>
-      <button class="btn-close" (click)="closeDeleteEmployeePopup()">Abandonner</button>
-    </div>
-  </div>
-}
-
-
-
-
-
-
-<div class="page-header">
-  <h1>Employés de Skill'QUEST</h1>
-</div>
-
-@if (isLoading) {
-  <div class="loading-message">
-    Chargement en cours...
-  </div>
-}
 
 @if (!isLoading && filteredEmployees.length === 0) {
   <div class="no-employees-message">
@@ -123,40 +11,6 @@
   </div>
 }
 
-<!-- Affichage des employés de la liste -->
-
-@if (!isLoading && filteredEmployees.length > 0) {
-  <div class="employee-container">
-    <div *ngFor="let employe of filteredEmployees" class="employee-card">
-
-
-      <div class="employee-avatar">
-        <img src="/assets/img/avatarimg.jpg" alt="Avatar"/>
-      </div>
-      <div class="employee-details">
-        <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
-        <p class="employee-entree">
-          <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
-        </p>
-        <p class="employee-competences">
-          <strong>Compétences : </strong>
-        </p>
-        <ul>
-          <li *ngFor="let comp of employe.competences">{{ comp }}</li>
-        </ul>
-        <p class="employee-description">{{ employe.description }}</p>
-      </div>
-      <div class="button-container">
-
-        <button class="btn btn-success" (click)="openEditEmployeePopup(employe)">Modifier</button>
-        <button class="btn btn-danger" (click)="openDeleteEmployeePopup(employe)">Supprimer</button>
-        <!--<button class="btn btn-danger" (click)="deleteEmployee(employe.identifiant)">Supprimer</button>-->
-      </div>
-
-
-    </div>
-  </div>
-}
 
 
 

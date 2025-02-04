@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AjouterRetirerComponent } from './ajouter-retirer.component';
+import { AjouterComponent } from './ajouter.component';
 
-describe('AjouterRetirerComponent', () => {
-  let component: AjouterRetirerComponent;
-  let fixture: ComponentFixture<AjouterRetirerComponent>;
+describe('AjouterComponent', () => {
+  let component: AjouterComponent;
+  let fixture: ComponentFixture<AjouterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AjouterRetirerComponent]
+      imports: [AjouterComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AjouterRetirerComponent);
+    fixture = TestBed.createComponent(AjouterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

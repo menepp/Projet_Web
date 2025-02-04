@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AfficherListeComponent } from './afficher-liste.component';
+import { TrierComponent } from './trier.component';
 
-describe('AfficherListeComponent', () => {
-  let component: AfficherListeComponent;
-  let fixture: ComponentFixture<AfficherListeComponent>;
+describe('TrierComponent', () => {
+  let component: TrierComponent;
+  let fixture: ComponentFixture<TrierComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AfficherListeComponent]
+      imports: [TrierComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AfficherListeComponent);
+    fixture = TestBed.createComponent(TrierComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
