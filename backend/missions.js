@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { Pool } = require('pg');
 
-// Configuration de la connexion à PostgreSQL
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -29,4 +28,59 @@ pool.connect((err, client, release) => {
     }
   });
   
+// Ajout mission 
+router.post('/', async (req, res) => {
+  const { nomm, dated, datef, competences } = req.body;
+
+  console.log("Compétences reçues : ", competences); 
+  const client = await pool.connect();
+  try {
+      await client.query('BEGIN'); 
+      const missionQuery = 'INSERT INTO mission (nomm, dated, datef) VALUES ($1, $2, $3) RETURNING idm';
+      const missionResult = await client.query(missionQuery, [nomm, dated, datef]);
+      const missionId = missionResult.rows[0].idm;
+
+
+      await client.query('COMMIT'); 
+      res.status(201).json({ message: "Mission ajouté avec ses compétences", idm: missionId });
+  } catch (err) {
+      await client.query('ROLLBACK'); 
+      console.error('Erreur lors de l\'ajout de la mission et des compétences :', err);
+      res.status(500).send('Erreur serveur');
+  } finally {
+      client.release();
+  }
+});
+
+  //supprimer mission
+  router.delete('/:id', async (req, res) => {
+    const missionId = req.params.id;
+    console.log('ID reçu pour suppression :', missionId);
+  
+    if (!missionId) {
+      return res.status(400).send('ID de l\'employé non fourni');
+    }
+  
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN'); 
+  
+      const deletemissionQuery = 'DELETE FROM mission WHERE idm = $1';
+      const result = await client.query(deletemissionQuery, [missionId]);
+  
+      if (result.rowCount === 0) {
+        return res.status(404).send('Mission non trouvé');
+      }
+  
+      await client.query('COMMIT'); 
+      res.status(200).send('Mission supprimé avec succès');
+    } catch (err) {
+      await client.query('ROLLBACK'); 
+      console.error('Erreur lors de la suppression de la mission :', err);
+      res.status(500).send('Erreur serveur lors de la suppression de la mission');
+    } finally {
+      client.release();
+    }
+  });
+
   module.exports = router;

@@ -92,4 +92,63 @@
   #supprimer:active {
     transform: translateY(1px);
   }
+  .delete-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /*permet d'eviter que les infos missions s'ouvrent sur la pop up */
+  }
+  .popup-content {
+    position: fixed;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    z-index: 1000;
+  
+  }
+  .btn-apply, .btn-close {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 40%;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .btn-apply {
+    background-color: #D9A566;
+    float: right;
+  }
+  
+  .btn-apply:hover {
+    background-color: #bd8542;
+  }
+  
+  .btn-close {
+    background-color: #dc3545;
+    float: left;
+  }
+
+  .btn-close:hover {
+    background-color: #a71d2a;
+  }
+  .btn-danger {
+    background-color: #ea4258;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c52b3f;
+  }
   

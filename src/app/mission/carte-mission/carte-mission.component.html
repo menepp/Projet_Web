@@ -15,7 +15,18 @@
     </div>
     <div class="button-container">
       <button id="modifier">Modifier</button>
-      <button id="supprimer">Supprimer</button>
+      <button class="btn btn-danger" (click)="openDeleteMissionPopup(mission)">Supprimer</button>
     </div>
   </div>
   
+  
+@if (isDeletePopupOpen) {
+    <div class="delete-popup">
+      <div class="popup-content">
+        <h3> Supprimer {{ delMission.nom + " " + delMission.prenom }}</h3>
+        <p>Voulez vous vraiment supprimer cette mission ?</p>
+        <button type="submit" class="btn-apply" (click)="deleteMission()">Confirmer</button>
+        <button class="btn-close" (click)="closeDeleteMissionPopup()">Abandonner</button>
+      </div>
+    </div>
+  }

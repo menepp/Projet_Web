@@ -1,15 +1,15 @@
 .btn-add {
-    background-color: #D9A566; /* or */
+    background-color: #D9A566; 
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px; /* Pour l'espacement entre les boutons */
+    margin-left: 10px;
   }
   
   .btn-add:hover {
-    background-color: #bd8542; /* Changement de couleur au survol */
+    background-color: #bd8542; 
   }
 
   .btn-apply, .btn-close {

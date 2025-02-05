@@ -88,8 +88,6 @@ export class CadreEmployeComponent implements OnInit {
   deleteEmployee() {
     console.log('Tentative de suppression avec ID :', this.delEmployee.identifiant);
 
-    // Suppression de la condition if (confirm(...)) car elle est toujours vraie
-
     fetch(`http://localhost:3000/api/employes/${this.delEmployee.identifiant}`, {
       method: 'DELETE',
     })
@@ -135,7 +133,6 @@ export class CadreEmployeComponent implements OnInit {
     this.isEditEmployeePopupOpen = false;
   }
 
-  // Enregistrer les modifications
   saveEmployee() {
     const competencesArray = this.editEmployee.competences.split(',').map(comp => comp.trim());
 
