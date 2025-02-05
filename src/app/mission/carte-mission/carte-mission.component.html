@@ -1,19 +1,21 @@
-<div class = "container-card">
-    <div class = "title">
-        <h1>{{mission.nomm}}</h1>
+<div class="container-card">
+    <div class="title">
+      <h1>{{ mission.nomm }}</h1>
     </div>
-    <div class = "description">
-        <p>Description : {{mission.description}}</p>
+    <div class="description">
+      <p><strong>Description :</strong> {{ mission.description }}</p>
     </div>
-    <div class = "information">
-        <p>Etat : En-cours</p>
-        <p>Employés : </p>
+    <div class="information">
+      <p><strong>Etat :</strong> En-cours</p>
+      <p><strong>Employés :</strong></p>
     </div>
-    <div class = "date">
-        <p>Date de début : {{mission.dated| date}}</p>
-        <br><p>Date de fin : {{mission.datef|date}}</p>
+    <div class="date">
+      <p><strong>Date de début :</strong> {{ mission.dated | date:'dd/MM/yyyy' }}</p>
+      <p><strong>Date de fin :</strong> {{ mission.datef | date:'dd/MM/yyyy' }}</p>
     </div>
-    <div class = "button">
-        <button id = "modifier">Modifier</button>
+    <div class="button-container">
+      <button id="modifier">Modifier</button>
+      <button id="supprimer">Supprimer</button>
     </div>
-</div>
+  </div>
+  

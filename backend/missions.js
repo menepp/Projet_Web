@@ -21,7 +21,7 @@ pool.connect((err, client, release) => {
   router.get('/', async (req, res) => {
     try {
       console.log('Endpoint /api/missions appelé');
-      const result = await pool.query('SELECT * FROM liste_mission');
+      const result = await pool.query('SELECT * FROM mission');
       res.status(200).json(result.rows);
     } catch (err) {
       console.error('Erreur lors de la récupération des missions:', err);
