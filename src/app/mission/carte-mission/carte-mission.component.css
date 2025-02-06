@@ -92,7 +92,7 @@
   #supprimer:active {
     transform: translateY(1px);
   }
-  .delete-popup {
+  .edit-mission-popup,.delete-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -151,4 +151,12 @@
   .btn-danger:hover {
     background-color: #c52b3f;
   }
+  .btn-success {
+    background-color:#ff6700;
+    color: white;
+    margin-right: 20px
+  }
   
+  .btn-success:hover {
+    background-color: #ff6700;
+  }

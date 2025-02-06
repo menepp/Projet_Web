@@ -67,7 +67,6 @@ export class AjouterComponent {
   }
 
   addEmployee() {
-    console.log('coucou');
     const competencesString = this.newEmployee.competences ? this.newEmployee.competences.trim() : '';
 
     console.log('Compétences envoyées :', competencesString);

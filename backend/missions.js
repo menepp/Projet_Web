@@ -5,8 +5,8 @@ const {Pool} = require('pg');
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'web',
-  password: 'milo12',
+  database: 'postgres',
+  password: 'menep',
   port: 5432,
 });
 pool.connect((err, client, release) => {
@@ -78,6 +78,41 @@ router.delete('/:id', async (req, res) => {
     await client.query('ROLLBACK');
     console.error('Erreur lors de la suppression de la mission :', err);
     res.status(500).send('Erreur serveur lors de la suppression de la mission');
+  } finally {
+    client.release();
+  }
+});
+
+// Modifier mission
+router.put('/:id', async (req, res) => {
+  const missionId = req.params.id;
+  const {nomm, dated, datef} = req.body;
+
+  if (!nomm || !dated || !datef) {
+    return res.status(400).send('Données manquantes');
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const query = `UPDATE mission
+                   SET nomm = $1, dated = $2, datef = $3
+                   WHERE idm = $4 RETURNING *`;
+    const values = [nomm, dated, datef, missionId];
+    const result = await client.query(query, values);
+
+    if (result.rowCount === 0) {
+      return res.status(404).send('Mission non trouvé');
+    }
+   
+    await client.query('COMMIT');
+
+    res.status(200).send({identifiant: missionId, nomm, dated, datef});
+  } catch (err) {
+
+    await client.query('ROLLBACK');
+    console.error('Erreur lors de la mise à jour de la mission :', err);
+    res.status(500).send('Erreur serveur');
   } finally {
     client.release();
   }

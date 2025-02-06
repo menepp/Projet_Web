@@ -74,7 +74,7 @@ export class MissionComponent implements OnInit{
         this.fetchMissions();
         this.isAddMissionPopupOpen = false;
       })
-      .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
+      .catch(error => console.error('Erreur lors de l\'ajout de la mission :', error));
   }
 
 
