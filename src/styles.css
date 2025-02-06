@@ -2,7 +2,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Barlow Condensed', serif;
   background: linear-gradient(to bottom, #ffffff, #f9f9f9 50%, #ffffff);
   color: #4d4d4d;
 }
@@ -30,8 +30,12 @@ a:hover {
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  background: linear-gradient(to bottom, #f9f9f9 70%,  #ffffff 100%);
+  background: linear-gradient(to bottom, #f9f9f9 70%, #ffffff 100%);
   border: 10px solid #ff6700;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+:root {
+  background-color: #F5F5F5;
 }
