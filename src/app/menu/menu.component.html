@@ -1,17 +1,27 @@
-<!-- menu.component.html -->
-<div class="menu-container">
-  <div class="menu-icon" (click)="toggleMenu()">
-    ☰ 
-  </div>
-  <ul class="menu" [class.open]="menuOpen">
-    <li class="menu-item">
-      <a routerLink="/accueil" (click)="toggleMenu()">Accueil</a>
-    </li>
-    <li class="menu-item">
-      <a routerLink="/missions" (click)="toggleMenu()">Missions</a>
-    </li>
-    <li class="menu-item">
-      <a routerLink="/employes" (click)="toggleMenu()">Personnels</a>
-    </li>
-  </ul>
+<div class="side-bar">
+
+  <nav class="header__nav">
+
+    <div class="menu-button" routerLink="accueil">
+      <div class="menu-icon">
+        <img src="/assets/img/home-2-line.png" alt="Menu"/>
+      </div>
+      <span class="menu-text">Menu</span>
+    </div>
+    <div class="personnel-button" routerLink="employes">
+      <div class="personnel-icon">
+        <img src="/assets/img/user-search-line.png" alt="Personnel"/>
+      </div>
+      <span class="personnel-text">Personnel</span>
+    </div>
+    <div class="mission-button" routerLink="missions">
+      <div class="mission-icon">
+        <img src="/assets/img/file-list-line.png" alt="Missions"/>
+      </div>
+      <span class="mission-text">Missions</span>
+    </div>
+
+  </nav>
+
+
 </div>

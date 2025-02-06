@@ -1,54 +1,148 @@
-.menu-container {
-    width: 250px;
-    background-color: #ffffff;
-    border: 2px solid #e6e6e6;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 40px;
-  }
-  
-  .menu-icon {
+.side-bar {
+  /* SideBar */
+
+  box-sizing: border-box;
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200px 40px;
+  gap: 83px;
+
+  position: fixed;
+  width: 150px;
+  height: 100%;
+  left: 0px;
+  top: 2px;
+
+  background: #5B74A6;
+  color: white;
+
+}
+
+
+.header__nav {
+
+  /* Ecartement */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 83px;
+
+  width: 68px;
+  height: 307.6px;
+
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+
+}
+
+
+.menu-button,
+.personnel-button,
+.mission-button {
+  /* Auto layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+
+  width: 58px;
+  height: 48px;
+
+
+  /* Inside auto layout */
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+
+  :hover {
     cursor: pointer;
-    font-size: 24px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    color: #4d4d4d;
-    text-align: center;
-    border-bottom: 2px solid #ff6700;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    font-weight: bold;
   }
-  
-  .menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-height: 0; /* Caché par défaut */
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-  }
-  
-  .menu.open {
-    max-height: 300px; /* Ajustez selon le contenu */
-  }
-  
-  .menu-item {
-    border-bottom: 1px solid #e6e6e6;
-  }
-  
-  .menu-item a {
-    display: block;
-    padding: 12px 15px;
-    color: #4d4d4d;
-    background-color: #ffffff;
-    transition: background-color 0.3s ease, border-left 0.3s ease;
-    border-left: 4px solid transparent; /* Effet de survol */
-  }
-  
-  .menu-item a:hover {
-    background-color: #f9f9f9;
-    border-left: 4px solid #ff6700;
-    color: #ff6700;
-  }
-  
+
+  transition: transform 0.2s ease, background-color 0.2s ease; /* Pour une transition douce */
+}
+
+.menu-button:hover,
+.personnel-button:hover,
+.mission-button:hover {
+  transform: scale(1.10); /* Légère augmentation de taille au survol */
+  /*background-color: rgba(255, 255, 255, 0.2); /* Fond légèrement transparent au survol */
+  color: black; /* Texte noir au survol */
+
+}
+
+.menu-icon,
+.personnel-icon,
+.mission-icon {
+  /* Icon mission */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px 3px;
+  gap: 10px;
+
+  width: 24px;
+  height: 24px;
+
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+
+  /* Vector */
+  background: transparent;
+  filter: invert(100%);
+  border-radius: 50%; /* Pour les rendre ronds */
+  transition: transform 0.2s ease, background-color 0.2s ease; /* Transitions pour les icônes */
+}
+
+.menu-button:hover .menu-icon,
+.personnel-button:hover .personnel-icon,
+.mission-button:hover .mission-icon {
+  transform: scale(1.1); /* Augmentation de taille de l'icone au hover */
+  /* Fond blanc au survol de l'icône */
+  stroke: #004c99;
+  filter: invert(0%);
+
+
+}
+
+
+.menu-text,
+.personnel-text,
+.mission-text {
+  /* text */
+  width: 58px;
+  height: 24px;
+
+
+  font-family: 'Barlow Condensed', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  /* identical to box height */
+
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  transition: color 0.2s ease; /* Transition pour la couleur du texte */
+
+}
+
