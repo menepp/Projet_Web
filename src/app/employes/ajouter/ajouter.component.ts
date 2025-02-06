@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {Component, EventEmitter, Output} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-ajouter',
@@ -89,5 +89,7 @@ export class AjouterComponent {
         this.isAddEmployeePopupOpen = false;
       })
       .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
+    location.reload();
+
   }
 }

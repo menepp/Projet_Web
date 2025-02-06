@@ -1,75 +1,77 @@
 
 .btn-sort {
-    background-color: #8bb4d7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .btn-sort:hover {
-    background-color: #6191ba;
-  }
-  
-  .sort-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .popup-content {
-    position: fixed;
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 40%;
-    z-index: 1000;
-  }
-  
+  background-color: #5B74A6;
+  width: 150px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 30px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.btn-sort:hover {
+  background-color: #6191ba;
+}
+
+.sort-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  position: fixed;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  z-index: 1000;
+}
+
 .sort-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .btn-apply, .btn-close {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 40%;
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  
-  .btn-apply {
-    background-color: #D9A566;
-    float: right;
-  }
-  
-  .btn-apply:hover {
-    background-color: #bd8542;
-  }
-  
-  .btn-close {
-    background-color: #dc3545;
-    float: left;
-  }
-  
-  
-  .btn-close:hover {
-    background-color: #a71d2a;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-appliquer, .btn-fermer {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 40%;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.btn-appliquer {
+  background-color: #D9A566;
+  float: right;
+}
+
+.btn-appliquer:hover {
+  background-color: #bd8542;
+}
+
+.btn-fermer {
+  background-color: #dc3545;
+  float: left;
+}
+
+
+.btn-fermer:hover {
+  background-color: #a71d2a;
+}
