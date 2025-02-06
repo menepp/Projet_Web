@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {SearchBarComponent} from '../../components/search-bar/search-bar.component';
+import {AjouterComponent} from '../ajouter/ajouter.component';
+import {TrierComponent} from '../trier/trier.component';
 
 @Component({
   selector: 'app-cadre-employe',
-  imports: [CommonModule, FormsModule, SearchBarComponent],
+  imports: [CommonModule, FormsModule, SearchBarComponent, AjouterComponent, TrierComponent],
   templateUrl: './cadre-employe.component.html',
   styleUrl: './cadre-employe.component.css'
 })
@@ -57,7 +59,7 @@ export class CadreEmployeComponent implements OnInit {
         this.isLoading = false;
       });
   }
-  
+
   openEmployeeDetails(employee: any) {
     this.selectedEmployee = employee;
   }
@@ -153,10 +155,13 @@ export class CadreEmployeComponent implements OnInit {
         console.log('Réponse du serveur:', data);
         this.fetchEmployees();
         this.closeEditEmployeePopup()
+        location.reload();
       })
       .catch(error => {
         console.error('Erreur lors de la mise à jour de l\'employé :', error);
         alert('Erreur lors de la modification de l\'employé.');
       });
+
+
   }
 }

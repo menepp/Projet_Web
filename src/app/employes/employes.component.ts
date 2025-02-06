@@ -2,14 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SearchBarComponent} from '../components/search-bar/search-bar.component';
 import {FormsModule} from '@angular/forms';
-import { AjouterComponent } from './ajouter/ajouter.component';
-import { TrierComponent } from './trier/trier.component';
-import { CadreEmployeComponent } from './cadre-employe/cadre-employe.component';
+import {AjouterComponent} from './ajouter/ajouter.component';
+import {TrierComponent} from './trier/trier.component';
+import {CadreEmployeComponent} from './cadre-employe/cadre-employe.component';
 
 
 @Component({
   selector: 'app-employes',
-  imports: [CommonModule, FormsModule, AjouterComponent, TrierComponent, CadreEmployeComponent ],
+  imports: [CommonModule, FormsModule, AjouterComponent, TrierComponent, CadreEmployeComponent, SearchBarComponent],
   templateUrl: './employes.component.html',
   styleUrls: ['./employes.component.css']
 })
@@ -26,6 +26,7 @@ export class EmployeComponent {
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
 
+  
 }
 
 

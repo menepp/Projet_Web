@@ -1,18 +1,8 @@
-<div class="search-and-sort">
-  <app-trier></app-trier>
-  <app-ajouter></app-ajouter>
+<div class="page">
+  <app-cadre-employe></app-cadre-employe>
+  @if (!isLoading && filteredEmployees.length === 0) {
+    <div class="no-employees-message">
+      Aucun employé trouvé.
+    </div>
+  }
 </div>
-<app-cadre-employe></app-cadre-employe>
-
-
-@if (!isLoading && filteredEmployees.length === 0) {
-  <div class="no-employees-message">
-    Aucun employé trouvé.
-  </div>
-}
-
-
-
-
-
-

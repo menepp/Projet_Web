@@ -1,13 +1,26 @@
-<app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
-<div class="page-header">
-    <h1>Employés de Skill'QUEST</h1>
+<div class="page">
+  <div class="titre">
+    <p>Personnel de Skill'QUEST </p>
   </div>
-  
+  <div class="search-and-sort">
+    <div class="search-bar">
+      <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
+    </div>
+    <div class="trier-ajouter">
+      <div>
+        <app-trier></app-trier>
+      </div>
+      <div>
+        <app-ajouter></app-ajouter>
+      </div>
 
-@if (isEditEmployeePopupOpen) {
+    </div>
+  </div>
+
+  @if (isEditEmployeePopupOpen) {
     <div class="edit-employee-popup">
       <div class="popup-content">
-  
+
         <h3>Modifier un Employé</h3>
         <form (ngSubmit)="saveEmployee()" #editEmployeeForm="ngForm">
           <div>
@@ -26,57 +39,92 @@
             <label for="competences"> Compétences : </label>
             <input type="text" id="competences" [(ngModel)]="editEmployee.competences" name="competences" required/>
           </div>
-          <div>
-            <button type="submit" class="btn-apply" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
-            <button type="button" class="btn-close" (click)="closeEditEmployeePopup()">Fermer</button>
+          <div class="double-bouton-pop-up">
+            <button type="button" class="btn-fermer" (click)="closeEditEmployeePopup()">Fermer</button>
+            <button type="submit" class="btn-appliquer" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
           </div>
         </form>
-  
+
       </div>
     </div>
   }
-  
+
   @if (isDeletePopupOpen) {
     <div class="delete-popup">
       <div class="popup-content">
         <h3> Supprimer {{ delEmployee.nom + " " + delEmployee.prenom }}</h3>
         <p>Voulez vous vraiment supprimer cet(te) employé(e) ?</p>
-        <button type="submit" class="btn-apply" (click)="deleteEmployee()">Confirmer</button>
-        <button class="btn-close" (click)="closeDeleteEmployeePopup()">Abandonner</button>
-      </div>
-    </div>
-  }
+        <div class="double-bouton-pop-up">
+          <button class="btn-fermer" (click)="closeDeleteEmployeePopup()">Abandonner</button>
+          <button type="submit" class="btn-appliquer" (click)="deleteEmployee()">Confirmer</button>
 
-  @if (!isLoading && filteredEmployees.length > 0) {
-    <div class="employee-container">
-      <div *ngFor="let employe of filteredEmployees" class="employee-card">
-  
-  
-        <div class="employee-avatar">
-          <img src="/assets/img/avatarimg.jpg" alt="Avatar"/>
         </div>
-        <div class="employee-details">
-          <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
-          <p class="employee-entree">
-            <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
-          </p>
-          <p class="employee-competences">
-            <strong>Compétences : </strong>
-          </p>
-          <ul>
-            <li *ngFor="let comp of employe.competences">{{ comp }}</li>
-          </ul>
-          <p class="employee-description">{{ employe.description }}</p>
-        </div>
-        <div class="button-container">
-  
-          <button class="btn btn-success" (click)="openEditEmployeePopup(employe)">Modifier</button>
-          <button class="btn btn-danger" (click)="openDeleteEmployeePopup(employe)">Supprimer</button>
-          <!--<button class="btn btn-danger" (click)="deleteEmployee(employe.identifiant)">Supprimer</button>-->
-        </div>
-  
-  
+
       </div>
     </div>
   }
-  
+  <!--
+    @if (!isLoading && filteredEmployees.length > 0) {
+      <div class="employee-container">
+        <div *ngFor="let employe of filteredEmployees" class="employee-card">
+
+
+          <div class="employee-avatar">
+            <img src="/assets/img/avatarimg.jpg" alt="Avatar"/>
+          </div>
+          <div class="employee-details">
+            <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
+            <p class="employee-entree">
+              <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
+            </p>
+            <p class="employee-competences">
+              <strong>Compétences : </strong>
+            </p>
+            <ul>
+              <li *ngFor="let comp of employe.competences">{{ comp }}</li>
+            </ul>
+            <p class="employee-description">{{ employe.description }}</p>
+          </div>
+          <div class="button-container">
+
+            <button class="btn btn-success" (click)="openEditEmployeePopup(employe)">Modifier</button>
+            <button class="btn btn-danger" (click)="openDeleteEmployeePopup(employe)">Supprimer</button>
+          </div>
+
+
+        </div>
+      </div>
+    }-->
+  <div class="employe-centre">
+    @if (!isLoading && filteredEmployees.length > 0) {
+      <div class="employe-container">
+        <div *ngFor="let employe of filteredEmployees" class="employe-card">
+
+          <div class="employe-description">
+            <div class="employe-avatar">
+              <img src="/assets/img/avatarimg.png" alt="Avatar"/>
+            </div>
+            <div class="employe-info">
+              <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
+              <p class="employee-entree">
+                <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
+              </p>
+            </div>
+          </div>
+          <div class="employe-competence">
+            <p>
+              <strong>Compétences : </strong>
+            </p>
+            <ul>
+              <li *ngFor="let comp of employe.competences">{{ comp }}</li>
+            </ul>
+          </div>
+          <div class="double-bouton">
+            <button class=" btn-modifier" (click)="openEditEmployeePopup(employe)">Modifier</button>
+            <button class=" btn-supprimer" (click)="openDeleteEmployeePopup(employe)">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
