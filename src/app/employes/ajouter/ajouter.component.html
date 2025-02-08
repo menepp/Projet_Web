@@ -1,4 +1,4 @@
-<div class="search-and-sort">
+<div class="search-add">
   <button class="btn-add" (click)="openAddEmployeePopup()">Ajouter (+)</button>
 </div>
 
@@ -9,20 +9,31 @@
       <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
         <div>
           <label for="prenom">Prénom : </label>
-          <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required/>
+          <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required />
         </div>
         <div>
           <label for="nom">Nom : </label>
-          <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required/>
+          <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required />
         </div>
         <div>
           <label for="date_entree">Date d'entrée : </label>
-          <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required/>
+          <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required />
         </div>
         <div>
-          <label for="competences"> Compétences : </label>
-          <input type="text" id="competences" [(ngModel)]="newEmployee.competences" name="competences" required/>
+          <label for="competences">Compétences :</label>
+          <!-- Liste des compétences -->
+<div *ngFor="let competence of competences">
+  <label>
+    <input type="checkbox" 
+           [value]="competence.code_skill" 
+           (change)="toggleCompetence(competence.code_skill)" 
+           [checked]="competencesSelectionnees.includes(competence.code_skill)">
+    {{ competence.description_competence_fr }}
+  </label>
+</div>
+
         </div>
+        
         <div>
           <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid">Ajouter</button>
         </div>

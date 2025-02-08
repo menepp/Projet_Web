@@ -72,3 +72,21 @@
   z-index: 1000;
 
 }
+.search-add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 250px; /* Ajuste selon la largeur de ton container */
+  top: 15%;
+}
+.popup2 {
+  width: 300px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0,10);
+}
+.ma-classe-de-competences {
+  display: block !important;
+}

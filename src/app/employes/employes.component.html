@@ -1,5 +1,5 @@
 <div class="search-and-sort">
-  <app-trier></app-trier>
+  <app-trier (sortChanged)="onSortChanged($event)"></app-trier>
   <app-ajouter></app-ajouter>
 </div>
 <app-cadre-employe></app-cadre-employe>
