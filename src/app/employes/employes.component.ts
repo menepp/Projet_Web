@@ -26,8 +26,19 @@ export class EmployeComponent {
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
 
-  
+  onSortChanged(criterion: string) {
+    console.log(`Tri par : ${criterion}`);
+
+    if (criterion === 'nom') {
+      this.filteredEmployees.sort((a, b) => a.nom.localeCompare(b.nom));
+    } else if (criterion === 'prenom') {
+      this.filteredEmployees.sort((a, b) => a.prenom.localeCompare(b.prenom));
+    } else if (criterion === 'date_entree') {
+      this.filteredEmployees.sort((a, b) => a.date_entree.getTime() - b.date_entree.getTime());
+    }
+  }
 }
+
 
 
 

@@ -1,40 +1,53 @@
-<app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
+<div class="search">
+  <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
+</div>
 <div class="page-header">
     <h1>Employés de Skill'QUEST</h1>
   </div>
   
 
-@if (isEditEmployeePopupOpen) {
+  @if (isEditEmployeePopupOpen) {
     <div class="edit-employee-popup">
       <div class="popup-content">
-  
         <h3>Modifier un Employé</h3>
         <form (ngSubmit)="saveEmployee()" #editEmployeeForm="ngForm">
           <div>
             <label for="prenom">Prénom : </label>
-            <input type="text" id="prenom" [(ngModel)]="editEmployee.prenom" name="prenom" required/>
+            <input type="text" id="prenom" [(ngModel)]="editEmployee.prenom" name="prenom" required />
           </div>
           <div>
             <label for="nom">Nom : </label>
-            <input type="text" id="nom" [(ngModel)]="editEmployee.nom" name="nom" required/>
+            <input type="text" id="nom" [(ngModel)]="editEmployee.nom" name="nom" required />
           </div>
           <div>
             <label for="date_entree">Date d'entrée : </label>
-            <input type="date" id="date_entree" [(ngModel)]="editEmployee.date_entree" name="date_entree" required/>
+            <input type="date" id="date_entree" [(ngModel)]="editEmployee.date_entree" name="date_entree" required />
           </div>
           <div>
-            <label for="competences"> Compétences : </label>
-            <input type="text" id="competences" [(ngModel)]="editEmployee.competences" name="competences" required/>
+            <label for="competences">Compétences :</label>
+            <div class="competences-list">
+              <div *ngFor="let competence of competences">
+                <label>
+                  <input type="checkbox" 
+                         [value]="competence.code_skill" 
+                         (change)="toggleCompetence(competence.code_skill)" 
+                         [checked]="competencesSelectionnees.includes(competence.code_skill)">
+                  {{ competence.description_competence_fr }}
+                </label>
+              </div>
+            </div>
           </div>
+  
           <div>
-            <button type="submit" class="btn-apply" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
-            <button type="button" class="btn-close" (click)="closeEditEmployeePopup()">Fermer</button>
+            <button type="submit" class="btn-appliquer" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
+            <button type="button" class="btn-fermer" (click)="closeEditEmployeePopup()">Fermer</button>
           </div>
         </form>
-  
       </div>
     </div>
   }
+  
+  
   
   @if (isDeletePopupOpen) {
     <div class="delete-popup">

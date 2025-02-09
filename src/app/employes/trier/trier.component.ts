@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component,EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-trier',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './trier.component.html',
   styleUrl: './trier.component.css'
 })
@@ -18,7 +19,7 @@ export class TrierComponent {
   }[] = [];
   isSortPopupOpen: boolean = false;
   sortBy: string = '';
-
+  @Output() sortChanged = new EventEmitter<string>();
   openSortPopup() {
     this.isSortPopupOpen = true;
   }
@@ -32,13 +33,9 @@ export class TrierComponent {
   }
 
   applySort() {
-    if (this.sortBy === 'nom') {
-      this.employes.sort((a, b) => a.nom.localeCompare(b.nom));
-    } else if (this.sortBy === 'prenom') {
-      this.employes.sort((a, b) => a.prenom.localeCompare(b.prenom));
-    } else if (this.sortBy === 'date_entree') {
-      this.employes.sort((a, b) => new Date(a.date_entree).getTime() - new Date(b.date_entree).getTime());
-    }
+    this.sortChanged.emit(this.sortBy);
     this.closeSortPopup();
+  
   }
+  
 }

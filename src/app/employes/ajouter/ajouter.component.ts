@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import { SearchBarComponent } from "../../components/search-bar/search-bar.component";
 
 @Component({
   selector: 'app-ajouter',
@@ -8,7 +9,7 @@ import {CommonModule} from '@angular/common';
   templateUrl: './ajouter.component.html',
   styleUrl: './ajouter.component.css'
 })
-export class AjouterComponent {
+export class AjouterComponent implements OnInit {
   newEmployee: { nom: string; prenom: string; date_entree: string, competences: string } = {
     nom: '',
     prenom: '',
@@ -28,31 +29,42 @@ export class AjouterComponent {
   filteredEmployees: typeof this.employes = [];
   isAddEmployeePopupOpen: boolean = false;
 
+  competences: { code_skill: string, description_competence_fr: string }[] = [];
+  competencesSelectionnees: string[] = []; 
+
+  ngOnInit() {
+    this.fetchEmployees(); 
+  }
+
   fetchEmployees() {
+    console.log("📡 Envoi de la requête GET /api/employes...");
+    
     fetch('http://localhost:3000/api/employes')
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des employés');
         }
         return response.json();
       })
-      .then((data) => {
-        console.log("Données des employés reçues : ", data);
-
-        this.employes = data.map((employe: any) => ({
+      .then(data => {
+        console.log("✅ Réponse reçue :", data);
+  
+        this.employes = data.employes.map((employe: any) => ({
           identifiant: employe.identifiant,
           nom: employe.nom,
           prenom: employe.prenom,
           date_entree: employe.date_entree,
           competences: employe.competences ? employe.competences.split(', ') : [],
-          description: employe.description || 'Pas de description disponible.',
         }));
 
+        this.competences = data.competences || [];
+        console.log("Compétences disponibles :", this.competences);
+  
         this.filteredEmployees = [...this.employes];
         this.isLoading = false;
       })
-      .catch((error) => {
-        console.error('Erreur :', error);
+      .catch(error => {
+        console.error('Erreur dans fetchEmployees:', error);
         this.isLoading = false;
       });
   }
@@ -67,10 +79,6 @@ export class AjouterComponent {
   }
 
   addEmployee() {
-    const competencesString = this.newEmployee.competences ? this.newEmployee.competences.trim() : '';
-
-    console.log('Compétences envoyées :', competencesString);
-
     fetch('http://localhost:3000/api/employes', {
       method: 'POST',
       headers: {
@@ -80,16 +88,27 @@ export class AjouterComponent {
         nom: this.newEmployee.nom,
         prenom: this.newEmployee.prenom,
         date_entree: this.newEmployee.date_entree,
-        competences: competencesString
+        competences: this.competencesSelectionnees, 
       })
     })
-      .then(response => response.json())
-      .then(() => {
-        this.fetchEmployees();
-        this.isAddEmployeePopupOpen = false;
-      })
-      .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
-    location.reload();
-
+    .then(response => response.json())
+    .then(() => {
+      this.fetchEmployees();
+      this.isAddEmployeePopupOpen = false;
+    })
+    .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
   }
+  
+  
+  
+  toggleCompetence(code_skill: string) {
+    if (this.competencesSelectionnees.includes(code_skill)) {
+      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+    } else {
+      this.competencesSelectionnees.push(code_skill);
+    }
+    console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
+  }
+  
+
 }

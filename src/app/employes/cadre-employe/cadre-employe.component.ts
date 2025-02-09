@@ -11,7 +11,7 @@ import { SearchBarComponent } from '../../components/search-bar/search-bar.compo
   styleUrl: './cadre-employe.component.css'
 })
 export class CadreEmployeComponent implements OnInit {
-  employes: {
+  @Input() employes: {
     identifiant: number;
     nom: string;
     prenom: string;
@@ -26,10 +26,13 @@ export class CadreEmployeComponent implements OnInit {
   filteredEmployees: typeof this.employes = [];
   isDeletePopupOpen: boolean = false;
 
+  competences: { code_skill: string, description_competence_fr: string }[] = [];
+  competencesSelectionnees: string[] = []; 
+  
+
   ngOnInit(): void {
     this.fetchEmployees();
   }
-
   fetchEmployees() {
     fetch('http://localhost:3000/api/employes')
       .then((response) => {
@@ -41,16 +44,24 @@ export class CadreEmployeComponent implements OnInit {
       .then((data) => {
         console.log("Données des employés reçues : ", data);
 
-        this.employes = data.map((employe: any) => ({
-          identifiant: employe.identifiant,
-          nom: employe.nom,
-          prenom: employe.prenom,
-          date_entree: employe.date_entree,
-          competences: employe.competences ? employe.competences.split(', ') : [],
-          description: employe.description || 'Pas de description disponible.',
-        }));
-
-        this.filteredEmployees = [...this.employes];
+        if (data && Array.isArray(data.employes)) {
+          this.employes = data.employes.map((employe: any) => ({
+            identifiant: employe.identifiant,
+            nom: employe.nom,
+            prenom: employe.prenom,
+            date_entree: employe.date_entree,
+            competences: employe.competences ? employe.competences.split(', ') : [], 
+            description: employe.description || 'Pas de description disponible.',
+          }));
+          this.filteredEmployees = [...this.employes];
+        } else {
+          console.error("Les données des employés ne sont pas un tableau :", data.employes);
+          this.employes = [];
+        }
+        if (data.competences) {
+          this.competences = data.competences;
+        }
+  
         this.isLoading = false;
       })
       .catch((error) => {
@@ -59,10 +70,7 @@ export class CadreEmployeComponent implements OnInit {
       });
   }
   
-  openEmployeeDetails(employee: any) {
-    this.selectedEmployee = employee;
-  }
-
+  
 
   filterEmployees(searchTerm: string) {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -88,9 +96,6 @@ export class CadreEmployeComponent implements OnInit {
 
   deleteEmployee() {
     console.log('Tentative de suppression avec ID :', this.delEmployee.identifiant);
-
-    // Suppression de la condition if (confirm(...)) car elle est toujours vraie
-
     fetch(`http://localhost:3000/api/employes/${this.delEmployee.identifiant}`, {
       method: 'DELETE',
     })
@@ -126,20 +131,25 @@ export class CadreEmployeComponent implements OnInit {
       nom: employee.nom,
       prenom: employee.prenom,
       date_entree: employee.date_entree,
-      competences: employee.competences.join(', ')
+      competences: employee.competences 
     };
+    this.competencesSelectionnees = employee.competences
+      .map((desc: string) => {
+        const found = this.competences.find(c => c.description_competence_fr === desc);
+        return found ? found.code_skill : null;
+      })
+      .filter((skill: string | null): skill is string => skill !== null); 
+  
+    console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
     this.isEditEmployeePopupOpen = true;
   }
-
 
   closeEditEmployeePopup() {
     this.isEditEmployeePopupOpen = false;
   }
 
-  // Enregistrer les modifications
   saveEmployee() {
-    const competencesArray = this.editEmployee.competences.split(',').map(comp => comp.trim());
-
+    
     fetch(`http://localhost:3000/api/employes/${this.editEmployee.identifiant}`, {
       method: 'PUT',
       headers: {
@@ -149,18 +159,34 @@ export class CadreEmployeComponent implements OnInit {
         nom: this.editEmployee.nom,
         prenom: this.editEmployee.prenom,
         date_entree: this.editEmployee.date_entree,
-        competences: competencesArray
-      })
+        competences: this.competencesSelectionnees, 
+      }),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Réponse du serveur:', data);
-        this.fetchEmployees();
-        this.closeEditEmployeePopup()
-      })
-      .catch(error => {
-        console.error('Erreur lors de la mise à jour de l\'employé :', error);
-        alert('Erreur lors de la modification de l\'employé.');
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Réponse du serveur:', data);
+      this.fetchEmployees();
+      this.closeEditEmployeePopup();
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la mise à jour de l\'employé :', error);
+      alert('Erreur lors de la modification de l\'employé.');
+    });
   }
+  
+  
+  
+  
+  toggleCompetence(code_skill: string) {
+    if (this.competencesSelectionnees.includes(code_skill)) {
+      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+    } else {
+      this.competencesSelectionnees.push(code_skill);
+    }
+    console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
+  }
+  
+  
+  
+  
 }
