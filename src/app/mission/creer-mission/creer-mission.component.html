@@ -1,1 +1,26 @@
-<p>creer-mission works!</p>
+<div class="add-mission-popup">
+    <div class="popup-content">
+      <h3>Ajouter une Mission</h3>
+      <form>
+        <div>
+          <label for="nom">Nom :</label>
+          <input type="text" id="nom" [(ngModel)]="nomm" name="nomm" required />
+        </div>
+  
+        <div>
+          <label for="dated">Date de début :</label>
+          <input type="date" id="dated" [(ngModel)]="dated" name="dated" required />
+        </div>
+  
+        <div>
+          <label for="datef">Date de fin :</label>
+          <input type="date" id="datef" [(ngModel)]="datef" name="datef" required />
+        </div>
+  
+        <div class="button-container">
+            <button type="button" class="btn-close" (click)="closeAddMissionPopup()">Fermer</button>
+            <button type="button" class="btn-apply" (click)="addMission()" [disabled]="!isFormValid">Ajouter</button>
+        </div>
+      </form>
+    </div>
+</div>
