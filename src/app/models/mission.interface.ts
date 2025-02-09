@@ -4,4 +4,5 @@ export interface Mission {
   dated: Date;
   datef: Date;
   competences: String[];
+  employes?: { identifiant: number; nom: string; prenom: string; competences: string }[];
 }

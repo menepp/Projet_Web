@@ -28,6 +28,7 @@ export class CarteMissionComponent implements OnInit {
   ngOnInit(): void {
     this.convertMissionDates();
     this.fetchMissions();
+    this.fetchEmployesForMission(this.mission.idm);
   } 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -43,29 +44,42 @@ export class CarteMissionComponent implements OnInit {
 
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
-
-    fetch('http://localhost:3000/api/missions')
+  
+    fetch('http://localhost:3000/api/missions?missionId=1')  
       .then(response => response.json())
       .then(data => {
         console.log("Réponse API missions :", data);
-
+  
         this.missions = data.missions.map((mission: any) => ({
           idm: mission.idm,
           nomm: mission.nomm,
           dated: mission.dated,
           datef: mission.datef,
-          competences: mission.competences ? mission.competences.split(', ') : [], // Assurez-vous que les compétences sont bien traitées ici
+          competences: mission.competences ? mission.competences.split(', ') : [], 
         }));
+  
         this.competences = data.competences || [];
         console.log("Compétences disponibles :", this.competences);
-
+        console.log("Employés correspondants :", this.employes);
+  
         this.isLoading = false;
       })
       .catch(error => {
         console.error("Erreur dans fetchMissions:", error);
         this.isLoading = false;
       });
-}
+  }
+  fetchEmployesForMission(missionId: number) {
+    fetch(`http://localhost:3000/api/missions/employes?missionId=${missionId}`)
+      .then(response => response.json())
+      .then(data => {
+        this.employes = data.employes || [];
+      })
+      .catch(error => {
+        console.error("Erreur lors de la récupération des employés", error);
+      });
+  }
+  
 
   openDeleteMissionPopup(mission: Mission) {
     this.delMission = { ...mission };
@@ -156,5 +170,60 @@ export class CarteMissionComponent implements OnInit {
     }
     console.log("Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
   }
-  
+  employes: { identifiant: number, nom: string, prenom:string, competences: string }[] = [];
+employesSelectionnes: number[] = [];
+isEmployesPopupOpen: boolean = false;
+
+openEmployesPopup(missionId: number) {
+  this.isEmployesPopupOpen = true;
+  fetch(`http://localhost:3000/api/missions/employes?missionId=${missionId}`)
+    .then(response => response.json())
+    .then(data => {
+      this.employes = data.employes || [];
+      console.log("Employés récupérés pour la mission : ", this.employes);
+    })
+    .catch(error => {
+      console.error("Erreur lors de la récupération des employés", error);
+    });
+}
+
+
+
+closeEmployesPopup() {
+  this.isEmployesPopupOpen = false;
+}
+
+toggleEmployeSelection(identifiant: number) {
+  if (this.employesSelectionnes.includes(identifiant)) {
+    this.employesSelectionnes = this.employesSelectionnes.filter(id => id !== identifiant);
+  } else {
+    this.employesSelectionnes.push(identifiant);
+  }
+}
+
+saveEmployes() {
+  console.log("✅ Employés sélectionnés pour la mission :", this.employesSelectionnes);
+
+  fetch(`http://localhost:3000/api/missions/${this.editMission.idm}/employes`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      employes: this.employesSelectionnes
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("📩 Employés ajoutés avec succès :", data);
+    this.fetchMissions();  
+    this.closeEmployesPopup();
+  })
+  .catch(error => {
+    console.error("❌ Erreur lors de l'ajout des employés :", error);
+    alert("Erreur lors de l'ajout des employés à la mission.");
+  });
+}
+
+
 }

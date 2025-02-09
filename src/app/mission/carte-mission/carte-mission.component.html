@@ -16,6 +16,12 @@
         <p><strong>Etat :</strong> Mission terminée</p>
       }
       <p><strong>Employés :</strong></p>
+      <ul>
+        <li *ngFor="let employe of employes">
+            {{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}
+          </li>
+      </ul>
+      
     </div>
     <div class="date">
       <p><strong>Date de début :</strong> {{ mission.dated | date:'dd/MM/yyyy' }}</p>
@@ -74,10 +80,16 @@
                 </div>
             </div>
         </div>
+        <div>
+            <label for="employes">Employés :</label>
+        </div>
         
   
           <div>
-            <button type="submit" class="btn-apply" [disabled]="!editMissionForm.form.valid">Enregistrer</button>
+            <button type="button" class="btn-employes" (click)="openEmployesPopup(editMission.idm)">
+                Présélectionner employé
+              </button>
+                          <button type="submit" class="btn-apply" [disabled]="!editMissionForm.form.valid">Enregistrer</button>
             <button type="button" class="btn-close" (click)="closeEditMissionPopup()">Fermer</button>
           </div>
         </form>
@@ -85,3 +97,23 @@
       </div>
     </div>
   } 
+  @if(isEmployesPopupOpen){
+    <div class="popup-employes">
+        <div class="popup-content">
+          <h3>Employés recommandés</h3>
+          <div *ngFor="let employe of employes">
+            <label>
+              <input type="checkbox" [value]="employe.identifiant" 
+                     (change)="toggleEmployeSelection(employe.identifiant)">
+              {{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}
+            </label>
+          </div>
+          <button class="ajouter-emp"(click)="saveEmployes()">Ajouter les employés sélectionnés</button>
+          <button  class="fermer-emp"(click)="closeEmployesPopup()">Fermer</button>
+        </div>
+    </div>
+  }
+  
+  
+  
+  

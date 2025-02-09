@@ -188,7 +188,6 @@ white-space: nowrap;
   .btn-fermer:hover {
     background-color: #a71d2a;
   }
-  /* Formulaire */
   form div {
     margin-bottom: 15px;
   }
@@ -197,7 +196,6 @@ white-space: nowrap;
     margin-top: 10px;
   }
   
-  /* Barres de recherche */
   .search {
     display: flex;
     justify-content: center;
@@ -210,12 +208,10 @@ white-space: nowrap;
     gap: 5px;
   }
   
-  /* Labels des champs */
   form label {
     font-size: 14px;
   }
   
-  /* Input de texte */
   form input[type="text"],
   form input[type="date"] {
     padding: 8px;
@@ -239,9 +235,100 @@ white-space: nowrap;
   
   form .competences-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Organise en grille */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
     gap: 10px;
     max-width: 100%;
-    overflow-y: auto; /* Permet de défiler si la liste est trop longue */
-    max-height: 250px; /* Limite la hauteur de la liste */
+    overflow-y: auto; 
+    max-height: 250px; 
   }
+  .popup-employes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    padding: 20px; 
+}
+
+.popup-employes .popup-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px; 
+    width: 600px; 
+    max-width: 80%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+    overflow-y: auto; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+.popup-employes h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333333; 
+    font-weight: 600;
+}
+
+.popup-employes p {
+    font-size: 1.1em;
+    color: #555555; 
+}
+
+.popup-employes .employe-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.popup-employes .employe-item label {
+    margin-left: 10px;
+    font-size: 1.1em;
+    color: #444444;
+    flex-grow: 1; 
+}
+
+.popup-employes input[type="checkbox"] {
+    margin-right: 15px;
+    transform: scale(1.2); 
+}
+
+.popup-employes .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.ajouter-emp {
+    background-color: #aaa120; 
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.fermer-emp{
+    background-color: #a71d2a; 
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.ajouter-emp button:hover {
+    background-color: #aaa120;  
+}
+.fermer-emp button:hover {
+    background-color: #a71d2a;
+}
+
