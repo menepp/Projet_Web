@@ -2,11 +2,19 @@
     <div class="title">
       <h1>{{ mission.nomm }}</h1>
     </div>
-    <div class="description">
-      <p><strong>Description :</strong> {{ mission.description }}</p>
-    </div>
     <div class="information">
-      <p><strong>Etat :</strong> En-cours</p>
+      @if (mission.dated <= currentDate && mission.datef >= currentDate) {
+      <p><strong>Etat :</strong> Mission en cours</p>
+      }
+      @if (mission.dated >= currentDate) {
+        <p><strong>Etat :</strong> Mission en préparation</p>
+      }
+      @if (mission.dated > currentDate) {
+        <p><strong>Etat :</strong> Mission plannifiée</p>
+      }
+      @if (mission.datef < currentDate) {
+        <p><strong>Etat :</strong> Mission terminée</p>
+      }
       <p><strong>Employés :</strong></p>
     </div>
     <div class="date">
@@ -30,6 +38,7 @@
       </div>
     </div>
   }
+
   @if (isEditMissionPopupOpen) {
     <div class="edit-mission-popup">
       <div class="popup-content">
@@ -56,4 +65,4 @@
   
       </div>
     </div>
-  }
+  } 

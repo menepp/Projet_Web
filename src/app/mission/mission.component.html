@@ -45,7 +45,7 @@
   <h2>Liste des Missions</h2>
   <p>Voici la liste des missions disponibles...</p>
   @for (mission of missions; track mission.idm) {
-    <app-carte-mission [mission]="mission"></app-carte-mission>
+    <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
   }
 </div>
 

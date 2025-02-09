@@ -1,7 +1,6 @@
 export interface Mission {
-    idm: number;
-    dated: Date;
-    datef: Date;
-    nomm: string;
-    description: string;
-  }
+  idm: number;
+  nomm: string;
+  dated: Date;
+  datef: Date;
+}
