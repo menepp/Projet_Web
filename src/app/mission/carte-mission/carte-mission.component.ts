@@ -20,11 +20,15 @@ export class CarteMissionComponent implements OnInit {
 
   isEditMissionPopupOpen = false;
 
-  editMission : Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date() };
-
+  editMission : Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: [] };
+  competences: { code_skill: string, description_competence_fr: string }[] = [];
+  competencesSelectionnees: string[] = []; 
+  missions: Mission[] = [];
+  isLoading = true;
   ngOnInit(): void {
     this.convertMissionDates();
-  }
+    this.fetchMissions();
+  } 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mission']) {
@@ -36,6 +40,33 @@ export class CarteMissionComponent implements OnInit {
     this.mission.dated = new Date(this.mission.dated);
     this.mission.datef = new Date(this.mission.datef);
   }
+
+  fetchMissions() {
+    console.log("📡 Envoi de la requête GET /api/missions...");
+
+    fetch('http://localhost:3000/api/missions')
+      .then(response => response.json())
+      .then(data => {
+        console.log("Réponse API missions :", data);
+
+        this.missions = data.missions.map((mission: any) => ({
+          idm: mission.idm,
+          nomm: mission.nomm,
+          dated: mission.dated,
+          datef: mission.datef,
+          competences: mission.competences ? mission.competences.split(', ') : [], // Assurez-vous que les compétences sont bien traitées ici
+        }));
+        this.competences = data.competences || [];
+        console.log("Compétences disponibles :", this.competences);
+
+        this.isLoading = false;
+      })
+      .catch(error => {
+        console.error("Erreur dans fetchMissions:", error);
+        this.isLoading = false;
+      });
+}
+
   openDeleteMissionPopup(mission: Mission) {
     this.delMission = { ...mission };
     this.isDeletePopupOpen = true;
@@ -66,13 +97,30 @@ export class CarteMissionComponent implements OnInit {
     this.closeDeleteMissionPopup();
   }
 
-  openEditMissionPopup(mission: Mission) {
-    this.editMission = { ...mission };
+  openEditMissionPopup(mission: any) {
+    this.editMission = {
+      idm: mission.idm,
+      nomm: mission.nomm,
+      dated: mission.dated,
+      datef: mission.datef,
+      competences: mission.competences
+    };
+      this.competencesSelectionnees = mission.competences
+      .map((desc: string) => {
+        const found = this.competences.find(c => c.description_competence_fr === desc);
+        return found ? found.code_skill : null;
+      })
+      .filter((skill: string | null): skill is string => skill !== null);
+  
+    console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
+  
     this.isEditMissionPopupOpen = true;
   }
 
+
   closeEditMissionPopup() {
     this.isEditMissionPopupOpen = false;
+    this.competencesSelectionnees = [];
   }
 
   saveMission() {
@@ -85,18 +133,28 @@ export class CarteMissionComponent implements OnInit {
         nomm: this.editMission.nomm,
         dated: this.editMission.dated,
         datef: this.editMission.datef,
+        competences: this.competencesSelectionnees, 
       }),
     })
-      .then((response) => response.json())
-      .then(() => {
-        alert('Mission mise à jour avec succès.');
-        this.missionUpdated.emit(); 
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la mise à jour de la mission :', error);
-        alert('Erreur lors de la modification de la mission.');
-      });
-
-    this.closeEditMissionPopup();
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Réponse du serveur:', data);
+      this.fetchMissions();
+      this.closeEditMissionPopup();
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la mise à jour de la mission :', error);
+      alert('Erreur lors de la modification de la mission.');
+    });
   }
+
+  toggleCompetence(code_skill: string) {
+    if (this.competencesSelectionnees.includes(code_skill)) {
+      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+    } else {
+      this.competencesSelectionnees.push(code_skill);
+    }
+    console.log("Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
+  }
+  
 }

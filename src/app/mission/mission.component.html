@@ -2,31 +2,49 @@
   <app-search-bar></app-search-bar>
   <button class="btn-add" (click)="openAddMissionPopUp()">Ajouter</button>
 </div>
+
 @if (isAddMissionPopupOpen) {
   <div class="add-mission-popup">
     <div class="popup-content">
       <h3>Ajouter une Mission</h3>
       <form (ngSubmit)="addMission()" #missionForm="ngForm">
         <div>
-          <label for="nom">Nom : </label>
-          <input type="text" id="nom" [(ngModel)]="newMission.nomm" name="nom" required/>
+          <label for="nom">Nom :</label>
+          <input type="text" id="nom" [(ngModel)]="newMission.nomm" name="nom" required />
         </div>
         <div>
-          <label for="dated">Date de début : </label>
-          <input type="date" id="dated" [(ngModel)]="newMission.dated" name="dated" required/>
+          <label for="dated">Date de début :</label>
+          <input type="date" id="dated" [(ngModel)]="newMission.dated" name="dated" required />
         </div>
         <div>
-          <label for="datef"> Date de fin : </label>
-          <input type="date" id="datef" [(ngModel)]="newMission.datef" name="datef" required/>
+          <label for="datef">Date de fin :</label>
+          <input type="date" id="datef" [(ngModel)]="newMission.datef" name="datef" required />
         </div>
         <div>
-          <button type="submit" class="btn-apply" [disabled]="!missionForm.form.valid">Ajouter</button>
+          <label for="competences">Compétences requises :</label>
+          <div class="competences-list">
+            <div *ngFor="let competence of competences">
+              <label>
+                <input type="checkbox" 
+                       [value]="competence.code_skill" 
+                       (change)="toggleCompetence(competence.code_skill)" 
+                       [checked]="competencesSelectionnees.includes(competence.code_skill)">
+                {{ competence.description_competence_fr }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup-buttons">
+          <button type="submit" class="btn-appliquer" [disabled]="!missionForm.form.valid">Enregistrer</button>
+          <button type="button" class="btn-fermer" (click)="closeAddMissionPopup()">Fermer</button>
         </div>
       </form>
-      <button class="btn-close" (click)="closeAddMissionPopup()">Fermer</button>
     </div>
   </div>
 }
+
+
 <div class="page-header">
   <h1>Missions de Skill'Quest</h1>
 </div>

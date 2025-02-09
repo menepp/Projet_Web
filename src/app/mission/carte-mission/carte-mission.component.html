@@ -21,6 +21,9 @@
       <p><strong>Date de début :</strong> {{ mission.dated | date:'dd/MM/yyyy' }}</p>
       <p><strong>Date de fin :</strong> {{ mission.datef | date:'dd/MM/yyyy' }}</p>
     </div>
+    <div class="competence-carte">
+        <p><strong>Compétences utilisées :</strong> {{ mission.competences}}
+    </div>
     <div class="button-container">
         <button class="btn btn-success" (click)="openEditMissionPopup(mission)">Modifier</button>
         <button class="btn btn-danger" (click)="openDeleteMissionPopup(mission)">Supprimer</button>
@@ -57,6 +60,22 @@
             <label for="datef"> Date de fin : </label>
             <input type="date" id="datef" [(ngModel)]="editMission.datef" name="datef" required/>
           </div>
+          <div>
+            <label for="competences">Compétences requises :</label>
+            <div class="competences-list">
+                <div *ngFor="let competence of competences">
+                    <label>
+                        <input type="checkbox" 
+                               [value]="competence.code_skill" 
+                               (change)="toggleCompetence(competence.code_skill)" 
+                               [checked]="competencesSelectionnees.includes(competence.code_skill)">
+                        {{ competence.description_competence_fr }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+  
           <div>
             <button type="submit" class="btn-apply" [disabled]="!editMissionForm.form.valid">Enregistrer</button>
             <button type="button" class="btn-close" (click)="closeEditMissionPopup()">Fermer</button>

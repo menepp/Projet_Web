@@ -3,4 +3,5 @@ export interface Mission {
   nomm: string;
   dated: Date;
   datef: Date;
+  competences: String[];
 }

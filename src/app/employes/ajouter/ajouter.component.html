@@ -21,16 +21,15 @@
         </div>
         <div>
           <label for="competences">Compétences :</label>
-          <!-- Liste des compétences -->
-<div *ngFor="let competence of competences">
-  <label>
-    <input type="checkbox" 
+          <div *ngFor="let competence of competences">
+            <label>
+            <input type="checkbox" 
            [value]="competence.code_skill" 
            (change)="toggleCompetence(competence.code_skill)" 
            [checked]="competencesSelectionnees.includes(competence.code_skill)">
-    {{ competence.description_competence_fr }}
-  </label>
-</div>
+          {{ competence.description_competence_fr }}
+               </label>
+        </div>
 
         </div>
         

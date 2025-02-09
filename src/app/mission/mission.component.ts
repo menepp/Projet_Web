@@ -3,10 +3,11 @@ import { CarteMissionComponent } from './carte-mission/carte-mission.component';
 import { Mission } from '../models/mission.interface';
 import { SearchBarComponent } from "../components/search-bar/search-bar.component";
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mission',
-  imports: [CarteMissionComponent, SearchBarComponent, FormsModule],
+  imports: [CarteMissionComponent, SearchBarComponent, FormsModule, CommonModule],
 
   templateUrl: './mission.component.html',
   styleUrl: './mission.component.css'
@@ -14,69 +15,89 @@ import { FormsModule } from '@angular/forms';
 
 export class MissionComponent implements OnInit{
   missions: Mission[] = [];
-  isLoading = true;
+isLoading = true;
+competences: { code_skill: string, description_competence_fr: string }[] = [];
+competencesSelectionnees: string[] = []; 
 
-  ngOnInit(): void {
-    this.fetchMissions();
-  }
+ngOnInit(): void {
+  this.fetchMissions();
+}
+fetchMissions() {
+  console.log("📡 Envoi de la requête GET /api/missions...");
 
-  fetchMissions(){
-    fetch('http://localhost:3000/api/missions')
-    .then((response) => response.json())
-      .then((data) => {
-        this.missions = data; 
-        this.isLoading = false; 
-        console.log(this.missions);
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la récupération des missions:', error);
-        this.isLoading = false; 
-      });
-  }
-  newMission: { nomm: string; dated: string; datef: string; } = {
-    nomm: '',
-    dated: '',
-    datef: '',
-  };
-  mission: {
-    identifiant: number;
-    nomm: string;
-    dated: Date;
-    datef: Date;
-  }[] = [];
-  isAddMissionPopupOpen: boolean = false;
-  
+  fetch('http://localhost:3000/api/missions')
+    .then(response => response.json())
+    .then(data => {
+      console.log(" Réponse API missions :", data);
 
-  openAddMissionPopUp(){
-    this.isAddMissionPopupOpen = true;
-  }
+      this.missions = data.missions.map((mission: any) => ({
+        idm: mission.idm,
+        nomm: mission.nomm,
+        dated: mission.dated,
+        datef: mission.datef,
+        competences: mission.competences ? mission.competences.split(', ') : [],
+      }));
 
-  closeAddMissionPopup() {
-    this.isAddMissionPopupOpen = false;
-    this.newMission = {nomm: '', dated: '', datef: '',};
-  }
+      this.competences = data.competences || [];
+      console.log(" Compétences disponibles :", this.competences);
 
-  addMission() {
-
-    fetch('http://localhost:3000/api/missions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        nomm: this.newMission.nomm,
-        dated: this.newMission.dated,
-        datef: this.newMission.datef,
-      })
+      this.isLoading = false;
     })
-      .then(response => response.json())
-      .then(() => {
-        this.fetchMissions();
-        this.isAddMissionPopupOpen = false;
-      })
-      .catch(error => console.error('Erreur lors de l\'ajout de la mission :', error));
-  }
+    .catch(error => {
+      console.error(" Erreur dans fetchMissions:", error);
+      this.isLoading = false;
+    });
+}
 
+
+newMission: { nomm: string; dated: string; datef: string; competences: string[] } = {
+  nomm: '',
+  dated: '',
+  datef: '',
+  competences: []
+};
+
+isAddMissionPopupOpen: boolean = false;
+
+openAddMissionPopUp() {
+  this.isAddMissionPopupOpen = true;
+}
+
+closeAddMissionPopup() {
+  this.isAddMissionPopupOpen = false;
+  this.newMission = { nomm: '', dated: '', datef: '', competences: [] };
+  this.competencesSelectionnees = [];
+}
+
+addMission() {
+  fetch('http://localhost:3000/api/missions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      nomm: this.newMission.nomm,
+      dated: this.newMission.dated,
+      datef: this.newMission.datef,
+      competences: this.competencesSelectionnees
+    })
+  })
+  .then(response => response.json())
+  .then(() => {
+    this.fetchMissions();
+    this.isAddMissionPopupOpen = false;
+  })
+  .catch(error => console.error('Erreur lors de l\'ajout de la mission :', error));
+}
+
+toggleCompetence(code_skill: string) {
+  if (this.competencesSelectionnees.includes(code_skill)) {
+    this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+  } else {
+    this.competencesSelectionnees.push(code_skill);
+  }
+  console.log("Compétences sélectionnées :", this.competencesSelectionnees);
+}
 
   
 }

@@ -155,3 +155,93 @@ white-space: nowrap;
 .btn-success:hover {
   background-color: #ff6700;
 }
+.btn-appliquer {
+    background-color: #D9A566;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 150px;
+    margin-top: 10px;
+    float: right;
+  }
+  
+  .btn-appliquer:hover {
+    background-color: #bd8542;
+  }
+  
+  .btn-fermer {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    float: left;
+    width: 150px;
+  }
+  
+  .btn-fermer:hover {
+    background-color: #a71d2a;
+  }
+  /* Formulaire */
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  /* Barres de recherche */
+  .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  form div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  /* Labels des champs */
+  form label {
+    font-size: 14px;
+  }
+  
+  /* Input de texte */
+  form input[type="text"],
+  form input[type="date"] {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+  }
+  form label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  form input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+  }
+  
+  form .competences-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Organise en grille */
+    gap: 10px;
+    max-width: 100%;
+    overflow-y: auto; /* Permet de défiler si la liste est trop longue */
+    max-height: 250px; /* Limite la hauteur de la liste */
+  }
