@@ -16,7 +16,19 @@
           <label for="datef">Date de fin :</label>
           <input type="date" id="datef" [(ngModel)]="datef" name="datef" required />
         </div>
-  
+
+        <div>
+            <label for="competences">Compétences requises :</label>
+            <div class="competences-list">
+                @for (comp of competences; track comp.code_skill) {
+                <label>
+                    <input type="checkbox" [value]="comp.code_skill" (change)="toggleCompetence(comp.code_skill)" [checked]="competencesSelectionnees.includes(comp.code_skill)">
+                    {{ comp.description_competence_fr }}
+                </label>
+                }
+            </div>
+          </div>
+
         <div class="button-container">
             <button type="button" class="btn-close" (click)="closeAddMissionPopup()">Fermer</button>
             <button type="button" class="btn-apply" (click)="addMission()" [disabled]="!isFormValid">Ajouter</button>

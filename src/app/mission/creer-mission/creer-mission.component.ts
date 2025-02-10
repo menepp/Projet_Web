@@ -1,5 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
+import { Competence } from '../../models/competence.interface';
 
 @Component({
   selector: 'app-creer-mission',
@@ -7,11 +8,15 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./creer-mission.component.css'],
   imports: [FormsModule]
 })
+
 export class CreerMissionComponent {
   nomm: string = ''; 
   dated: string = ''; 
   datef: string = ''; 
 
+  competencesSelectionnees: string[] = []; 
+
+  @Input() competences: { code_skill: string; description_competence_fr: string }[] = [];
   @Output() closePopup = new EventEmitter<void>();
   @Output() missionAdded = new EventEmitter<void>();
 
@@ -20,23 +25,24 @@ export class CreerMissionComponent {
   }
 
   addMission() {
-    const missionData = {
+    fetch('http://localhost:3000/api/missions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
       nomm: this.nomm,
       dated: this.dated,
       datef: this.datef,
-    };
-
-    fetch('http://localhost:3000/api/missions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(missionData),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        this.missionAdded.emit();
-        this.closeAddMissionPopup();
+      competences: this.competencesSelectionnees
       })
-      .catch((error) => console.error("Erreur lors de l'ajout de la mission:", error));
+    })
+    .then(response => response.json())
+    .then(() => {
+      this.missionAdded.emit();
+      this.closeAddMissionPopup();
+    })
+    .catch(error => console.error('Erreur lors de l\'ajout de la mission :', error));
   }
 
   closeAddMissionPopup() {
@@ -44,5 +50,14 @@ export class CreerMissionComponent {
     this.dated = '';  
     this.datef = ''; 
     this.closePopup.emit();
+  }
+
+  toggleCompetence(code_skill: string) {
+    if (this.competencesSelectionnees.includes(code_skill)) {
+      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+    } else {
+      this.competencesSelectionnees.push(code_skill);
+    }
+    console.log("Compétences sélectionnées :", this.competencesSelectionnees);
   }
 }
