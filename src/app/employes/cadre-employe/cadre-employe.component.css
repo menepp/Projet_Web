@@ -1,4 +1,3 @@
-/* Centrer et limiter la largeur du conteneur principal */
 .page-header {
   text-align: center;
   margin-bottom: 40px;
@@ -11,17 +10,15 @@
   margin-bottom: 10px;
 }
 
-/* Ajuster la largeur de l'employé-container pour qu'il ne prenne pas trop de place */
 .employee-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* réduit la taille des cartes */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 20px;
   margin: 20px auto;
   padding: 0 20px;
   max-width: 1200px;
 }
 
-/* Assurez-vous que les cartes des employés sont bien dimensionnées */
 .employee-card {
   background-color: #f4f4f4;
   border-radius: 10px;
@@ -30,7 +27,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
   padding: 20px;
-  max-width: 100%; /* garantir que les cartes ne s'étendent pas trop */
+  max-width: 100%; 
 }
 
 .employee-avatar {
@@ -96,7 +93,6 @@
   background-color: #004c99;
 }
 
-/* Boutons généraux */
 .btn {
   padding: 10px 16px;
   border: none;
@@ -124,7 +120,6 @@
   background-color: #c52b3f;
 }
 
-/* Ajuster la disposition de la barre de recherche */
 .search-and-sort {
   display: flex;
   justify-content: center;
@@ -134,7 +129,6 @@
   gap: 10px;
 }
 
-/* Popups */
 .popup-content {
   position: fixed;
   background-color: white;
@@ -164,7 +158,6 @@
   text-align: center;
 }
 
-/* Boutons dans les popups */
 .btn-apply, .btn-close {
   background-color: #007bff;
   color: white;
@@ -227,7 +220,6 @@
 .btn-fermer:hover {
   background-color: #a71d2a;
 }
-/* Formulaire */
 form div {
   margin-bottom: 15px;
 }
@@ -236,7 +228,6 @@ button {
   margin-top: 10px;
 }
 
-/* Barres de recherche */
 .search {
   display: flex;
   justify-content: center;
@@ -249,12 +240,10 @@ form div {
   gap: 5px;
 }
 
-/* Labels des champs */
 form label {
   font-size: 14px;
 }
 
-/* Input de texte */
 form input[type="text"],
 form input[type="date"] {
   padding: 8px;
@@ -278,9 +267,9 @@ form input[type="checkbox"] {
 
 form .competences-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Organise en grille */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
   gap: 10px;
   max-width: 100%;
-  overflow-y: auto; /* Permet de défiler si la liste est trop longue */
-  max-height: 250px; /* Limite la hauteur de la liste */
+  overflow-y: auto; 
+  max-height: 250px; 
 }
