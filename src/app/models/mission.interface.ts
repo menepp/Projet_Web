@@ -3,4 +3,6 @@ export interface Mission {
   nomm: string;
   dated: Date;
   datef: Date;
+  competences: String[];
+  employes?: { identifiant: number; nom: string; prenom: string; competences: string }[];
 }

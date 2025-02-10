@@ -4,7 +4,7 @@
 </div>
 
 @if(isAddMissionPopupOpen){
-  <app-creer-mission (closePopup)="closeAddMissionPopup()"(missionAdded)="onMissionAdded()"></app-creer-mission>
+  <app-creer-mission [competences]="competences" (closePopup)="closeAddMissionPopup()" (missionAdded)="onMissionAdded()"></app-creer-mission>
 }
 
 <div class="page-header">
@@ -12,20 +12,22 @@
 </div>
 
 @if(isLoading){
-  <div  class="loading-message">
-  Chargement en cours...
-</div>}
+  <div class="loading-message">
+    Chargement en cours...
+  </div>
+}
 
-@if(!isLoading && missions.length===0){
+@if(!isLoading && missions.length === 0){
   <div class="no-mission-message">
-      Aucune mission trouvé.
-    </div>}
+    Aucune mission trouvée.
+  </div>
+}
 
 <div class="mission-page">
   <h2>Liste des Missions</h2>
   <p>Voici la liste des missions disponibles...</p>
+
   @for (mission of missions; track mission.idm) {
     <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
   }
 </div>
-

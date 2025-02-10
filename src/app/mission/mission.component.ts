@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Mission } from '../models/mission.interface';
-import { SearchBarComponent } from '../components/search-bar/search-bar.component';
 import { CarteMissionComponent } from './carte-mission/carte-mission.component';
-import { CreerMissionComponent } from './creer-mission/creer-mission.component'; 
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { SearchBarComponent } from '../components/search-bar/search-bar.component';
+import { CreerMissionComponent } from './creer-mission/creer-mission.component';
 
 @Component({
   selector: 'app-mission',
-  imports: [CarteMissionComponent, CreerMissionComponent, SearchBarComponent, FormsModule],
+  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent],
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
@@ -15,6 +16,7 @@ export class MissionComponent implements OnInit {
   missions: Mission[] = [];
   isLoading: Boolean = true;
   isAddMissionPopupOpen: boolean = false;
+  competences: { code_skill: string, description_competence_fr: string }[] = [];
 
   ngOnInit(): void {
     this.fetchMissions();
@@ -22,13 +24,20 @@ export class MissionComponent implements OnInit {
 
   fetchMissions() {
     fetch('http://localhost:3000/api/missions')
-      .then((response) => response.json())
-      .then((data) => {
-        this.missions = data;
+      .then(response => response.json())
+      .then(data => {
+        this.missions = data.missions.map((mission: any) => ({
+          idm: mission.idm,
+          nomm: mission.nomm,
+          dated: mission.dated,
+          datef: mission.datef,
+          competences: mission.competences ? mission.competences.split(', ') : [],
+        }));
+        this.competences = data.competences || [];
         this.isLoading = false;
       })
-      .catch((error) => {
-        console.error('Erreur lors de la récupération des missions:', error);
+      .catch(error => {
+        console.error("Erreur dans fetchMissions:", error);
         this.isLoading = false;
       });
   }
