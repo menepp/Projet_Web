@@ -1,5 +1,6 @@
-<button class="btn-add" (click)="openAddEmployeePopup()">Ajouter (+)</button>
-
+<div class="search-add">
+  <button class="btn-add" (click)="openAddEmployeePopup()">Ajouter (+)</button>
+</div>
 @if (isAddEmployeePopupOpen) {
   <div class="add-employee-popup">
     <div class="popup-content">
@@ -32,13 +33,14 @@
             </div>
           </div>
         </div>
-
-
+        <div class="double-bouton">
+          <button class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
+          <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid" (click)="addEmployee()">
+            Ajouter
+          </button>
+        </div>
       </form>
-      <div class="double-bouton">
-        <button class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
-        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid">Ajouter</button>
-      </div>
+
     </div>
   </div>
 }

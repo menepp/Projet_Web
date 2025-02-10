@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import { SearchBarComponent } from "../../components/search-bar/search-bar.component";
+import {SearchBarComponent} from "../../components/search-bar/search-bar.component";
 
 @Component({
   selector: 'app-ajouter',
@@ -30,15 +30,15 @@ export class AjouterComponent implements OnInit {
   isAddEmployeePopupOpen: boolean = false;
 
   competences: { code_skill: string, description_competence_fr: string }[] = [];
-  competencesSelectionnees: string[] = []; 
+  competencesSelectionnees: string[] = [];
 
   ngOnInit() {
-    this.fetchEmployees(); 
+    this.fetchEmployees();
   }
 
   fetchEmployees() {
     console.log("📡 Envoi de la requête GET /api/employes...");
-    
+
     fetch('http://localhost:3000/api/employes')
       .then(response => {
         if (!response.ok) {
@@ -48,7 +48,7 @@ export class AjouterComponent implements OnInit {
       })
       .then(data => {
         console.log("✅ Réponse reçue :", data);
-  
+
         this.employes = data.employes.map((employe: any) => ({
           identifiant: employe.identifiant,
           nom: employe.nom,
@@ -59,7 +59,7 @@ export class AjouterComponent implements OnInit {
 
         this.competences = data.competences || [];
         console.log("Compétences disponibles :", this.competences);
-  
+
         this.filteredEmployees = [...this.employes];
         this.isLoading = false;
       })
@@ -79,6 +79,7 @@ export class AjouterComponent implements OnInit {
   }
 
   addEmployee() {
+    console.log("essaie ajouter-------------------------------------------------------------------------------------");
     fetch('http://localhost:3000/api/employes', {
       method: 'POST',
       headers: {
@@ -88,19 +89,19 @@ export class AjouterComponent implements OnInit {
         nom: this.newEmployee.nom,
         prenom: this.newEmployee.prenom,
         date_entree: this.newEmployee.date_entree,
-        competences: this.competencesSelectionnees, 
+        competences: this.competencesSelectionnees,
       })
     })
-    .then(response => response.json())
-    .then(() => {
-      this.fetchEmployees();
-      this.isAddEmployeePopupOpen = false;
-    })
-    .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
+      .then(response => response.json())
+      .then(() => {
+        this.fetchEmployees();
+        this.isAddEmployeePopupOpen = false;
+        location.reload();
+      })
+      .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
   }
-  
-  
-  
+
+
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
@@ -109,6 +110,6 @@ export class AjouterComponent implements OnInit {
     }
     console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
   }
-  
+
 
 }
