@@ -8,7 +8,6 @@
   padding: 10px 30px;
   cursor: pointer;
   font-size: 14px;
-  margin-top: 10px;
 }
 
 .btn-sort:hover {
@@ -32,7 +31,7 @@
   position: fixed;
   background-color: white;
   padding: 30px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 40%;
   z-index: 1000;
@@ -46,11 +45,10 @@
 }
 
 .btn-appliquer, .btn-fermer {
-  background-color: #007bff;
   color: white;
   border: none;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   width: 40%;
   margin-top: 10px;
@@ -74,4 +72,8 @@
 
 .btn-fermer:hover {
   background-color: #a71d2a;
+}
+
+h3 {
+  text-align: center;
 }

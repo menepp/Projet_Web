@@ -1,15 +1,28 @@
-<div class="search-and-sort">
-  <app-trier (sortChanged)="onSortChanged($event)"></app-trier>
-  <app-ajouter></app-ajouter>
+<div class="page">
+  <div class="page-header">
+    <h1>Employés de Skill'QUEST</h1>
+  </div>
+  <div class="search-and-sort">
+    <div class="btn-tri">
+      <app-trier (sortChanged)="onSortChanged($event)"></app-trier>
+    </div>
+    <div class="btn-ajout">
+      <app-ajouter></app-ajouter>
+    </div>
+  </div>
 </div>
+
+
 <app-cadre-employe></app-cadre-employe>
-
-
 @if (!isLoading && filteredEmployees.length === 0) {
   <div class="no-employees-message">
     Aucun employé trouvé.
   </div>
 }
+
+
+
+
 
 
 

@@ -1,8 +1,7 @@
-
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {SearchBarComponent} from '../../components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-cadre-employe',
@@ -27,12 +26,13 @@ export class CadreEmployeComponent implements OnInit {
   isDeletePopupOpen: boolean = false;
 
   competences: { code_skill: string, description_competence_fr: string }[] = [];
-  competencesSelectionnees: string[] = []; 
-  
+  competencesSelectionnees: string[] = [];
+
 
   ngOnInit(): void {
     this.fetchEmployees();
   }
+
   fetchEmployees() {
     fetch('http://localhost:3000/api/employes')
       .then((response) => {
@@ -50,7 +50,7 @@ export class CadreEmployeComponent implements OnInit {
             nom: employe.nom,
             prenom: employe.prenom,
             date_entree: employe.date_entree,
-            competences: employe.competences ? employe.competences.split(', ') : [], 
+            competences: employe.competences ? employe.competences.split(', ') : [],
             description: employe.description || 'Pas de description disponible.',
           }));
           this.filteredEmployees = [...this.employes];
@@ -61,7 +61,7 @@ export class CadreEmployeComponent implements OnInit {
         if (data.competences) {
           this.competences = data.competences;
         }
-  
+
         this.isLoading = false;
       })
       .catch((error) => {
@@ -69,8 +69,7 @@ export class CadreEmployeComponent implements OnInit {
         this.isLoading = false;
       });
   }
-  
-  
+
 
   filterEmployees(searchTerm: string) {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -105,7 +104,8 @@ export class CadreEmployeComponent implements OnInit {
         }
         this.employes = this.employes.filter((employe) => employe.identifiant !== this.delEmployee.identifiant);
         this.filteredEmployees = [...this.employes];
-        alert('Employé supprimé avec succès.');
+        /*alert('Employé supprimé avec succès.');*/
+        location.reload();
       })
       .catch((error) => {
         console.error('Erreur :', error);
@@ -131,15 +131,15 @@ export class CadreEmployeComponent implements OnInit {
       nom: employee.nom,
       prenom: employee.prenom,
       date_entree: employee.date_entree,
-      competences: employee.competences 
+      competences: employee.competences
     };
     this.competencesSelectionnees = employee.competences
       .map((desc: string) => {
         const found = this.competences.find(c => c.description_competence_fr === desc);
         return found ? found.code_skill : null;
       })
-      .filter((skill: string | null): skill is string => skill !== null); 
-  
+      .filter((skill: string | null): skill is string => skill !== null);
+
     console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
     this.isEditEmployeePopupOpen = true;
   }
@@ -149,7 +149,7 @@ export class CadreEmployeComponent implements OnInit {
   }
 
   saveEmployee() {
-    
+
     fetch(`http://localhost:3000/api/employes/${this.editEmployee.identifiant}`, {
       method: 'PUT',
       headers: {
@@ -159,24 +159,22 @@ export class CadreEmployeComponent implements OnInit {
         nom: this.editEmployee.nom,
         prenom: this.editEmployee.prenom,
         date_entree: this.editEmployee.date_entree,
-        competences: this.competencesSelectionnees, 
+        competences: this.competencesSelectionnees,
       }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Réponse du serveur:', data);
-      this.fetchEmployees();
-      this.closeEditEmployeePopup();
-    })
-    .catch((error) => {
-      console.error('Erreur lors de la mise à jour de l\'employé :', error);
-      alert('Erreur lors de la modification de l\'employé.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Réponse du serveur:', data);
+        this.fetchEmployees();
+        this.closeEditEmployeePopup();
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la mise à jour de l\'employé :', error);
+        alert('Erreur lors de la modification de l\'employé.');
+      });
   }
-  
-  
-  
-  
+
+
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
@@ -185,8 +183,6 @@ export class CadreEmployeComponent implements OnInit {
     }
     console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
   }
-  
-  
-  
-  
+
+
 }

@@ -1,10 +1,12 @@
-<div class="search">
-  <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
-</div>
-<div class="page-header">
-    <h1>Employés de Skill'QUEST</h1>
+<div class="page">
+
+  <div class="search-and-sort">
+    <div>
+      <app-search-bar (searchChange)="filterEmployees($event)"></app-search-bar>
+    </div>
+
   </div>
-  
+
 
   @if (isEditEmployeePopupOpen) {
     <div class="edit-employee-popup">
@@ -13,82 +15,92 @@
         <form (ngSubmit)="saveEmployee()" #editEmployeeForm="ngForm">
           <div>
             <label for="prenom">Prénom : </label>
-            <input type="text" id="prenom" [(ngModel)]="editEmployee.prenom" name="prenom" required />
+            <input type="text" id="prenom" [(ngModel)]="editEmployee.prenom" name="prenom" required/>
           </div>
           <div>
             <label for="nom">Nom : </label>
-            <input type="text" id="nom" [(ngModel)]="editEmployee.nom" name="nom" required />
+            <input type="text" id="nom" [(ngModel)]="editEmployee.nom" name="nom" required/>
           </div>
           <div>
             <label for="date_entree">Date d'entrée : </label>
-            <input type="date" id="date_entree" [(ngModel)]="editEmployee.date_entree" name="date_entree" required />
+            <input type="date" id="date_entree" [(ngModel)]="editEmployee.date_entree" name="date_entree" required/>
           </div>
           <div>
             <label for="competences">Compétences :</label>
             <div class="competences-list">
               <div *ngFor="let competence of competences">
                 <label>
-                  <input type="checkbox" 
-                         [value]="competence.code_skill" 
-                         (change)="toggleCompetence(competence.code_skill)" 
+                  <input type="checkbox"
+                         [value]="competence.code_skill"
+                         (change)="toggleCompetence(competence.code_skill)"
                          [checked]="competencesSelectionnees.includes(competence.code_skill)">
                   {{ competence.description_competence_fr }}
                 </label>
               </div>
             </div>
           </div>
-  
-          <div>
-            <button type="submit" class="btn-appliquer" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
-            <button type="button" class="btn-fermer" (click)="closeEditEmployeePopup()">Fermer</button>
+          <div class="double-bouton">
+            <div>
+              <button type="button" class="btn-fermer" (click)="closeEditEmployeePopup()">Fermer</button>
+            </div>
+            <div>
+              <button type="submit" class="btn-appliquer" [disabled]="!editEmployeeForm.form.valid">Enregistrer</button>
+            </div>
           </div>
         </form>
       </div>
     </div>
   }
-  
-  
-  
+
+
   @if (isDeletePopupOpen) {
     <div class="delete-popup">
       <div class="popup-content">
         <h3> Supprimer {{ delEmployee.nom + " " + delEmployee.prenom }}</h3>
         <p>Voulez vous vraiment supprimer cet(te) employé(e) ?</p>
-        <button type="submit" class="btn-apply" (click)="deleteEmployee()">Confirmer</button>
-        <button class="btn-close" (click)="closeDeleteEmployeePopup()">Abandonner</button>
+        <div class="double-bouton">
+          <button class="btn-fermer" (click)="closeDeleteEmployeePopup()">Abandonner</button>
+          <button type="submit" class="btn-appliquer" (click)="deleteEmployee()">Confirmer</button>
+        </div>
       </div>
     </div>
   }
 
-  @if (!isLoading && filteredEmployees.length > 0) {
-    <div class="employee-container">
-      <div *ngFor="let employe of filteredEmployees" class="employee-card">
-  
-  
-        <div class="employee-avatar">
-          <img src="/assets/img/avatarimg.jpg" alt="Avatar"/>
+  <div class="enployee-centre">
+    @if (!isLoading && filteredEmployees.length > 0) {
+      <div class="employee-container">
+        <div *ngFor="let employe of filteredEmployees" class="employee-card">
+
+          <div class="employee-description">
+            <div class="employee-avatar">
+              <img src="/assets/img/avatarimg.png" alt="Avatar"/>
+            </div>
+            <div>
+              <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
+              <p>
+                <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
+              </p>
+            </div>
+          </div>
+          <div class="employee-competence">
+            <p class="employee-competences-text">
+              <strong>Compétences : </strong>
+            </p>
+            <ul>
+              <li *ngFor="let comp of employe.competences">{{ comp }}</li>
+            </ul>
+            <p class="employee-competences-list">{{ employe.description }}</p>
+          </div>
+          <div class="double-bouton">
+            <button class="btn-modifier" (click)="openEditEmployeePopup(employe)">Modifier</button>
+            <button class="btn-supprimer" (click)="openDeleteEmployeePopup(employe)">Supprimer</button>
+          </div>
+
+
         </div>
-        <div class="employee-details">
-          <h3>{{ employe.nom }} {{ employe.prenom }}</h3>
-          <p class="employee-entree">
-            <strong>Date d'entrée : </strong>{{ employe.date_entree | date: 'longDate' }}
-          </p>
-          <p class="employee-competences">
-            <strong>Compétences : </strong>
-          </p>
-          <ul>
-            <li *ngFor="let comp of employe.competences">{{ comp }}</li>
-          </ul>
-          <p class="employee-description">{{ employe.description }}</p>
-        </div>
-        <div class="button-container">
-  
-          <button class="btn btn-success" (click)="openEditEmployeePopup(employe)">Modifier</button>
-          <button class="btn btn-danger" (click)="openDeleteEmployeePopup(employe)">Supprimer</button>
-        </div>
-  
-  
       </div>
-    </div>
-  }
-  
+    }
+
+  </div>
+
+</div>

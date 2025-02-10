@@ -1,18 +1,29 @@
-.page-header {
-  text-align: center;
-  margin-bottom: 40px;
-  padding: 0 20px;
+/*---------------------------------------------------------------------------------------------------------------------------*/
+/*page*/
+
+button {
+  color: black;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 150px;
 }
 
-.page-header h1 {
-  font-size: 32px;
-  color: #333;
-  margin-bottom: 10px;
+
+.search-and-sort {
+  display: flex;
+  padding-left: 30px;
+  width: 100%;
 }
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+/*employe*/
 
 .employee-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 20px;
   margin: 20px auto;
   padding: 0 20px;
@@ -20,26 +31,40 @@
 }
 
 .employee-card {
-  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  justify-content: space-between;
+  background-color: white;
   border-radius: 10px;
+  overflow: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
   padding: 20px;
-  max-width: 100%; 
+}
+
+.employee-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.employee-description {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  gap: 20px;
+  align-self: stretch;
 }
 
 .employee-avatar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
   width: 80px;
   height: 80px;
-  margin: 0 auto 15px;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
 }
 
 .employee-avatar img {
@@ -48,96 +73,36 @@
   object-fit: cover;
 }
 
-.employee-details {
-  margin-bottom: 15px;
-}
 
-.employee-details h3 {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.employee-details .employee-entree {
-  font-size: 16px;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-.employee-details .employee-description {
+form input[type="text"],
+form input[type="date"] {
+  padding: 8px;
   font-size: 14px;
-  color: #666;
-  line-height: 1.5;
-}
-
-.employee-actions {
-  margin-top: 10px;
-}
-
-.employee-actions .view-profile {
-  display: inline-block;
-  background-color: #0066cc;
-  color: #fff;
-  padding: 8px 20px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.employee-actions .view-profile:hover {
-  background-color: #004c99;
-}
-
-.btn {
-  padding: 10px 16px;
-  border: none;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.btn-success {
-  background-color: #8bb4d7;
-  color: white;
-  margin-right: 20px;
-}
-
-.btn-success:hover {
-  background-color: #6191ba;
-}
-
-.btn-danger {
-  background-color: #ea4258;
-  color: white;
-}
-
-.btn-danger:hover {
-  background-color: #c52b3f;
-}
-
-.search-and-sort {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
   width: 100%;
-  gap: 10px;
 }
 
-.popup-content {
-  position: fixed;
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 40%;
-  z-index: 1000;
+
+form input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
 }
+
+
+form .competences-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  max-width: 100%;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/*pop-up*/
 
 .edit-employee-popup, .delete-popup {
   position: fixed;
@@ -152,41 +117,36 @@
   z-index: 1000;
 }
 
+.popup-content {
+  position: fixed;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  z-index: 1000;
+}
+
+
 .popup-content h3 {
   margin-bottom: 20px;
   font-size: 18px;
   text-align: center;
 }
 
-.btn-apply, .btn-close {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 40%;
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/*boutons*/
+
+.double-bouton {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
   margin-top: 10px;
-  font-size: 14px;
 }
 
-.btn-apply {
-  background-color: #D9A566;
-  float: right;
-}
-
-.btn-apply:hover {
-  background-color: #bd8542;
-}
-
-.btn-close {
-  background-color: #dc3545;
-  float: left;
-}
-
-.btn-close:hover {
-  background-color: #a71d2a;
-}
 .btn-appliquer {
   background-color: #D9A566;
   color: white;
@@ -196,8 +156,6 @@
   cursor: pointer;
   font-size: 14px;
   width: 150px;
-  margin-top: 10px;
-  float: right;
 }
 
 .btn-appliquer:hover {
@@ -207,69 +165,30 @@
 .btn-fermer {
   background-color: #dc3545;
   color: white;
-  padding: 10px 30px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
-  float: left;
-  width: 150px;
+
+
 }
 
 .btn-fermer:hover {
   background-color: #a71d2a;
 }
-form div {
-  margin-bottom: 15px;
+
+
+.btn-modifier {
+  background-color: #8bb4d7;
+  color: white;
 }
 
-button {
-  margin-top: 10px;
+.btn-modifier:hover {
+  background-color: #6191ba;
 }
 
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.btn-supprimer {
+  background-color: #ea4258;
+  color: white;
 }
 
-form div {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-form label {
-  font-size: 14px;
-}
-
-form input[type="text"],
-form input[type="date"] {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-}
-form label {
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-form input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-}
-
-form .competences-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-  gap: 10px;
-  max-width: 100%;
-  overflow-y: auto; 
-  max-height: 250px; 
+.btn-supprimer:hover {
+  background-color: #c52b3f;
 }

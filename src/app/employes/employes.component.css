@@ -1,1 +1,33 @@
+.page {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  padding-right: 30px;
+  padding-left: 30px;
+
+}
+
+
+.page-header {
+  text-align: start;
+  width: 100%;
+
+}
+
+.search-and-sort {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
+  gap: 10px;
+
+}
+
+.btn-ajout {
+
+}
+
+.btn-tri {
+}
 
