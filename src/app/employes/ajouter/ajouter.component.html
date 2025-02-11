@@ -33,13 +33,11 @@
             </div>
           </div>
         </div>
-        <div class="double-bouton">
-          <button class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
-          <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid" (click)="addEmployee()">
-            Ajouter
-          </button>
-        </div>
       </form>
+      <div class="double-bouton">
+        <button class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
+        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid"(click)="addEmployee()">Ajouter</button>
+      </div>
 
     </div>
   </div>

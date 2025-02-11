@@ -16,12 +16,12 @@
         <p><strong>Etat :</strong> Mission terminée</p>
       }
       <p><strong>Employés :</strong></p>
-      <ul>
-        <li *ngFor="let employe of employes">
-            {{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}
-          </li>
-      </ul>
-      
+    
+        <div *ngFor="let employe of mission.employes">
+            <p>{{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}</p>
+          </div>
+
+     
     </div>
     <div class="date">
       <p><strong>Date de début :</strong> {{ mission.dated | date:'dd/MM/yyyy' }}</p>
@@ -35,8 +35,8 @@
         <button class="btn btn-danger" (click)="openDeleteMissionPopup(mission)">Supprimer</button>
     </div>
   </div>
-  
-  
+ 
+ 
 @if (isDeletePopupOpen) {
     <div class="delete-popup">
       <div class="popup-content">
@@ -48,10 +48,11 @@
     </div>
   }
 
+
   @if (isEditMissionPopupOpen) {
     <div class="edit-mission-popup">
       <div class="popup-content">
-  
+ 
         <h3>Modifier une mission</h3>
         <form (ngSubmit)="saveMission()" #editMissionForm="ngForm">
           <div>
@@ -67,24 +68,29 @@
             <input type="date" id="datef" [(ngModel)]="editMission.datef" name="datef" required/>
           </div>
           <div>
-            <label for="competences">Compétences requises :</label>
-            <div class="competences-list">
-                <div *ngFor="let competence of competences">
-                    <label>
-                        <input type="checkbox" 
-                               [value]="competence.code_skill" 
-                               (change)="toggleCompetence(competence.code_skill)" 
-                               [checked]="competencesSelectionnees.includes(competence.code_skill)">
-                        {{ competence.description_competence_fr }}
-                    </label>
+            <div>
+                <h4>Compétences requises :</h4>
+                <div class="competences-list">
+                <div *ngFor="let comp of competences">
+                  <input type="checkbox"
+                         [value]="comp.code_skill"
+                         [checked]="competencesSelectionnees.includes(comp.code_skill)"
+                         (change)="toggleCompetence(comp.code_skill)">
+                  <label>{{ comp.description_competence_fr }}</label>
                 </div>
+              </div>
             </div>
         </div>
-        <div>
-            <label for="employes">Employés :</label>
-        </div>
-        
-  
+        <div >
+            <h3>Employés affectés :</h3>
+            <ul>
+              <li *ngFor="let employe of mission.employes">
+                {{ employe.prenom }} {{ employe.nom }} ({{ employe.competences }})
+                <button (click)="removeEmployeFromMission(mission.idm, employe.identifiant)">🗑️ Retirer</button>
+              </li>
+            </ul>
+          </div>
+          
           <div>
             <button type="button" class="btn-employes" (click)="openEmployesPopup(editMission.idm)">
                 Présélectionner employé
@@ -93,17 +99,17 @@
             <button type="button" class="btn-close" (click)="closeEditMissionPopup()">Fermer</button>
           </div>
         </form>
-  
+ 
       </div>
     </div>
-  } 
+  }
   @if(isEmployesPopupOpen){
     <div class="popup-employes">
         <div class="popup-content">
           <h3>Employés recommandés</h3>
           <div *ngFor="let employe of employes">
             <label>
-              <input type="checkbox" [value]="employe.identifiant" 
+              <input type="checkbox" [value]="employe.identifiant"
                      (change)="toggleEmployeSelection(employe.identifiant)">
               {{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}
             </label>
@@ -113,7 +119,3 @@
         </div>
     </div>
   }
-  
-  
-  
-  

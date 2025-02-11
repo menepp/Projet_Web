@@ -17,15 +17,21 @@ export class MissionComponent implements OnInit {
   isLoading: Boolean = true;
   isAddMissionPopupOpen: boolean = false;
   competences: { code_skill: string, description_competence_fr: string }[] = [];
+  employes: { identifiant: number, nom: string, prenom:string, competences: string }[] = [];
 
   ngOnInit(): void {
     this.fetchMissions();
   }
 
+
   fetchMissions() {
-    fetch('http://localhost:3000/api/missions')
+    console.log("📡 Envoi de la requête GET /api/missions...");
+ 
+    fetch('http://localhost:3000/api/missions?missionId=1')  
       .then(response => response.json())
       .then(data => {
+        console.log("Réponse API missions :", data);
+ 
         this.missions = data.missions.map((mission: any) => ({
           idm: mission.idm,
           nomm: mission.nomm,
@@ -33,7 +39,11 @@ export class MissionComponent implements OnInit {
           datef: mission.datef,
           competences: mission.competences ? mission.competences.split(', ') : [],
         }));
+ 
         this.competences = data.competences || [];
+        console.log("Compétences disponibles :", this.competences);
+        console.log("Employés correspondants :", this.employes);
+ 
         this.isLoading = false;
       })
       .catch(error => {
