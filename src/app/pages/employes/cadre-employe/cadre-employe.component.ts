@@ -1,9 +1,9 @@
+
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
-import { Employes } from '../../models/employes.interface';
-
+import { SearchBarComponent } from '../../../components/search-bar/search-bar.component';
+import { Employes } from '../../../models/employes.interface';
 
 @Component({
   selector: 'app-cadre-employe',
@@ -11,8 +11,9 @@ import { Employes } from '../../models/employes.interface';
   templateUrl: './cadre-employe.component.html',
   styleUrl: './cadre-employe.component.css'
 })
+
 export class CadreEmployeComponent implements OnInit {
-  @Input() employes!: Employes[];  
+  @Input() employes!: Employes[];
   isLoading = true;
   selectedEmployee: any = null;
   delEmployee: any = null;
@@ -22,13 +23,12 @@ export class CadreEmployeComponent implements OnInit {
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
 
-  
   isEditEmployeePopupOpen = false;
   editEmployee: Employes = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };
+
   ngOnInit(): void {
     this.fetchEmployees();
   }
-
   fetchEmployees() {
     fetch('http://localhost:3000/api/employes')
       .then((response) => {
@@ -46,7 +46,7 @@ export class CadreEmployeComponent implements OnInit {
             nom: employe.nom,
             prenom: employe.prenom,
             date_entree: employe.date_entree,
-            competences: employe.competences ? employe.competences.split(', ') : [],
+            competences: employe.competences ? employe.competences.split(', ') : [], 
             description: employe.description || 'Pas de description disponible.',
           }));
           this.filteredEmployees = [...this.employes];
@@ -57,7 +57,7 @@ export class CadreEmployeComponent implements OnInit {
         if (data.competences) {
           this.competences = data.competences;
         }
-
+  
         this.isLoading = false;
       })
       .catch((error) => {
@@ -102,22 +102,21 @@ export class CadreEmployeComponent implements OnInit {
     this.closeDeleteEmployeePopup();
   }
 
-
   openEditEmployeePopup(employee: any) {
     this.editEmployee = {
       identifiant: employee.identifiant,
       nom: employee.nom,
       prenom: employee.prenom,
       date_entree: employee.date_entree,
-      competences: employee.competences
+      competences: employee.competences 
     };
     this.competencesSelectionnees = employee.competences
       .map((desc: string) => {
         const found = this.competences.find(c => c.description_competence_fr === desc);
         return found ? found.code_skill : null;
       })
-      .filter((skill: string | null): skill is string => skill !== null);
-
+      .filter((skill: string | null): skill is string => skill !== null); 
+  
     console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
     this.isEditEmployeePopupOpen = true;
   }
@@ -127,6 +126,7 @@ export class CadreEmployeComponent implements OnInit {
   }
 
   saveEmployee() {
+    
     fetch(`http://localhost:3000/api/employes/${this.editEmployee.identifiant}`, {
       method: 'PUT',
       headers: {
@@ -136,7 +136,7 @@ export class CadreEmployeComponent implements OnInit {
         nom: this.editEmployee.nom,
         prenom: this.editEmployee.prenom,
         date_entree: this.editEmployee.date_entree,
-        competences: this.competencesSelectionnees,
+        competences: this.competencesSelectionnees, 
       }),
     })
     .then((response) => response.json())
@@ -150,7 +150,7 @@ export class CadreEmployeComponent implements OnInit {
       alert('Erreur lors de la modification de l\'employé.');
     });
   }
-
+  
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
@@ -159,5 +159,5 @@ export class CadreEmployeComponent implements OnInit {
     }
     console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
   }
-
+  
 }

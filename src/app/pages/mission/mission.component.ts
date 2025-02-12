@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Mission } from '../models/mission.interface';
+import { Mission } from '../../models/mission.interface';
 import { CarteMissionComponent } from './carte-mission/carte-mission.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SearchBarComponent } from '../components/search-bar/search-bar.component';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { CreerMissionComponent } from './creer-mission/creer-mission.component';
 import { HistoriqueMissionComponent } from './historique-mission/historique-mission.component';
 
@@ -27,7 +27,6 @@ export class MissionComponent implements OnInit {
   ngOnInit(): void {
     this.fetchMissions();
   }
-
 
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");

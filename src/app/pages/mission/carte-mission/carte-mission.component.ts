@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges  } from '@angular/core';
-import { Mission } from '../../models/mission.interface';
+import { Mission } from '../../../models/mission.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,11 +26,15 @@ export class CarteMissionComponent implements OnInit {
   editMission : Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: [] };
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
+  
   missions: Mission[] = [];
+
   isLoading = true;
   employes: { identifiant: number, nom: string, prenom: string, competences: string }[] = [];
+
   employesSelectionnes: number[] = [];
   isEmployesPopupOpen: boolean = false;
+
   ngOnInit(): void {
     this.convertMissionDates();
     this.fetchMissions();

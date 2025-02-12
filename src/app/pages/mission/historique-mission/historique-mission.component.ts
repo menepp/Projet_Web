@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Mission } from '../../models/mission.interface';
+import { Mission } from '../../../models/mission.interface';
 import { CarteMissionComponent } from '../carte-mission/carte-mission.component';
 
 @Component({
