@@ -9,10 +9,11 @@ import { HistoriqueMissionComponent } from './historique-mission/historique-miss
 
 @Component({
   selector: 'app-mission',
-  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent, HistoriqueMissionComponent, AjouterComponent, TrierComponent],
+  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent, HistoriqueMissionComponent],
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
+
 export class MissionComponent implements OnInit {
   missions: Mission[] = [];
   filteredMissions: Mission[] = [];
@@ -30,7 +31,7 @@ export class MissionComponent implements OnInit {
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
 
-    fetch('http://localhost:3000/api/missions?missionId=1')
+    fetch('http://localhost:3000/api/missions')
       .then(response => response.json())
       .then(data => {
         console.log("Réponse API missions :", data);
@@ -42,10 +43,9 @@ export class MissionComponent implements OnInit {
           datef: mission.datef,
           competences: mission.competences ? mission.competences.split(', ') : [],
         }));
+        this.filteredMissions = [...this.missions];
         this.separerMissions();
         this.competences = data.competences || [];
-        console.log("Compétences disponibles :", this.competences);
-        console.log("Employés correspondants :", this.employes);
 
         this.isLoading = false;
       })

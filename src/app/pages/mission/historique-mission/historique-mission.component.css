@@ -1,7 +1,7 @@
 .missions-list {
   display: grid;
-  gap: 20px; /* Espacement entre les éléments */
-  justify-items: center; /* Centre chaque carte de mission dans sa colonne */
+  gap: 20px; 
+  justify-items: center;
   width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   max-width: 1200px;

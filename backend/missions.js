@@ -18,7 +18,6 @@ pool.connect((err, client, release) => {
   release();
 });
 
-// On récupère toutes les missions avec leurs compétences
 router.get('/', async (req, res) => {
   try {
     console.log('📡 Requête reçue : GET /api/missions');
