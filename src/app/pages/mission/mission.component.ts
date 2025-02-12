@@ -13,13 +13,12 @@ import { HistoriqueMissionComponent } from './historique-mission/historique-miss
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
-
 export class MissionComponent implements OnInit {
   missions: Mission[] = [];
+  filteredMissions: Mission[] = [];
   isLoading: Boolean = true;
   isAddMissionPopupOpen: boolean = false;
   competences: { code_skill: string, description_competence_fr: string }[] = [];
-  employes: { identifiant: number, nom: string, prenom:string, competences: string }[] = [];
   afficherHistoriqueMissions = false;
   missionsActuelles: Mission[] = [];
   missionsTerminees: Mission[] = [];
@@ -30,12 +29,12 @@ export class MissionComponent implements OnInit {
 
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
- 
-    fetch('http://localhost:3000/api/missions?missionId=1')  
+    
+    fetch('http://localhost:3000/api/missions')  
       .then(response => response.json())
       .then(data => {
         console.log("Réponse API missions :", data);
- 
+    
         this.missions = data.missions.map((mission: any) => ({
           idm: mission.idm,
           nomm: mission.nomm,
@@ -43,17 +42,31 @@ export class MissionComponent implements OnInit {
           datef: mission.datef,
           competences: mission.competences ? mission.competences.split(', ') : [],
         }));
+        
+        this.filteredMissions = [...this.missions];
         this.separerMissions();
         this.competences = data.competences || [];
-        console.log("Compétences disponibles :", this.competences);
-        console.log("Employés correspondants :", this.employes);
- 
+    
         this.isLoading = false;
       })
       .catch(error => {
         console.error("Erreur dans fetchMissions:", error);
         this.isLoading = false;
       });
+  }
+
+  filterMissions(searchTerm: string) {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    this.filteredMissions = this.missions.filter(mission =>
+      mission.nomm.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+    this.separerMissions();
+  }
+
+  separerMissions() {
+    const today = new Date();
+    this.missionsActuelles = this.filteredMissions.filter(m => new Date(m.datef) >= today);
+    this.missionsTerminees = this.filteredMissions.filter(m => new Date(m.datef) < today);
   }
 
   openAddMissionPopUp() {
@@ -67,12 +80,6 @@ export class MissionComponent implements OnInit {
   onMissionAdded() {
     this.fetchMissions();
     this.isAddMissionPopupOpen = false;
-  }
-
-  separerMissions() {
-    const today = new Date();
-    this.missionsActuelles = this.missions.filter(m =>new Date(m.datef) >= today);
-    this.missionsTerminees = this.missions.filter(m =>new Date(m.datef) < today);
   }
 
   afficherHistorique() {

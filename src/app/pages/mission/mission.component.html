@@ -1,5 +1,5 @@
 <div class="search">
-  <app-search-bar></app-search-bar>
+  <app-search-bar (searchChange)="filterMissions($event)"></app-search-bar>
   <button class="btn-add" (click)="openAddMissionPopUp()">Ajouter</button>
 </div>
 
