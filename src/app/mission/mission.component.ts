@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Mission } from '../models/mission.interface';
-import { CarteMissionComponent } from './carte-mission/carte-mission.component';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { SearchBarComponent } from '../components/search-bar/search-bar.component';
-import { CreerMissionComponent } from './creer-mission/creer-mission.component';
-import { HistoriqueMissionComponent } from './historique-mission/historique-mission.component';
+import {Component, OnInit} from '@angular/core';
+import {Mission} from '../models/mission.interface';
+import {CarteMissionComponent} from './carte-mission/carte-mission.component';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {SearchBarComponent} from '../components/search-bar/search-bar.component';
+import {CreerMissionComponent} from './creer-mission/creer-mission.component';
+import {HistoriqueMissionComponent} from './historique-mission/historique-mission.component';
+import {AjouterComponent} from '../employes/ajouter/ajouter.component';
+import {TrierComponent} from '../employes/trier/trier.component';
 
 @Component({
   selector: 'app-mission',
-  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent, HistoriqueMissionComponent],
+  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent, HistoriqueMissionComponent, AjouterComponent, TrierComponent],
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
@@ -19,7 +21,7 @@ export class MissionComponent implements OnInit {
   isLoading: Boolean = true;
   isAddMissionPopupOpen: boolean = false;
   competences: { code_skill: string, description_competence_fr: string }[] = [];
-  employes: { identifiant: number, nom: string, prenom:string, competences: string }[] = [];
+  employes: { identifiant: number, nom: string, prenom: string, competences: string }[] = [];
   afficherHistoriqueMissions = false;
   missionsActuelles: Mission[] = [];
   missionsTerminees: Mission[] = [];
@@ -31,12 +33,12 @@ export class MissionComponent implements OnInit {
 
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
- 
-    fetch('http://localhost:3000/api/missions?missionId=1')  
+
+    fetch('http://localhost:3000/api/missions?missionId=1')
       .then(response => response.json())
       .then(data => {
         console.log("Réponse API missions :", data);
- 
+
         this.missions = data.missions.map((mission: any) => ({
           idm: mission.idm,
           nomm: mission.nomm,
@@ -48,7 +50,7 @@ export class MissionComponent implements OnInit {
         this.competences = data.competences || [];
         console.log("Compétences disponibles :", this.competences);
         console.log("Employés correspondants :", this.employes);
- 
+
         this.isLoading = false;
       })
       .catch(error => {
@@ -72,8 +74,8 @@ export class MissionComponent implements OnInit {
 
   separerMissions() {
     const today = new Date();
-    this.missionsActuelles = this.missions.filter(m =>new Date(m.datef) >= today);
-    this.missionsTerminees = this.missions.filter(m =>new Date(m.datef) < today);
+    this.missionsActuelles = this.missions.filter(m => new Date(m.datef) >= today);
+    this.missionsTerminees = this.missions.filter(m => new Date(m.datef) < today);
   }
 
   afficherHistorique() {

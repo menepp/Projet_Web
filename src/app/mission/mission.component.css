@@ -1,29 +1,42 @@
-/* Button pour ajouter */
-.btn-add {
-  background-color: #d98542;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: normal;
-  cursor: pointer;
-  transition: background-color 0.3s ease, opacity 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 40px;
+.missions-list {
+  display: grid;
+  gap: 20px; /* Espacement entre les éléments */
+  justify-items: center; /* Centre chaque carte de mission dans sa colonne */
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  margin: 20px auto;
+  padding: 0 20px;
+  max-width: 1200px;
+}
+
+.double-bouton {
+  gap: 20px;
+}
+
+.page {
   display: flex;
-  justify-content: center; 
+  flex-direction: column;
+  justify-content: start;
+}
+
+/* Recherche */
+.search {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  white-space: nowrap; 
+  gap: 15px;
+  padding-bottom: 20px;
 }
 
-.btn-add:hover {
-  background-color: #bd7335;
-  opacity: 0.9;
+.page-header {
+  display: flex;
+  padding-left: 30px;
 }
 
-.btn-add:active {
-  background-color: #a8642f;
+.double-bouton {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
 }
 
 /* Page des missions */
@@ -33,14 +46,9 @@
   align-items: center;
   padding: 20px;
   background-color: #f5f5f5;
-  font-family: Arial, sans-serif;
   min-height: 100vh;
 }
 
-#historique-btn {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 
 .missions-actuelles h3 {
   font-size: 22px;
@@ -49,8 +57,7 @@
   margin-bottom: 15px;
 }
 
-.missions-actuelles .missions-list,
-.missions-terminees .missions-list {
+.missions-actuelles .missions-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
@@ -59,24 +66,6 @@
   margin: 0 auto;
 }
 
-.missions-terminees {
-  width: 100%;
-  margin-top: 30px;
-}
-
-.missions-terminees h3 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.missions-terminees .missions-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  justify-items: center;
-}
 
 .mission-page h2 {
   font-size: 24px;
@@ -87,62 +76,8 @@
 }
 
 .mission-page p {
-  font-size: 16px;
   color: #555;
   text-align: center;
-  margin-bottom: 20px;
-}
-
-/* Card mission */
-.container-card {
-  display: flex;
-  flex-direction: column;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  width: 100%; 
-  max-width: 300px;
-  height: 350px;
-  font-family: 'Roboto', sans-serif;
-  gap: 10px;
-  border: 1px solid #e0e0e0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box;
-}
-
-.container-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-.container-card h1 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #212121;
-  margin: 0 0 5px 0;
-  border-bottom: 2px solid #ff6700;
-  padding-bottom: 5px;
-}
-
-.container-card .description {
-  color: #616161;
-  font-size: 14px;
-  margin-bottom: 5px;
-  flex-grow: 1;
-}
-
-.container-card .information,
-.container-card .date {
-  display: flex;
-  flex-direction: column;
-  color: #424242;
-  font-size: 12px;
-  gap: 3px;
-}
-
-.container-card .button {
-  text-align: right;
 }
 
 button#modifier {
@@ -181,55 +116,10 @@ button#modifier:active {
   z-index: 1000;
 }
 
-.btn-appliquer {
-  background-color: #D9A566;
-  color: white;
-  padding: 10px 30px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 150px;
-  margin-top: 10px;
-  float: right;
-}
-
-.btn-appliquer:hover {
-  background-color: #bd8542;
-}
-
-.btn-fermer {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px 30px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
-  float: left;
-  width: 150px;
-}
-
-.btn-fermer:hover {
-  background-color: #a71d2a;
-}
 
 /* Formulaire */
 form div {
   margin-bottom: 15px;
-}
-
-button {
-  margin-top: 10px;
-}
-
-/* Recherche */
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
 }
 
 form div {
@@ -257,14 +147,6 @@ form input[type="checkbox"] {
   margin-right: 10px;
 }
 
-.missions-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px; 
-  justify-items: center; 
-  width: 100%;
-  margin-top: 20px; 
-}
 
 form .competences-list {
   display: grid;
@@ -295,7 +177,7 @@ form .competences-list {
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 80%;  /* Ajuste la largeur à 80% de l'écran */
+  width: 80%; /* Ajuste la largeur à 80% de l'écran */
   max-width: 600px; /* Largeur maximale */
   max-height: 80%; /* Limite la hauteur */
   overflow-y: auto; /* Permet le défilement si nécessaire */
@@ -313,7 +195,7 @@ form .competences-list {
     gap: 10px;
   }
 
-  .add-mission-popup .btn-apply, 
+  .add-mission-popup .btn-apply,
   .add-mission-popup .btn-close {
     width: 45%; /* Ajuste les boutons pour les petits écrans */
   }

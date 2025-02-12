@@ -1,44 +1,56 @@
-<div class="search">
-  <app-search-bar></app-search-bar>
-  <button class="btn-add" (click)="openAddMissionPopUp()">Ajouter</button>
-</div>
-
-@if(isAddMissionPopupOpen){
-  <app-creer-mission [competences]="competences" (closePopup)="closeAddMissionPopup()" (missionAdded)="onMissionAdded()"></app-creer-mission>
-}
-
-<div class="page-header">
-  <h1>Missions de Skill'Quest</h1>
-</div>
-
-@if(isLoading){
-  <div class="loading-message">
-    Chargement en cours...
-  </div>
-}
-
-@if(!isLoading && missions.length === 0){
-  <div class="no-mission-message">
-    Aucune mission trouvée.
-  </div>
-}
-
-<div class="mission-page">
-  <h2>Liste des Missions</h2>
-  <p>Voici la liste des missions disponibles...</p>
-
-  <button id="historique-btn" class="btn btn-secondary" (click)="afficherHistorique()">Voir l'historique des missions</button>
-
-  @if(afficherHistoriqueMissions){
-    <app-historique-mission [missionsTerminees]="missionsTerminees"></app-historique-mission>
-  }
-
-  <div class="missions-actuelles">
-    <h3>Missions Actuelles</h3>
-    <div class="missions-list">
-      @for (mission of missionsActuelles; track mission.idm) {
-        <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
-      }
+<div class="page">
+  <div class="page-header">
+    <div class="title">
+      <h1>Missions de Skill'Quest</h1>
     </div>
   </div>
+
+  <div class="search">
+    <app-search-bar></app-search-bar>
+    <div class="double-bouton">
+      @if (afficherHistoriqueMissions) {
+        <button class="btn-fermer" (click)="afficherHistorique()">Fermer
+        </button>
+      }
+      @if (!afficherHistoriqueMissions) {
+        <button id="historique-btn" class="btn-autre" (click)="afficherHistorique()">Historique
+        </button>
+      }
+      <button class="btn-ajouter" (click)="openAddMissionPopUp()">Ajouter (+)</button>
+    </div>
+  </div>
+
+  <div class="mission-page">
+    @if (afficherHistoriqueMissions) {
+      <app-historique-mission [missionsTerminees]="missionsTerminees"></app-historique-mission>
+    }
+    <div class="missions-actuelles">
+      <h3>Missions Actuelles</h3>
+      <div class="missions-list">
+        @for (mission of missionsActuelles; track mission.idm) {
+          <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
+        }
+      </div>
+    </div>
+  </div>
+
+
+
+  @if (isAddMissionPopupOpen) {
+    <app-creer-mission [competences]="competences" (closePopup)="closeAddMissionPopup()"
+                       (missionAdded)="onMissionAdded()"></app-creer-mission>
+  }
+
+
+  @if (isLoading) {
+    <div class="loading-message">
+      Chargement en cours...
+    </div>
+  }
+
+  @if (!isLoading && missions.length === 0) {
+    <div class="no-mission-message">
+      Aucune mission trouvée.
+    </div>
+  }
 </div>

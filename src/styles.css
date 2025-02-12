@@ -13,10 +13,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
-a {
-  color: #ff6700;
-  text-decoration: none;
-}
 
 a:hover {
   text-decoration: underline;
@@ -38,4 +34,87 @@ a:hover {
 
 :root {
   background-color: #F5F5F5;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 130px;
+  color: white;
+}
+
+.double-bouton {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-modifier {
+  background-color: #8bb4d7;
+}
+
+.btn-modifier:hover {
+  background-color: #6191ba;
+}
+
+
+.btn-supprimer {
+  background-color: #ea4258;
+}
+
+.btn-supprimer:hover {
+  background-color: #c52b3f;
+}
+
+
+.btn-appliquer {
+  background-color: #D9A566;
+
+}
+
+.btn-appliquer:hover {
+  background-color: #bd8542;
+}
+
+.btn-fermer {
+  background-color: #dc3545;
+
+
+}
+
+.btn-fermer:hover {
+  background-color: #a71d2a;
+}
+
+.btn-ajouter {
+  background-color: #D9A566;
+
+}
+
+.btn-ajouter:hover {
+  background-color: #bd8542; /* Changement de couleur au survol */
+}
+
+
+.btn-autre {
+  background-color: #5B74A6;
+
+}
+
+.btn-autre:hover {
+  background-color: #6191ba;
+}
+
+
+.popup-content h3 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  text-align: center;
 }

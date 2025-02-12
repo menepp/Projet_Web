@@ -1,93 +1,104 @@
-/* Container card */
-.container-card {
+/* boutons */
+.double-bouton {
+  padding-top: 20px;
+}
+
+.carte {
   display: flex;
   flex-direction: column;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  margin: 10px auto;
-  width: 350px;
-  height: 300px;
-  font-family: 'Roboto', sans-serif;
-  gap: 10px;
-  border: 1px solid #e0e0e0;
+  text-align: start;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 10px;
+  overflow: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 20px;
 }
 
-.container-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+.carte:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.title h1 {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  color: #212121;
-  margin: 0;
-  padding-bottom: 5px;
-}
-
-.information p,
-.date p {
-  margin: 0;
-  font-size: 15px;
-  color: #424242;
-}
-
-.information, .date {
+.haut-carte-mission {
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+
 }
 
-.button-container {
-  margin-top: auto;
+p {
+  margin: 0;
+}
+
+.titre-mission {
   display: flex;
-  justify-content: flex-end;
-  gap: 5px;
+  justify-content: end;
+  align-items: center;
+  color: #3C4658;
+  font-weight: bold;
+  font-size: x-large;
+  text-transform: uppercase;
+
 }
 
-.button-container button {
-  padding: 5px 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+
+/* état des missions*/
+
+.etat-mission {
+  display: flex;
+  height: 30px;
 }
 
-#modifier {
-  background-color: #ff6700;
+.en-cours {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: lightgreen;
   color: white;
 }
 
-#modifier:hover {
-  background-color: #e65c00;
-  transform: translateY(-2px);
+.terminee {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: lightgrey;
+  color: white;
+
 }
 
-#modifier:active {
-  transform: translateY(1px);
-}
-
-#supprimer {
-  background-color: #d32f2f;
+.preparation {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: lightsalmon;
   color: white;
 }
 
-#supprimer:hover {
-  background-color: #c62828;
-  transform: translateY(-2px);
+.planifiee {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: pink;
+  color: white;
 }
 
-#supprimer:active {
-  transform: translateY(1px);
+.date-mission {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
 }
+
+.employes-en-mission {
+  padding-top: 10px;
+}
+
+.competences-requises, .employes-assignes {
+  margin-top: 5px;
+
+}
+
 
 /* Popups */
 .edit-mission-popup, .delete-popup, .add-popup {
@@ -112,7 +123,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 500px; /* Nouvelle largeur maximale ajustée */
+  max-width: 800px; /* Nouvelle largeur maximale ajustée */
   max-height: 80%; /* Limitation de la hauteur */
   overflow-y: auto; /* Ajout du défilement vertical si nécessaire */
   z-index: 1001;
@@ -122,54 +133,6 @@
   max-width: 450px; /* Ajustement de la largeur pour la pop-up "ajouter" */
 }
 
-.btn-apply, .btn-close {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 40%;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.btn-apply {
-  background-color: #D9A566;
-  float: right;
-}
-
-.btn-apply:hover {
-  background-color: #bd8542;
-}
-
-.btn-close {
-  background-color: #dc3545;
-  float: left;
-}
-
-.btn-close:hover {
-  background-color: #a71d2a;
-}
-
-.btn-danger {
-  background-color: #ea4258;
-  color: white;
-}
-
-.btn-danger:hover {
-  background-color: #c52b3f;
-}
-
-.btn-success {
-  background-color: #ff6700;
-  color: white;
-  margin-right: 20px;
-}
-
-.btn-success:hover {
-  background-color: #ff6700;
-}
 
 .popup-employes {
   position: fixed;
@@ -200,16 +163,16 @@
 /* Responsiveness */
 @media (max-width: 768px) {
   .popup-content {
-      width: 90%; /* Réduit la largeur sur les petits écrans */
-      padding: 20px;
+    width: 90%; /* Réduit la largeur sur les petits écrans */
+    padding: 20px;
   }
 
   .add-popup .popup-content {
-      width: 90%; /* Assure la bonne taille de la pop-up sur mobile */
+    width: 90%; /* Assure la bonne taille de la pop-up sur mobile */
   }
 
   .popup-employes .popup-content {
-      width: 90%; /* Pour les pop-ups "employés" aussi */
+    width: 90%; /* Pour les pop-ups "employés" aussi */
   }
 }
 
@@ -218,9 +181,6 @@ form div {
   margin-bottom: 15px;
 }
 
-button {
-  margin-top: 10px;
-}
 
 form div {
   display: flex;
@@ -256,9 +216,11 @@ form input[type="checkbox"] {
 
 form .competences-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
   max-width: 100%;
-  overflow-y: auto; 
-  max-height: 250px; 
+  overflow-y: auto;
+  max-height: 250px;
 }
+
+

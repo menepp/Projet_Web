@@ -1,20 +1,10 @@
 /*---------------------------------------------------------------------------------------------------------------------------*/
 /*page*/
 
-button {
-  color: black;
-  padding: 10px 30px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 150px;
-}
-
 
 .search-and-sort {
   display: flex;
-  padding-left: 30px;
+
   width: 100%;
 }
 
@@ -128,67 +118,9 @@ form .competences-list {
 }
 
 
-.popup-content h3 {
-  margin-bottom: 20px;
-  font-size: 18px;
-  text-align: center;
-}
-
-
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
 /*boutons*/
 
-.double-bouton {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.btn-appliquer {
-  background-color: #D9A566;
-  color: white;
-  padding: 10px 30px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 150px;
-}
-
-.btn-appliquer:hover {
-  background-color: #bd8542;
-}
-
-.btn-fermer {
-  background-color: #dc3545;
-  color: white;
 
 
-}
-
-.btn-fermer:hover {
-  background-color: #a71d2a;
-}
-
-
-.btn-modifier {
-  background-color: #8bb4d7;
-  color: white;
-}
-
-.btn-modifier:hover {
-  background-color: #6191ba;
-}
-
-
-.btn-supprimer {
-  background-color: #ea4258;
-  color: white;
-}
-
-.btn-supprimer:hover {
-  background-color: #c52b3f;
-}

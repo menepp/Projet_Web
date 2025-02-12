@@ -1,19 +1,4 @@
 
-.btn-sort {
-  background-color: #5B74A6;
-  width: 150px;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 30px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.btn-sort:hover {
-  background-color: #6191ba;
-}
-
 .sort-popup {
   position: fixed;
   top: 0;
@@ -33,7 +18,7 @@
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 40%;
+  width: 30%;
   z-index: 1000;
 }
 
@@ -42,36 +27,6 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
-}
-
-.btn-appliquer, .btn-fermer {
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 40%;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.btn-appliquer {
-  background-color: #D9A566;
-  float: right;
-}
-
-.btn-appliquer:hover {
-  background-color: #bd8542;
-}
-
-.btn-fermer {
-  background-color: #dc3545;
-  float: left;
-}
-
-
-.btn-fermer:hover {
-  background-color: #a71d2a;
 }
 
 h3 {

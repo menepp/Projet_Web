@@ -1,54 +1,8 @@
-.btn-add {
-  background-color: #D9A566;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 30px;
-  cursor: pointer;
-  font-size: 14px;
-  width: 150px;
-
-}
 
 h3 {
   text-align: center;
 }
 
-.btn-add:hover {
-  background-color: #bd8542; /* Changement de couleur au survol */
-}
-
-
-.btn-appliquer, .btn-fermer {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 40%;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.btn-appliquer {
-  background-color: #D9A566;
-  float: right;
-}
-
-.btn-appliquer:hover {
-  background-color: #bd8542;
-}
-
-.btn-fermer {
-  background-color: #dc3545;
-  float: left;
-}
-
-
-.btn-fermer:hover {
-  background-color: #a71d2a;
-}
 
 .add-employee-popup {
   position: fixed;
