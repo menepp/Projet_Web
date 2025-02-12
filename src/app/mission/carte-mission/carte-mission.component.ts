@@ -14,16 +14,14 @@ export class CarteMissionComponent implements OnInit {
   @Input() mission!: Mission;
   @Output() missionUpdated = new EventEmitter<void>();
 
+  isPrepared: boolean = false;
 
   currentDate: Date = new Date();
-
 
   isDeletePopupOpen: boolean = false;
   delMission: any = null;
 
-
   isEditMissionPopupOpen = false;
-
 
   editMission : Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: [] };
   competences: { code_skill: string, description_competence_fr: string }[] = [];
@@ -39,6 +37,24 @@ export class CarteMissionComponent implements OnInit {
     this.fetchEmployesAffectes(this.mission.idm);
   }
 
+  checkMissionPreparation() {
+    if (this.mission.competences && this.mission.competences.length > 0) {
+      const missionCompetences = new Set(this.mission.competences);
+      const employesCompetences = new Set<string>();
+      this.mission.employes?.forEach((employe) => {
+        if (employe.competences) {
+          employe.competences.split(', ').forEach((competence: string) => {
+            employesCompetences.add(competence);
+          });
+        }
+      });
+      this.isPrepared = [...missionCompetences].every(competence =>
+        employesCompetences.has(competence.toString()) 
+      );
+    } else {
+      this.isPrepared = true;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mission']) {
@@ -83,7 +99,7 @@ export class CarteMissionComponent implements OnInit {
         this.isLoading = false;
       });
   }
-  
+
   fetchEmployesAffectes(missionId: number) {
     fetch(`http://localhost:3000/api/missions/${missionId}/employes`)
       .then(response => response.json())
@@ -92,11 +108,13 @@ export class CarteMissionComponent implements OnInit {
 
         if (this.mission.idm === missionId) {
           this.mission.employes = data.employes || [];
+          this.checkMissionPreparation(); 
         }
 
         const mission = this.missions.find(m => m.idm === missionId);
         if (mission) {
           mission.employes = data.employes || [];
+          this.checkMissionPreparation(); 
         }
       })
       .catch(error => {
@@ -147,7 +165,7 @@ export class CarteMissionComponent implements OnInit {
       nomm: mission.nomm,
       dated: mission.dated,
       datef: mission.datef,
-      competences: mission.competences // Assure-toi que cette ligne est correcte
+      competences: mission.competences 
     };
   
     this.competencesSelectionnees = mission.competences
@@ -284,5 +302,3 @@ removeEmployeFromMission(missionId: number, employeId: number) {
 }
 
 }
-
-

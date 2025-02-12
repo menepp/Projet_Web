@@ -1,3 +1,4 @@
+/* Button pour ajouter */
 .btn-add {
   background-color: #d98542;
   color: white;
@@ -25,6 +26,7 @@
   background-color: #a8642f;
 }
 
+/* Page des missions */
 .mission-page {
   display: flex;
   flex-direction: column;
@@ -50,11 +52,11 @@
 .missions-actuelles .missions-list,
 .missions-terminees .missions-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour afficher 3 missions par ligne */
-  gap: 20px;  /* Espacement entre les missions */
-  justify-items: center; /* Aligne les missions au centre de chaque colonne */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-items: center;
   width: 100%;
-  margin: 0 auto;  /* Centre la grille dans la page */
+  margin: 0 auto;
 }
 
 .missions-terminees {
@@ -71,8 +73,8 @@
 
 .missions-terminees .missions-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour afficher 3 missions par ligne */
-  gap: 20px;  /* Espacement entre les missions */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   justify-items: center;
 }
 
@@ -91,6 +93,7 @@
   margin-bottom: 20px;
 }
 
+/* Card mission */
 .container-card {
   display: flex;
   flex-direction: column;
@@ -98,8 +101,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  width: 100%;  /* Occupe toute la largeur de la colonne */
-  max-width: 300px;  /* Largeur maximale pour chaque carte */
+  width: 100%; 
+  max-width: 300px;
   height: 350px;
   font-family: 'Roboto', sans-serif;
   gap: 10px;
@@ -164,6 +167,7 @@ button#modifier:active {
   transform: translateY(1px);
 }
 
+/* Pop-up delete */
 .delete-popup {
   position: fixed;
   top: 0;
@@ -211,7 +215,7 @@ button#modifier:active {
   background-color: #a71d2a;
 }
 
-/* Styles pour le formulaire */
+/* Formulaire */
 form div {
   margin-bottom: 15px;
 }
@@ -220,6 +224,7 @@ button {
   margin-top: 10px;
 }
 
+/* Recherche */
 .search {
   display: flex;
   justify-content: center;
@@ -254,11 +259,11 @@ form input[type="checkbox"] {
 
 .missions-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-  gap: 20px; /* Espacement entre les éléments */
-  justify-items: center; /* Centrer chaque carte de mission */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; 
+  justify-items: center; 
   width: 100%;
-  margin-top: 20px; /* Un peu d'espace au-dessus */
+  margin-top: 20px; 
 }
 
 form .competences-list {
@@ -270,16 +275,7 @@ form .competences-list {
   max-height: 250px;
 }
 
-.popup-content {
-  position: fixed;
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 40%;
-  z-index: 1000;
-}
-
+/* Pop-up Ajouter mission */
 .add-mission-popup {
   position: fixed;
   top: 0;
@@ -293,3 +289,32 @@ form .competences-list {
   z-index: 1000;
 }
 
+.add-mission-popup .popup-content {
+  position: relative;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;  /* Ajuste la largeur à 80% de l'écran */
+  max-width: 600px; /* Largeur maximale */
+  max-height: 80%; /* Limite la hauteur */
+  overflow-y: auto; /* Permet le défilement si nécessaire */
+  z-index: 1001;
+}
+
+/* Responsivité de la pop-up Ajouter */
+@media (max-width: 768px) {
+  .add-mission-popup .popup-content {
+    width: 90%; /* Réduit la largeur à 90% pour les petits écrans */
+    padding: 20px;
+  }
+
+  .add-mission-popup .popup-content form {
+    gap: 10px;
+  }
+
+  .add-mission-popup .btn-apply, 
+  .add-mission-popup .btn-close {
+    width: 45%; /* Ajuste les boutons pour les petits écrans */
+  }
+}

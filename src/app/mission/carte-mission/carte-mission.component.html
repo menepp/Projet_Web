@@ -6,10 +6,10 @@
       @if (mission.dated <= currentDate && mission.datef >= currentDate) {
       <p><strong>Etat :</strong> Mission en cours</p>
       }
-      @if (mission.dated >= currentDate) {
+      @if (mission.dated >= currentDate && !isPrepared) {
         <p><strong>Etat :</strong> Mission en préparation</p>
       }
-      @if (mission.dated > currentDate) {
+      @if (mission.dated >= currentDate && isPrepared) {
         <p><strong>Etat :</strong> Mission plannifiée</p>
       }
       @if (mission.datef < currentDate) {
@@ -17,9 +17,9 @@
       }
       <p><strong>Employés :</strong></p>
     
-        <div *ngFor="let employe of mission.employes">
-            <p>{{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}</p>
-          </div>
+      <div *ngFor="let employe of mission.employes">
+        <p>{{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}</p>
+      </div>
 
      
     </div>
@@ -72,10 +72,7 @@
                 <h4>Compétences requises :</h4>
                 <div class="competences-list">
                 <div *ngFor="let comp of competences">
-                  <input type="checkbox"
-                         [value]="comp.code_skill"
-                         [checked]="competencesSelectionnees.includes(comp.code_skill)"
-                         (change)="toggleCompetence(comp.code_skill)">
+                  <input type="checkbox" [value]="comp.code_skill" [checked]="competencesSelectionnees.includes(comp.code_skill)" (change)="toggleCompetence(comp.code_skill)">
                   <label>{{ comp.description_competence_fr }}</label>
                 </div>
               </div>
@@ -92,10 +89,8 @@
           </div>
           
           <div>
-            <button type="button" class="btn-employes" (click)="openEmployesPopup(editMission.idm)">
-                Présélectionner employé
-              </button>
-                          <button type="submit" class="btn-apply" [disabled]="!editMissionForm.form.valid">Enregistrer</button>
+            <button type="button" class="btn-employes" (click)="openEmployesPopup(editMission.idm)">Présélectionner employé</button>
+            <button type="submit" class="btn-apply" [disabled]="!editMissionForm.form.valid">Enregistrer</button>
             <button type="button" class="btn-close" (click)="closeEditMissionPopup()">Fermer</button>
           </div>
         </form>
@@ -109,9 +104,7 @@
           <h3>Employés recommandés</h3>
           <div *ngFor="let employe of employes">
             <label>
-              <input type="checkbox" [value]="employe.identifiant"
-                     (change)="toggleEmployeSelection(employe.identifiant)">
-              {{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}
+              <input type="checkbox" [value]="employe.identifiant" (change)="toggleEmployeSelection(employe.identifiant)">{{ employe.prenom }} {{ employe.nom }} - Compétences : {{ employe.competences }}
             </label>
           </div>
           <button class="ajouter-emp"(click)="saveEmployes()">Ajouter les employés sélectionnés</button>
