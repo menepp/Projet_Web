@@ -1,59 +1,28 @@
 # ProjetWeb
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+Notre projet consiste à gérer les compétences d'une entreprise, à la bonne gestion de ces employés et de ces missions. Pour cela, nous avons utilisé Angular, Node.js et une base de données(PostgreSQL).
+La communication entre Angular et le serveur Node utilise l'API REST et effectue les échanges sous le format JSON. 
+La communication entre Node et la BD se fait sous forme de requête SQL.
 
-## Development server
 
-To start a local development server, run:
+Nous avons séparé les fonctionnalitées de l'entreprise en 2 pages :
 
-```bash
-ng serve
-```
+    -  la page "employés" qui gère le personnel (l'ajout de nouveaux employés, la modification de leur informations, leur suppression)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+    - la page "missions" qui s'occupe de créer de nouvelles missions auquelles on attribue une date de début et de fin ainsi que les compétences nécessaires, qu'on peut par la suite modifier mais qui permettent aussi une présélection des employés qui possèdent les compétences nécessaires à la bonne résolution de la mission. Employés et compétences qu'on peut par la suite aussi supprimer.
+    Nous pouvons aussi observer le cycle de vie de la mission.
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Commandes à utiliser pour lancer le projet : 
 
-```bash
-ng generate component component-name
-```
+    - ng serve
+    - node server.js
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```bash
-ng generate --help
-```
+Exemple API Backend :
 
-## Building
+    - GET /api/employes        // Récupérer tous les employés
+    - POST /api/employes       // Ajouter un employé
+    - PUT /api/employes/:id    // Modifier un employé
+    - DELETE /api/employes/:id // Supprimer un employé
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

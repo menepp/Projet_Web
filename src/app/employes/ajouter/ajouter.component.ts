@@ -1,8 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import { SearchBarComponent } from "../../components/search-bar/search-bar.component";
-
+import { Employes } from '../../models/employes.interface';
 
 @Component({
   selector: 'app-ajouter',
@@ -11,21 +11,15 @@ import { SearchBarComponent } from "../../components/search-bar/search-bar.compo
   styleUrl: './ajouter.component.css'
 })
 export class AjouterComponent implements OnInit {
-  newEmployee: { nom: string; prenom: string; date_entree: string, competences: string } = {
+  newEmployee: Employes = {  
+    identifiant: 0, 
     nom: '',
     prenom: '',
-    date_entree: '',
-    competences: ''
+    date_entree: new Date(),  
+    competences: '' 
   };
-  employes: {
-    identifiant: number;
-    nom: string;
-    prenom: string;
-    poste: string;
-    description: string;
-    date_entree: Date;
-    competences: string;
-  }[] = [];
+  @Input() employes!: Employes[];  
+  
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
   isAddEmployeePopupOpen: boolean = false;
@@ -82,8 +76,7 @@ export class AjouterComponent implements OnInit {
 
   closeAddEmployeePopup() {
     this.isAddEmployeePopupOpen = false;
-    this.newEmployee = {nom: '', prenom: '', date_entree: '', competences: ''};
-  }
+    this.newEmployee = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };  }
 
 
   addEmployee() {
@@ -99,13 +92,18 @@ export class AjouterComponent implements OnInit {
         competences: this.competencesSelectionnees,
       })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'ajout de l'employé");
+      }
+      return response.json();
+    })
     .then(() => {
-      this.fetchEmployees();
-      this.isAddEmployeePopupOpen = false;
+      window.location.reload();
     })
     .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
   }
+  
  
  
  

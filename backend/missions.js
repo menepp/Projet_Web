@@ -18,7 +18,7 @@ pool.connect((err, client, release) => {
   release();
 });
 
-
+// On récupère toutes les missions avec leurs compétences
 router.get('/', async (req, res) => {
   try {
     console.log('📡 Requête reçue : GET /api/missions');
@@ -49,6 +49,8 @@ router.get('/', async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 });
+
+// On récupère les employés dont les compétences correspondent aux missions
 router.get('/employes', async (req, res) => {
   try {
     const missionId = req.query.missionId;
@@ -90,6 +92,7 @@ router.get('/employes', async (req, res) => {
   }
 });
 
+// On récupére les employés d'une mission spécifique par id de mission pour les afficher ensuite
 router.get('/:idm/employes', async (req, res) => {
   try {
     const missionId = req.params.idm;
@@ -117,40 +120,30 @@ router.get('/:idm/employes', async (req, res) => {
 
 
 
-
+//Ajoute des employés à une mission
 router.post('/:idm/employes', async (req, res) => {
   const missionId = req.params.idm;
   const { employes } = req.body;
 
-
   if (!Array.isArray(employes) || employes.length === 0) {
     return res.status(400).send('Aucun employé sélectionné');
   }
-
-
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-
 
     for (const employeId of employes) {
       const employeExists = await client.query(
         'SELECT 1 FROM liste_personnel WHERE identifiant = $1',
         [employeId]
       );
-
-
       if (!employeExists.rowCount) {
         return res.status(404).send(`Employé non trouvé pour l'ID: ${employeId}`);
       }
-
-
       const associationExists = await client.query(
         'SELECT 1 FROM mission_employes WHERE idm = $1 AND code_employe = $2',
         [missionId, employeId]
       );
-
-
       if (!associationExists.rowCount) {
         await client.query(
           'INSERT INTO mission_employes (idm, code_employe) VALUES ($1, $2)',
@@ -158,8 +151,6 @@ router.post('/:idm/employes', async (req, res) => {
         );
       }
     }
-
-
     await client.query('COMMIT');
     res.status(200).send({ message: 'Employés ajoutés à la mission avec succès.' });
   } catch (err) {
@@ -172,10 +163,7 @@ router.post('/:idm/employes', async (req, res) => {
 });
 
 
-
-
-
-
+//Route pour créer une nouvelle mission
 router.post('/', async (req, res) => {
   const { nomm, dated, datef, competences } = req.body;
   const client = await pool.connect();
@@ -205,17 +193,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-
+// Supprime un employé d'une mission
 router.delete('/:idm/employes/:employeId', async (req, res) => {
   const missionId = req.params.idm;
   const employeId = req.params.employeId;
-
-
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-
-
     const associationExists = await client.query(
       'SELECT 1 FROM mission_employes WHERE idm = $1 AND code_employe = $2',
       [missionId, employeId]
@@ -230,12 +214,10 @@ router.delete('/:idm/employes/:employeId', async (req, res) => {
       [missionId, employeId]
     );
 
-
     await client.query('COMMIT');
     res.status(200).send('Employé supprimé de la mission avec succès');
   } catch (err) {
     await client.query('ROLLBACK');
-    console.error('Erreur lors de la suppression de l\'employé de la mission:', err);
     res.status(500).send('Erreur serveur');
   } finally {
     client.release();
@@ -243,7 +225,7 @@ router.delete('/:idm/employes/:employeId', async (req, res) => {
 });
 
 
-//supprimer mission
+//Supprime une mission
 router.delete('/:id', async (req, res) => {
   const missionId = req.params.id;
   console.log('ID reçu pour suppression :', missionId);
@@ -255,14 +237,9 @@ router.delete('/:id', async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-
-    // Supprimer les compétences associées
     await client.query('DELETE FROM mission_competences WHERE idm = $1', [missionId]);
-
-    // Supprimer les employés associés
     await client.query('DELETE FROM mission_employes WHERE idm = $1', [missionId]);
 
-    // Supprimer la mission
     const deletemissionQuery = 'DELETE FROM mission WHERE idm = $1';
     const result = await client.query(deletemissionQuery, [missionId]);
 
@@ -281,41 +258,9 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:idm/employes/:employeId', async (req, res) => {
-  const missionId = req.params.idm;
-  const employeId = req.params.employeId;
-
-  const client = await pool.connect();
-  try {
-    await client.query('BEGIN');
-
-    const associationExists = await client.query(
-      'SELECT 1 FROM mission_employes WHERE idm = $1 AND code_employe = $2',
-      [missionId, employeId]
-    );
-
-    if (!associationExists.rowCount) {
-      return res.status(404).send('Association mission-employé non trouvée');
-    }
-
-    await client.query(
-      'DELETE FROM mission_employes WHERE idm = $1 AND code_employe = $2',
-      [missionId, employeId]
-    );
-
-    await client.query('COMMIT');
-    res.status(200).json({ message: 'Employé retiré de la mission avec succès' });
-  } catch (err) {
-    await client.query('ROLLBACK');
-    console.error('Erreur lors de la suppression de l\'employé de la mission:', err);
-    res.status(500).send('Erreur serveur');
-  } finally {
-    client.release();
-  }
-});
 
 
-// Modifier mission
+// Modifier une mission
 router.put('/:id', async (req, res) => {
   const missionId = req.params.id;
   const { nomm, dated, datef, competences } = req.body;

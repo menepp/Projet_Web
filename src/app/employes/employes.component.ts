@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {AjouterComponent} from './ajouter/ajouter.component';
 import {TrierComponent} from './trier/trier.component';
 import {CadreEmployeComponent} from './cadre-employe/cadre-employe.component';
-
+import { Employes } from '../models/employes.interface';
 
 @Component({
   selector: 'app-employes',
@@ -14,15 +14,7 @@ import {CadreEmployeComponent} from './cadre-employe/cadre-employe.component';
   styleUrls: ['./employes.component.css']
 })
 export class EmployeComponent {
-  employes: {
-    identifiant: number;
-    nom: string;
-    prenom: string;
-    poste: string;
-    description: string;
-    date_entree: Date;
-    competences: string;
-  }[] = [];
+  employes: Employes[] = [];
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
 
