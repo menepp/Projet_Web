@@ -10,11 +10,11 @@ import { FormsModule } from '@angular/forms';
 export class SearchBarComponent  implements OnInit {
   imageURL! : string;
   searchTerm: string = ''; 
-  @Output() searchChange = new EventEmitter<string>(); // Émettre les recherches vers le parent
-   // Variable liée à ngModel
+  @Output() searchChange = new EventEmitter<string>(); 
+
   
   onSearchChange() {
-      this.searchChange.emit(this.searchTerm.trim()); // Émettre l'événement à chaque frappe
+      this.searchChange.emit(this.searchTerm.trim()); 
     }
 
 ngOnInit() {

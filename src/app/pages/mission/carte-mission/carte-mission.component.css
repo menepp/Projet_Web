@@ -13,6 +13,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 20px;
+  width: 300px; /* Taille fixe */
+  height: 400px; /* Hauteur fixe */
 }
 
 .carte:hover {
@@ -201,4 +203,30 @@ form .competences-list {
   max-width: 100%;
   overflow-y: auto; 
   max-height: 250px; 
+}
+
+.btn-employes {
+  background-color: rgb(164, 196, 22); 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 16px;
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.btn-employes:hover {
+  background-color:rgb(164, 196, 22); 
+}
+.btn-retirer {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.btn-retirer:hover {
+  background-color: #d32f2f;
 }

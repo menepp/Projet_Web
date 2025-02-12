@@ -45,19 +45,10 @@
     </div>
   </div>
   <div class="double-bouton">
-    <button class="btn-modifier" (click)="openEditMissionPopup(mission)">Modifier</button>
+    <button class="btn-modifier" (click)="openEditMissionPopup(mission)"[disabled]="mission.dated <= currentDate && mission.datef >= currentDate">Modifier</button>
     <button class="btn-supprimer" (click)="openDeleteMissionPopup(mission)">Supprimer</button>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -113,7 +104,7 @@
           <ul>
             <li *ngFor="let employe of mission.employes">
               {{ employe.prenom }} {{ employe.nom }} ({{ employe.competences }})
-              <button (click)="removeEmployeFromMission(mission.idm, employe.identifiant)">🗑️ Retirer</button>
+              <button (click)="removeEmployeFromMission(mission.idm, employe.identifiant)"class="btn-retirer">🗑️ Retirer</button>
             </li>
           </ul>
         </div>
