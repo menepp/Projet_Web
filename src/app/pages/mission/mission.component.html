@@ -6,7 +6,7 @@
   </div>
 
   <div class="search">
-    <app-search-bar></app-search-bar>
+    <app-search-bar (searchChange)="filterMissions($event)"></app-search-bar>
     <div class="double-bouton">
       @if (afficherHistoriqueMissions) {
         <button class="btn-fermer" (click)="afficherHistorique()">Fermer

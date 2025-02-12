@@ -1,8 +1,8 @@
-import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
+import {Component, EventEmitter, OnInit, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import { SearchBarComponent } from "../../components/search-bar/search-bar.component";
-import { Employes } from '../../models/employes.interface';
+import { Employes } from '../../../models/employes.interface';
+
 
 @Component({
   selector: 'app-ajouter',
@@ -10,16 +10,17 @@ import { Employes } from '../../models/employes.interface';
   templateUrl: './ajouter.component.html',
   styleUrl: './ajouter.component.css'
 })
+
 export class AjouterComponent implements OnInit {
   newEmployee: Employes = {  
     identifiant: 0, 
     nom: '',
-    prenom: '',
+    prenom: '', 
     date_entree: new Date(),  
     competences: '' 
   };
   @Input() employes!: Employes[];  
-  
+
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
   isAddEmployeePopupOpen: boolean = false;
@@ -76,7 +77,8 @@ export class AjouterComponent implements OnInit {
 
   closeAddEmployeePopup() {
     this.isAddEmployeePopupOpen = false;
-    this.newEmployee = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };  }
+    this.newEmployee = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };
+  }
 
 
   addEmployee() {
@@ -103,7 +105,6 @@ export class AjouterComponent implements OnInit {
     })
     .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
   }
-  
  
  
  

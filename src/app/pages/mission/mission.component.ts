@@ -1,13 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Mission} from '../models/mission.interface';
-import {CarteMissionComponent} from './carte-mission/carte-mission.component';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {SearchBarComponent} from '../components/search-bar/search-bar.component';
-import {CreerMissionComponent} from './creer-mission/creer-mission.component';
-import {HistoriqueMissionComponent} from './historique-mission/historique-mission.component';
-import {AjouterComponent} from '../employes/ajouter/ajouter.component';
-import {TrierComponent} from '../employes/trier/trier.component';
+import { Component, OnInit } from '@angular/core';
+import { Mission } from '../../models/mission.interface';
+import { CarteMissionComponent } from './carte-mission/carte-mission.component';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import { CreerMissionComponent } from './creer-mission/creer-mission.component';
+import { HistoriqueMissionComponent } from './historique-mission/historique-mission.component';
 
 @Component({
   selector: 'app-mission',
@@ -15,13 +13,12 @@ import {TrierComponent} from '../employes/trier/trier.component';
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
-
 export class MissionComponent implements OnInit {
   missions: Mission[] = [];
+  filteredMissions: Mission[] = [];
   isLoading: Boolean = true;
   isAddMissionPopupOpen: boolean = false;
   competences: { code_skill: string, description_competence_fr: string }[] = [];
-  employes: { identifiant: number, nom: string, prenom: string, competences: string }[] = [];
   afficherHistoriqueMissions = false;
   missionsActuelles: Mission[] = [];
   missionsTerminees: Mission[] = [];
@@ -29,7 +26,6 @@ export class MissionComponent implements OnInit {
   ngOnInit(): void {
     this.fetchMissions();
   }
-
 
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
@@ -59,6 +55,20 @@ export class MissionComponent implements OnInit {
       });
   }
 
+  filterMissions(searchTerm: string) {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    this.filteredMissions = this.missions.filter(mission =>
+      mission.nomm.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+    this.separerMissions();
+  }
+
+  separerMissions() {
+    const today = new Date();
+    this.missionsActuelles = this.filteredMissions.filter(m => new Date(m.datef) >= today);
+    this.missionsTerminees = this.filteredMissions.filter(m => new Date(m.datef) < today);
+  }
+
   openAddMissionPopUp() {
     this.isAddMissionPopupOpen = true;
   }
@@ -70,12 +80,6 @@ export class MissionComponent implements OnInit {
   onMissionAdded() {
     this.fetchMissions();
     this.isAddMissionPopupOpen = false;
-  }
-
-  separerMissions() {
-    const today = new Date();
-    this.missionsActuelles = this.missions.filter(m => new Date(m.datef) >= today);
-    this.missionsTerminees = this.missions.filter(m => new Date(m.datef) < today);
   }
 
   afficherHistorique() {

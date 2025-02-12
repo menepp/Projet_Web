@@ -1,6 +1,6 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
-import { Competence } from '../../models/competence.interface';
+import { Competence } from '../../../models/competence.interface';
 
 @Component({
   selector: 'app-creer-mission',
