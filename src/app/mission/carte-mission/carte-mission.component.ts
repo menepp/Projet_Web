@@ -83,6 +83,7 @@ export class CarteMissionComponent implements OnInit {
         this.isLoading = false;
       });
   }
+  
   fetchEmployesAffectes(missionId: number) {
     fetch(`http://localhost:3000/api/missions/${missionId}/employes`)
       .then(response => response.json())

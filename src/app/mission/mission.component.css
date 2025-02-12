@@ -1,7 +1,7 @@
 .btn-add {
-  background-color: #d98542; 
+  background-color: #d98542;
   color: white;
-  padding: 8px 15px; 
+  padding: 8px 15px;
   border: none;
   border-radius: 5px;
   font-size: 14px;
@@ -9,134 +9,159 @@
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 40px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  white-space: nowrap; 
 }
 
 .btn-add:hover {
-  background-color: #bd7335; 
-  opacity: 0.9; 
+  background-color: #bd7335;
+  opacity: 0.9;
 }
 
 .btn-add:active {
   background-color: #a8642f;
 }
 
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px; 
-}
-
-.search{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.page-header{
-    text-align: center;
-}
-
 .mission-page {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-    gap: 20px;
-    padding: 20px;
-    background-color: #f5f5f5;
-    justify-items: center;
-    align-content: flex-start;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+#historique-btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.missions-actuelles h3 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.missions-actuelles .missions-list,
+.missions-terminees .missions-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour afficher 3 missions par ligne */
+  gap: 20px;  /* Espacement entre les missions */
+  justify-items: center; /* Aligne les missions au centre de chaque colonne */
+  width: 100%;
+  margin: 0 auto;  /* Centre la grille dans la page */
+}
+
+.missions-terminees {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.missions-terminees h3 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.missions-terminees .missions-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour afficher 3 missions par ligne */
+  gap: 20px;  /* Espacement entre les missions */
+  justify-items: center;
 }
 
 .mission-page h2 {
-    grid-column: 1 / -1; 
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
 }
 
 .mission-page p {
-    grid-column: 1 / -1; 
-    text-align: center;
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 20px;
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .container-card {
-    display: flex;
-    flex-direction: column;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    width: 300px; 
-    height: 350px; 
-    font-family: 'Roboto', sans-serif;
-    gap: 10px;
-    border: 1px solid #e0e0e0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 100%;  /* Occupe toute la largeur de la colonne */
+  max-width: 300px;  /* Largeur maximale pour chaque carte */
+  height: 350px;
+  font-family: 'Roboto', sans-serif;
+  gap: 10px;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .container-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .container-card h1 {
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #212121;
-    margin: 0 0 5px 0;
-    border-bottom: 2px solid #ff6700;
-    padding-bottom: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #212121;
+  margin: 0 0 5px 0;
+  border-bottom: 2px solid #ff6700;
+  padding-bottom: 5px;
 }
 
 .container-card .description {
-    color: #616161;
-    font-size: 14px;
-    margin-bottom: 5px;
-    flex-grow: 1; 
+  color: #616161;
+  font-size: 14px;
+  margin-bottom: 5px;
+  flex-grow: 1;
 }
 
 .container-card .information,
 .container-card .date {
-    display: flex;
-    flex-direction: column;
-    color: #424242;
-    font-size: 12px;
-    gap: 3px;
+  display: flex;
+  flex-direction: column;
+  color: #424242;
+  font-size: 12px;
+  gap: 3px;
 }
 
 .container-card .button {
-    text-align: right;
+  text-align: right;
 }
 
 button#modifier {
-    padding: 5px 8px;
-    background-color: #ff6700;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 5px 8px;
+  background-color: #ff6700;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 button#modifier:hover {
-    background-color: #e65b00;
-    transform: translateY(-2px);
+  background-color: #e65b00;
+  transform: translateY(-2px);
 }
 
 button#modifier:active {
-    background-color: #cc5200;
-    transform: translateY(1px);
+  background-color: #cc5200;
+  transform: translateY(1px);
 }
 
 .delete-popup {
@@ -149,119 +174,122 @@ button#modifier:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
+.btn-appliquer {
+  background-color: #D9A566;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 150px;
+  margin-top: 10px;
+  float: right;
+}
 
-  .btn-appliquer {
-    background-color: #D9A566;
-    color: white;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    width: 150px;
-    margin-top: 10px;
-    float: right;
-  }
-  
-  .btn-appliquer:hover {
-    background-color: #bd8542;
-  }
-  
-  .btn-fermer {
-    background-color: #dc3545;
-    color: white;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-    float: left;
-    width: 150px;
-  }
-  
-  .btn-fermer:hover {
-    background-color: #a71d2a;
-  }
-  /* Formulaire */
-  form div {
-    margin-bottom: 15px;
-  }
-  
-  button {
-    margin-top: 10px;
-  }
-  
-  /* Barres de recherche */
-  .search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  form div {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  /* Labels des champs */
-  form label {
-    font-size: 14px;
-  }
-  
-  /* Input de texte */
-  form input[type="text"],
-  form input[type="date"] {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-  }
-  form label {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  form input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-  }
-  
-  form .competences-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Organise en grille */
-    gap: 10px;
-    max-width: 100%;
-    overflow-y: auto; /* Permet de défiler si la liste est trop longue */
-    max-height: 250px; /* Limite la hauteur de la liste */
-  }
-  .popup-content {
-    position: fixed;
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 40%;
-    z-index: 1000;
-  }
-  
-  .add-mission-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
+.btn-appliquer:hover {
+  background-color: #bd8542;
+}
+
+.btn-fermer {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  float: left;
+  width: 150px;
+}
+
+.btn-fermer:hover {
+  background-color: #a71d2a;
+}
+
+/* Styles pour le formulaire */
+form div {
+  margin-bottom: 15px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+form label {
+  font-size: 14px;
+}
+
+form input[type="text"],
+form input[type="date"] {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+form input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.missions-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+  gap: 20px; /* Espacement entre les éléments */
+  justify-items: center; /* Centrer chaque carte de mission */
+  width: 100%;
+  margin-top: 20px; /* Un peu d'espace au-dessus */
+}
+
+form .competences-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  max-width: 100%;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+.popup-content {
+  position: fixed;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  z-index: 1000;
+}
+
+.add-mission-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+

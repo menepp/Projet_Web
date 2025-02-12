@@ -5,19 +5,24 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from '../components/search-bar/search-bar.component';
 import { CreerMissionComponent } from './creer-mission/creer-mission.component';
+import { HistoriqueMissionComponent } from './historique-mission/historique-mission.component';
 
 @Component({
   selector: 'app-mission',
-  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent],
+  imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent, HistoriqueMissionComponent],
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
+
 export class MissionComponent implements OnInit {
   missions: Mission[] = [];
   isLoading: Boolean = true;
   isAddMissionPopupOpen: boolean = false;
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   employes: { identifiant: number, nom: string, prenom:string, competences: string }[] = [];
+  afficherHistoriqueMissions = false;
+  missionsActuelles: Mission[] = [];
+  missionsTerminees: Mission[] = [];
 
   ngOnInit(): void {
     this.fetchMissions();
@@ -39,7 +44,7 @@ export class MissionComponent implements OnInit {
           datef: mission.datef,
           competences: mission.competences ? mission.competences.split(', ') : [],
         }));
- 
+        this.separerMissions();
         this.competences = data.competences || [];
         console.log("Compétences disponibles :", this.competences);
         console.log("Employés correspondants :", this.employes);
@@ -63,5 +68,15 @@ export class MissionComponent implements OnInit {
   onMissionAdded() {
     this.fetchMissions();
     this.isAddMissionPopupOpen = false;
+  }
+
+  separerMissions() {
+    const today = new Date();
+    this.missionsActuelles = this.missions.filter(m =>new Date(m.datef) >= today);
+    this.missionsTerminees = this.missions.filter(m =>new Date(m.datef) < today);
+  }
+
+  afficherHistorique() {
+    this.afficherHistoriqueMissions = !this.afficherHistoriqueMissions;
   }
 }

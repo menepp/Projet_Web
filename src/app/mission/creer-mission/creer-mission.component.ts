@@ -4,9 +4,9 @@ import { Competence } from '../../models/competence.interface';
 
 @Component({
   selector: 'app-creer-mission',
+  imports: [FormsModule],
   templateUrl: './creer-mission.component.html',
-  styleUrls: ['./creer-mission.component.css'],
-  imports: [FormsModule]
+  styleUrls: ['./creer-mission.component.css']
 })
 
 export class CreerMissionComponent {

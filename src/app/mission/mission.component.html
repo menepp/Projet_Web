@@ -27,7 +27,18 @@
   <h2>Liste des Missions</h2>
   <p>Voici la liste des missions disponibles...</p>
 
-  @for (mission of missions; track mission.idm) {
-    <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
+  <button id="historique-btn" class="btn btn-secondary" (click)="afficherHistorique()">Voir l'historique des missions</button>
+
+  @if(afficherHistoriqueMissions){
+    <app-historique-mission [missionsTerminees]="missionsTerminees"></app-historique-mission>
   }
+
+  <div class="missions-actuelles">
+    <h3>Missions Actuelles</h3>
+    <div class="missions-list">
+      @for (mission of missionsActuelles; track mission.idm) {
+        <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
+      }
+    </div>
+  </div>
 </div>

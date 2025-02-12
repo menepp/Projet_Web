@@ -1,0 +1,15 @@
+.missions-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Crée 3 colonnes */
+    gap: 20px; /* Espacement entre les éléments */
+    justify-items: center; /* Centre chaque carte de mission dans sa colonne */
+    width: 100%;
+  }
+  
+  .missions-terminees h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
