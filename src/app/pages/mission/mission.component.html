@@ -20,17 +20,22 @@
     </div>
   </div>
 
+
   <div class="mission-page">
-    @if (afficherHistoriqueMissions) {
-      <app-historique-mission [missionsTerminees]="missionsTerminees"></app-historique-mission>
-    }
+    <div class="missions-finies">
+      @if (afficherHistoriqueMissions) {
+        <app-historique-mission [missionsTerminees]="missionsTerminees"></app-historique-mission>
+      }
+    </div>
     <div class="missions-actuelles">
       <h3>Missions Actuelles</h3>
+
       <div class="missions-list">
         @for (mission of missionsActuelles; track mission.idm) {
           <app-carte-mission [mission]="mission" (missionUpdated)="fetchMissions()"></app-carte-mission>
         }
       </div>
+
     </div>
   </div>
 

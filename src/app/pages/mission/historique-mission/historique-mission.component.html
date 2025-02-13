@@ -1,11 +1,15 @@
-<h2>Historique des missions terminées</h2>
+<div class="page">
+  <h3>Historique des missions terminées</h3>
 
-@if (missionsTerminees.length === 0) {
-  <p>Aucune mission terminée.</p>
-}
-
-<div class="missions-list">
-  @for (mission of missionsTerminees; track mission.idm) {
-    <app-carte-mission [mission]="mission"></app-carte-mission>
+  @if (missionsTerminees.length === 0) {
+    <p>Aucune mission terminée.</p>
   }
+
+  <div class="missions-list">
+    @for (mission of missionsTerminees; track mission.idm) {
+      <app-carte-mission [mission]="mission"></app-carte-mission>
+    }
+  </div>
+
 </div>
+
