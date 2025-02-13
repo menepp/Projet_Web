@@ -12,29 +12,21 @@ import { Employes } from '../../../models/employes.interface';
 })
 
 export class AjouterComponent implements OnInit {
-  newEmployee: Employes = {  
-    identifiant: 0, 
-    nom: '',
-    prenom: '', 
-    date_entree: new Date(),  
-    competences: '' 
-  };
+  newEmployee: Employes = {  identifiant: 0, nom: '', prenom: '', date_entree: new Date(),  competences: '' };
   @Input() employes!: Employes[];  
 
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
   isAddEmployeePopupOpen: boolean = false;
 
-
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
-
 
   ngOnInit() {
     this.fetchEmployees();
   }
 
-
+//récupère les employés
   fetchEmployees() {
     console.log("📡 Envoi de la requête GET /api/employes...");
    
@@ -80,7 +72,7 @@ export class AjouterComponent implements OnInit {
     this.newEmployee = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };
   }
 
-
+//ajoute un employé en envoyant une requête POST à l'API
   addEmployee() {
     fetch('http://localhost:3000/api/employes', {
       method: 'POST',
@@ -107,7 +99,7 @@ export class AjouterComponent implements OnInit {
   }
  
  
- 
+ //Permet de choisir les compétences à donner à l'employé
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);

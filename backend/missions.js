@@ -7,7 +7,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'postgres',
-  password: '291004',
+  password: 'menep',
   port: 5432,
 });
 pool.connect((err, client, release) => {
@@ -18,6 +18,7 @@ pool.connect((err, client, release) => {
   release();
 });
 
+// On récupère toutes les missions avec leurs compétences
 router.get('/', async (req, res) => {
   try {
     console.log('📡 Requête reçue : GET /api/missions');
@@ -277,15 +278,10 @@ router.put('/:id', async (req, res) => {
     const values = [nomm, dated, datef, missionId];
     const result = await client.query(query, values);
 
-
     if (result.rowCount === 0) {
       return res.status(404).send('Mission non trouvée');
     }
-
-
     await client.query('DELETE FROM mission_competences WHERE idm = $1', [missionId]);
-
-
     for (const skillId of competences) {
       const skillExists = await client.query(`SELECT 1 FROM liste_competences WHERE code_skill = $1`, [skillId]);
 
@@ -293,12 +289,8 @@ router.put('/:id', async (req, res) => {
       if (!skillExists.rowCount) {
         return res.status(404).send(`Compétence non trouvée pour l'ID: ${skillId}`);
       }
-
-
       await client.query(`INSERT INTO mission_competences (idm, code_skill) VALUES ($1, $2)`, [missionId, skillId]);
     }
-
-
     await client.query('COMMIT');
     res.status(200).send({ idm: missionId, nomm, dated, datef, competences });
   } catch (err) {

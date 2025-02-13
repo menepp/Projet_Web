@@ -27,6 +27,7 @@ export class EmployeComponent {
   isLoading = true;
   filteredEmployees: typeof this.employes = [];
 
+  //trie les employés en fonction de certains critères
   onSortChanged(criterion: string) {
     console.log(`Tri par : ${criterion}`);
 

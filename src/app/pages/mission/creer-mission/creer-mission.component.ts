@@ -20,17 +20,18 @@ export class CreerMissionComponent {
   @Output() closePopup = new EventEmitter<void>();
   @Output() missionAdded = new EventEmitter<void>();
 
+  // Vérifie si le formulaire est valide (valeur non vide)
   get isFormValid(): boolean {
     return this.nomm.trim() !== '' && this.dated.trim() !== '' && this.datef.trim() !== '';
   }
-
+//Ajoute une mission en envoyant une requête http
   addMission() {
-    fetch('http://localhost:3000/api/missions', {
+    fetch('http://localhost:3000/api/missions', { //requête post vers api
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ //données de la mission
       nomm: this.nomm,
       dated: this.dated,
       datef: this.datef,
@@ -46,12 +47,13 @@ export class CreerMissionComponent {
   }
 
   closeAddMissionPopup() {
-    this.nomm = '';  
+    this.nomm = '';  //réinitialise le champ
     this.dated = '';  
     this.datef = ''; 
     this.closePopup.emit();
   }
-
+  
+//Retire sinon ajoute la compétence
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);

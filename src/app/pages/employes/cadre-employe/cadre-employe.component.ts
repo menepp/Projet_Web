@@ -65,7 +65,7 @@ export class CadreEmployeComponent implements OnInit {
         this.isLoading = false;
       });
   }
-
+//Permet de filtrer les employés que l'on souhaite trouver en fonction de leur nom ou prénom
   filterEmployees(searchTerm: string) {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     this.filteredEmployees = this.employes.filter((employe) =>
@@ -81,7 +81,7 @@ export class CadreEmployeComponent implements OnInit {
   closeDeleteEmployeePopup() {
     this.isDeletePopupOpen = false;
   }
-
+//Permet de supprimer un employé
   deleteEmployee() {
     console.log('Tentative de suppression avec ID :', this.delEmployee.identifiant);
     fetch(`http://localhost:3000/api/employes/${this.delEmployee.identifiant}`, {
@@ -89,7 +89,7 @@ export class CadreEmployeComponent implements OnInit {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Erreur lors de la suppression de l\'employé 1 ');
+          throw new Error('Erreur lors de la suppression de l employé 1 ');
         }
         this.employes = this.employes.filter((employe) => employe.identifiant !== this.delEmployee.identifiant);
         this.filteredEmployees = [...this.employes];
@@ -97,7 +97,7 @@ export class CadreEmployeComponent implements OnInit {
       })
       .catch((error) => {
         console.error('Erreur :', error);
-        alert('Erreur lors de la suppression de l\'employé 2 .');
+        alert('Erreur lors de la suppression de l employé 2 .');
       });
     this.closeDeleteEmployeePopup();
   }
@@ -124,7 +124,7 @@ export class CadreEmployeComponent implements OnInit {
   closeEditEmployeePopup() {
     this.isEditEmployeePopupOpen = false;
   }
-
+//Permet de modifier un employé en enregistrant les changements
   saveEmployee() {
     
     fetch(`http://localhost:3000/api/employes/${this.editEmployee.identifiant}`, {
@@ -146,11 +146,11 @@ export class CadreEmployeComponent implements OnInit {
       this.closeEditEmployeePopup();
     })
     .catch((error) => {
-      console.error('Erreur lors de la mise à jour de l\'employé :', error);
-      alert('Erreur lors de la modification de l\'employé.');
+      console.error('Erreur lors de la mise à jour de l employé :', error);
+      alert('Erreur lors de la modification de l employé.');
     });
   }
-  
+  // Permet d'ajouter ou de supprimer des compétences aux employés
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);

@@ -15,12 +15,9 @@ export class CarteMissionComponent implements OnInit {
   @Output() missionUpdated = new EventEmitter<void>();
 
   isPrepared: boolean = false;
-
   currentDate: Date = new Date();
-
   isDeletePopupOpen: boolean = false;
   delMission: any = null;
-
   isEditMissionPopupOpen = false;
 
   editMission: Mission = {idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: []};
@@ -28,19 +25,19 @@ export class CarteMissionComponent implements OnInit {
   competencesSelectionnees: string[] = [];
 
   missions: Mission[] = [];
-
   isLoading = true;
   employes: { identifiant: number, nom: string, prenom: string, competences: string }[] = [];
 
   employesSelectionnes: number[] = [];
   isEmployesPopupOpen: boolean = false;
+  
 
   ngOnInit(): void {
     this.convertMissionDates();
     this.fetchMissions();
     this.fetchEmployesAffectes(this.mission.idm);
   }
-
+ // Vérifie si les employés affectés possèdent les compétences nécessaires
   checkMissionPreparation() {
     if (this.mission.competences && this.mission.competences.length > 0) {
       const missionCompetences = new Set(this.mission.competences);
@@ -59,7 +56,7 @@ export class CarteMissionComponent implements OnInit {
       this.isPrepared = true;
     }
   }
-
+// Mets à jour les dates de la mission lorsqu'elles changent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mission']) {
       this.convertMissionDates();
@@ -72,9 +69,9 @@ export class CarteMissionComponent implements OnInit {
     this.mission.datef = new Date(this.mission.datef);
   }
 
+// Récupère toutes les missions et leurs informations associées
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
-
     fetch('http://localhost:3000/api/missions')
       .then(response => response.json())
       .then(data => {
@@ -88,14 +85,12 @@ export class CarteMissionComponent implements OnInit {
           competences: mission.competences ? mission.competences.split(', ') : [],
           employes: []
         }));
-
         this.competences = data.competences || [];
         console.log("Compétences disponibles :", this.competences);
 
         this.missions.forEach(mission => {
           this.fetchEmployesAffectes(mission.idm);
         });
-
         this.isLoading = false;
       })
       .catch(error => {
@@ -104,6 +99,7 @@ export class CarteMissionComponent implements OnInit {
       });
   }
 
+  // Récupère les employés affectés à une mission spécifique
   fetchEmployesAffectes(missionId: number) {
     fetch(`http://localhost:3000/api/missions/${missionId}/employes`)
       .then(response => response.json())
@@ -126,7 +122,6 @@ export class CarteMissionComponent implements OnInit {
       });
   }
 
-
   openDeleteMissionPopup(mission: Mission) {
     this.delMission = {...mission};
     this.isDeletePopupOpen = true;
@@ -137,11 +132,9 @@ export class CarteMissionComponent implements OnInit {
     this.isDeletePopupOpen = false;
   }
 
-
+ // Supprime une mission
   deleteMission() {
     console.log('Tentative de suppression avec ID :', this.delMission.idm);
-
-
     fetch(`http://localhost:3000/api/missions/${this.delMission.idm}`, {
       method: 'DELETE',
     })
@@ -262,7 +255,7 @@ export class CarteMissionComponent implements OnInit {
 
 
   saveEmployes() {
-    console.log("✅ Enregistrement des employés :", this.employesSelectionnes);
+    console.log(" Enregistrement des employés :", this.employesSelectionnes);
 
     fetch(`http://localhost:3000/api/missions/${this.mission.idm}/employes`, {
       method: 'POST',
