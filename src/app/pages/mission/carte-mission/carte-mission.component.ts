@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges  } from '@angular/core';
-import { Mission } from '../../../models/mission.interface';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, Input, OnInit, Output, EventEmitter, SimpleChanges} from '@angular/core';
+import {Mission} from '../../../models/mission.interface';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 
 @Component({
@@ -30,14 +30,15 @@ export class CarteMissionComponent implements OnInit {
 
   employesSelectionnes: number[] = [];
   isEmployesPopupOpen: boolean = false;
-  
+
 
   ngOnInit(): void {
     this.convertMissionDates();
     this.fetchMissions();
     this.fetchEmployesAffectes(this.mission.idm);
   }
- // Vérifie si les employés affectés possèdent les compétences nécessaires
+
+  // Vérifie si les employés affectés possèdent les compétences nécessaires
   checkMissionPreparation() {
     if (this.mission.competences && this.mission.competences.length > 0) {
       const missionCompetences = new Set(this.mission.competences);
@@ -56,6 +57,7 @@ export class CarteMissionComponent implements OnInit {
       this.isPrepared = true;
     }
   }
+
 // Mets à jour les dates de la mission lorsqu'elles changent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mission']) {
@@ -132,7 +134,7 @@ export class CarteMissionComponent implements OnInit {
     this.isDeletePopupOpen = false;
   }
 
- // Supprime une mission
+  // Supprime une mission
   deleteMission() {
     console.log('Tentative de suppression avec ID :', this.delMission.idm);
     fetch(`http://localhost:3000/api/missions/${this.delMission.idm}`, {
@@ -202,6 +204,7 @@ export class CarteMissionComponent implements OnInit {
         console.log('Réponse du serveur:', data);
         this.fetchMissions();
         this.closeEditMissionPopup();
+        location.reload();
       })
       .catch((error) => {
         console.error('Erreur lors de la mise à jour de la mission :', error);

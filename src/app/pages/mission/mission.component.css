@@ -1,7 +1,7 @@
 .missions-list {
   display: grid;
   gap: 20px 10px; /* Espacement entre les éléments */
-  width: 80%;
+  width: 90%;
   grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
   justify-content: center;
 }
@@ -38,7 +38,7 @@
 .mission-page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   padding: 20px;
   min-height: 100vh;
@@ -50,8 +50,8 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  text-align: center;
 }
+
 
 .missions-actuelles {
   align-items: center;
