@@ -13,7 +13,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 20px;
-  width: 300px; /* Taille fixe */
+  width: 400px; /* Taille fixe */
   height: 400px; /* Hauteur fixe */
 }
 
@@ -117,13 +117,13 @@ etat-mission {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 800px;
-  max-height: 80%; 
-  overflow-y: auto; 
+  max-height: 80%;
+  overflow-y: auto;
   z-index: 1001;
 }
 
 .add-popup .popup-content {
-  max-width: 450px; 
+  max-width: 450px;
 }
 
 .popup-employes {
@@ -154,7 +154,7 @@ etat-mission {
 
 @media (max-width: 768px) {
   .popup-content {
-    width: 90%; 
+    width: 90%;
     padding: 20px;
   }
 
@@ -201,24 +201,25 @@ form .competences-list {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
   max-width: 100%;
-  overflow-y: auto; 
-  max-height: 250px; 
+  overflow-y: auto;
+  max-height: 250px;
 }
 
 .btn-employes {
-  background-color: rgb(164, 196, 22); 
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
+  background-color: rgb(164, 196, 22);
+  color: white;
+  border: none;
+  padding: 10px 20px;
   font-size: 16px;
-  border-radius: 5px; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease; 
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-employes:hover {
-  background-color:rgb(164, 196, 22); 
+  background-color: rgb(164, 196, 22);
 }
+
 .btn-retirer {
   background-color: #f44336;
   color: white;
