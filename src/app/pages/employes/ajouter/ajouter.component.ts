@@ -11,7 +11,7 @@ import { EmployeInscription } from '../../../models/employes.interface';
 })
 export class AjouterComponent implements OnInit {
   newEmployee: EmployeInscription = { 
-    identifiant: 0, nom: '', prenom: '', email: '', 
+    nom: '', prenom: '', email: '', 
     mot_de_passe: '', role_employe: '', date_entree: new Date(), 
     competences: [''] 
   };
@@ -29,7 +29,17 @@ export class AjouterComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit() {
-    // Vous pouvez charger ici d'autres données si besoin
+    this.fetchEmployees();
+  }
+  
+  fetchEmployees() {
+    console.log("📡 Envoi de la requête GET /api/employes...");
+    fetch('http://localhost:3000/api/employes')
+      .then(response => response.json())
+      .then(data => {
+        this.competences = data.competences || []; // 📌 Récupération des compétences
+        console.log("Compétences disponibles :", this.competences);
+      });
   }
 
   openAddEmployeePopup() {
@@ -39,7 +49,7 @@ export class AjouterComponent implements OnInit {
   closeAddEmployeePopup() {
     this.isAddEmployeePopupOpen = false;
     this.newEmployee = { 
-      identifiant: 0, nom: '', prenom: '', email: '', 
+      nom: '', prenom: '', email: '', 
       mot_de_passe: '', role_employe: '', date_entree: new Date(), 
       competences: [''] 
     };
@@ -59,10 +69,10 @@ export class AjouterComponent implements OnInit {
       body: JSON.stringify({
         nom: this.newEmployee.nom,
         prenom: this.newEmployee.prenom,
+        date_entree: this.newEmployee.date_entree,
         email: this.newEmployee.email,
         mot_de_passe: this.newEmployee.mot_de_passe,
         role_employe: this.newEmployee.role_employe,
-        date_entree: this.newEmployee.date_entree,
         competences: this.competencesSelectionnees,
       })
     })
@@ -85,12 +95,11 @@ export class AjouterComponent implements OnInit {
   }
 
   toggleCompetence(code_skill: string) {
-    const index = this.competencesSelectionnees.indexOf(code_skill);
-    if (index !== -1) {
-      this.competencesSelectionnees.splice(index, 1);
+    if (this.competencesSelectionnees.includes(code_skill)) {
+      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
     } else {
       this.competencesSelectionnees.push(code_skill);
     }
-    console.log("Compétences sélectionnées :", this.competencesSelectionnees);
   }
+  
 }

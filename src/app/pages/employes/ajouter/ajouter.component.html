@@ -43,7 +43,7 @@
       </div>
       <div class="double-bouton">
         <button type="button" class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
-        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid">Ajouter</button>
+        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid" (click)="addEmployee()">Ajouter</button>
       </div>
     </form>
   </div>
