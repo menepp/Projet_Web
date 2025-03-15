@@ -1,114 +1,96 @@
-import {Component, EventEmitter, OnInit, Input, Output} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import { Employes } from '../../../models/employes.interface';
-
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, NgZone } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { EmployeInscription } from '../../../models/employes.interface';
 
 @Component({
   selector: 'app-ajouter',
   imports: [CommonModule, FormsModule],
   templateUrl: './ajouter.component.html',
-  styleUrl: './ajouter.component.css'
+  styleUrls: ['./ajouter.component.css']
 })
-
 export class AjouterComponent implements OnInit {
-  newEmployee: Employes = {  identifiant: 0, nom: '', prenom: '', date_entree: new Date(),  competences: '' };
-  @Input() employes!: Employes[];  
+  newEmployee: EmployeInscription = { 
+    identifiant: 0, nom: '', prenom: '', email: '', 
+    mot_de_passe: '', role_employe: '', date_entree: new Date(), 
+    competences: [''] 
+  };
+
+  @Input() employes!: EmployeInscription[];
+  @Output() employeeAdded = new EventEmitter<void>();
 
   isLoading = true;
-  filteredEmployees: typeof this.employes = [];
+  filteredEmployees: EmployeInscription[] = [];
   isAddEmployeePopupOpen: boolean = false;
 
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
 
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
+
   ngOnInit() {
-    this.fetchEmployees();
+    // Vous pouvez charger ici d'autres données si besoin
   }
-
-//récupère les employés
-  fetchEmployees() {
-    console.log("📡 Envoi de la requête GET /api/employes...");
-   
-    fetch('http://localhost:3000/api/employes')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des employés');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(" Réponse reçue :", data);
- 
-        this.employes = data.employes.map((employe: any) => ({
-          identifiant: employe.identifiant,
-          nom: employe.nom,
-          prenom: employe.prenom,
-          date_entree: employe.date_entree,
-          competences: employe.competences ? employe.competences.split(', ') : [],
-        }));
-
-
-        this.competences = data.competences || [];
-        console.log("Compétences disponibles :", this.competences);
- 
-        this.filteredEmployees = [...this.employes];
-        this.isLoading = false;
-      })
-      .catch(error => {
-        console.error('Erreur dans fetchEmployees:', error);
-        this.isLoading = false;
-      });
-  }
-
 
   openAddEmployeePopup() {
     this.isAddEmployeePopupOpen = true;
   }
 
-
   closeAddEmployeePopup() {
     this.isAddEmployeePopupOpen = false;
-    this.newEmployee = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };
+    this.newEmployee = { 
+      identifiant: 0, nom: '', prenom: '', email: '', 
+      mot_de_passe: '', role_employe: '', date_entree: new Date(), 
+      competences: [''] 
+    };
   }
 
-//ajoute un employé en envoyant une requête POST à l'API
   addEmployee() {
+    // Vérifie si l'email existe déjà
+    const emailExists = this.employes.some(emp => emp.email === this.newEmployee.email);
+    if (emailExists) {
+      alert('Un employé avec cet email existe déjà.');
+      return;
+    }
+
     fetch('http://localhost:3000/api/employes', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         nom: this.newEmployee.nom,
         prenom: this.newEmployee.prenom,
+        email: this.newEmployee.email,
+        mot_de_passe: this.newEmployee.mot_de_passe,
+        role_employe: this.newEmployee.role_employe,
         date_entree: this.newEmployee.date_entree,
         competences: this.competencesSelectionnees,
       })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error("Erreur lors de l'ajout de l'employé");
-      }
+      if (!response.ok) throw new Error("Erreur lors de l'ajout de l'employé");
       return response.json();
     })
-    .then(() => {
-      window.location.reload();
+    .then(data => {
+      console.log("✅ Employé ajouté :", data);
+      alert('Employé ajouté avec succès.');
+      // Émettre l'événement vers le parent pour recharger l'API
+      this.employeeAdded.emit();
+
+      // Fermer la pop-up d'ajout et réinitialiser le formulaire
+      this.closeAddEmployeePopup();
     })
-    .catch(error => console.error('Erreur lors de l\'ajout de l\'employé :', error));
+    .catch(error => {
+      console.error('❌ Erreur lors de l\'ajout de l\'employé :', error);
+    });
   }
- 
- 
- //Permet de choisir les compétences à donner à l'employé
+
   toggleCompetence(code_skill: string) {
-    if (this.competencesSelectionnees.includes(code_skill)) {
-      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+    const index = this.competencesSelectionnees.indexOf(code_skill);
+    if (index !== -1) {
+      this.competencesSelectionnees.splice(index, 1);
     } else {
       this.competencesSelectionnees.push(code_skill);
     }
-    console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
+    console.log("Compétences sélectionnées :", this.competencesSelectionnees);
   }
- 
-
-
 }

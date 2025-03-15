@@ -1,8 +1,13 @@
-export interface Employes{
-    identifiant: number;
+export interface Employes {
+    identifiant?: number;
     nom: string;
     prenom: string;
     date_entree: Date;
-    competences: string;
+    competences: string[];
+}
 
+export interface EmployeInscription extends Employes {
+    email: string;
+    mot_de_passe: string;
+    role_employe: string;
 }

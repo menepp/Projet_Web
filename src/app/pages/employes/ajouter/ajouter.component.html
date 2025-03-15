@@ -1,47 +1,51 @@
+<!-- Formulaire d'ajout (votre code existant) -->
 <div class="search-add">
   <button class="btn-ajouter" (click)="openAddEmployeePopup()">Ajouter (+)</button>
 </div>
 
-@if (isAddEmployeePopupOpen) {
-  <div class="add-employee-popup">
-    <div class="popup-content">
-      <h3>Ajouter un Employé</h3>
-      <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
-        <div>
-          <label for="prenom">Prénom : </label>
-          <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required/>
-        </div>
-        <div>
-          <label for="nom">Nom : </label>
-          <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required/>
-        </div>
-        <div>
-          <label for="date_entree">Date d'entrée : </label>
-          <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required/>
-        </div>
-        <div>
-          <label for="competences">Compétences :</label>
-          <div class="competences-list">
-
-            <div *ngFor="let competence of competences">
-              <label>
-                <input type="checkbox"
-                       [value]="competence.code_skill"
-                       (change)="toggleCompetence(competence.code_skill)"
-                       [checked]="competencesSelectionnees.includes(competence.code_skill)">
-                {{ competence.description_competence_fr }}
-              </label>
-            </div>
+<div *ngIf="isAddEmployeePopupOpen" class="add-employee-popup">
+  <div class="popup-content">
+    <h3>Ajouter un Employé</h3>
+    <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
+      <div>
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required/>
+      </div>
+      <div>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required/>
+      </div>
+      <div>
+        <label for="email">Email :</label>
+        <input type="email" id="email" [(ngModel)]="newEmployee.email" name="email" required/>
+      </div>
+      <div>
+        <label for="mot_de_passe">Mot de passe :</label>
+        <input type="password" id="mot_de_passe" [(ngModel)]="newEmployee.mot_de_passe" name="mot_de_passe" required/>
+      </div>
+      <div>
+        <label for="date_entree">Date d'entrée :</label>
+        <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required/>
+      </div>
+      <div>
+        <label for="competences">Compétences :</label>
+        <div class="competences-list">
+          <div *ngFor="let competence of competences">
+            <label>
+              <input type="checkbox"
+                     [value]="competence.code_skill"
+                     (change)="toggleCompetence(competence.code_skill)"
+                     [checked]="competencesSelectionnees.includes(competence.code_skill)">
+              {{ competence.description_competence_fr }}
+            </label>
           </div>
         </div>
-      </form>
-      <div class="double-bouton">
-        <button class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
-        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid" (click)="addEmployee()">
-          Ajouter
-        </button>
       </div>
-
-    </div>
+      <div class="double-bouton">
+        <button type="button" class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
+        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid">Ajouter</button>
+      </div>
+    </form>
   </div>
-}
+</div>
+

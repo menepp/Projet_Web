@@ -7,24 +7,14 @@
       <app-trier (sortChanged)="onSortChanged($event)"></app-trier>
     </div>
     <div class="btn-ajout">
-      <app-ajouter></app-ajouter>
+      <!-- L'événement employeeAdded appellera fetchEmployees() -->
+      <app-ajouter (employeeAdded)="fetchEmployees()" [employes]="employes"></app-ajouter>
     </div>
   </div>
 </div>
 
-<app-cadre-employe></app-cadre-employe>
-@if (!isLoading && filteredEmployees.length === 0) {
-  <div class="no-employees-message">
-    Aucun employé trouvé.
-  </div>
-}
+<app-cadre-employe [employes]="employes"></app-cadre-employe>
 
-
-
-
-
-
-
-
-
-
+<div *ngIf="!isLoading && filteredEmployees.length === 0" class="no-employees-message">
+  Aucun employé trouvé.
+</div>

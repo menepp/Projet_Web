@@ -24,7 +24,7 @@ export class CadreEmployeComponent implements OnInit {
   competencesSelectionnees: string[] = [];
 
   isEditEmployeePopupOpen = false;
-  editEmployee: Employes = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: '' };
+  editEmployee: Employes = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: [''] };
 
   ngOnInit(): void {
     this.fetchEmployees();
