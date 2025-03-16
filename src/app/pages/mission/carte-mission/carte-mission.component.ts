@@ -36,6 +36,7 @@ export class CarteMissionComponent implements OnInit {
     this.convertMissionDates();
     this.fetchMissions();
     this.fetchEmployesAffectes(this.mission.idm);
+    this.saveMission();
   }
 
   // Vérifie si les employés affectés possèdent les compétences nécessaires
@@ -104,7 +105,7 @@ export class CarteMissionComponent implements OnInit {
   // Récupère les employés affectés à une mission spécifique
   fetchEmployesAffectes(missionId: number) {
     fetch(`http://localhost:3000/api/missions/${missionId}/employes`)
-      .then(response => response.json())
+    .then(response => response.json())
       .then(data => {
         console.log(`👷 Employés affectés à la mission ${missionId} :`, data.employes);
 
@@ -185,32 +186,58 @@ export class CarteMissionComponent implements OnInit {
     this.competencesSelectionnees = [];
   }
 
+// Convertir en format yyyy-MM-dd
+saveMission() {
+  console.log('Type de this.editMission.dated:', typeof this.editMission.dated);
+  console.log('Valeur de this.editMission.dated:', this.editMission.dated);
 
-  saveMission() {
-    fetch(`http://localhost:3000/api/missions/${this.editMission.idm}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nomm: this.editMission.nomm,
-        dated: this.editMission.dated,
-        datef: this.editMission.datef,
-        competences: this.competencesSelectionnees,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Réponse du serveur:', data);
-        this.fetchMissions();
-        this.closeEditMissionPopup();
-        location.reload();
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la mise à jour de la mission :', error);
-        alert('Erreur lors de la modification de la mission.');
-      });
+  // Si c'est une chaîne de caractères, convertir en objet Date
+  if (typeof this.editMission.dated === 'string') {
+    this.editMission.dated = new Date(this.editMission.dated);
   }
+  if (typeof this.editMission.datef === 'string') {
+    this.editMission.datef = new Date(this.editMission.datef);
+  }
+
+  // Fonction pour formater les dates en yyyy-MM-dd
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Formatage des dates
+  const datedFormatted = formatDate(this.editMission.dated);
+  const datefFormatted = formatDate(this.editMission.datef);
+
+  // Envoi à l'API avec les dates formatées
+  fetch(`http://localhost:3000/api/missions/${this.editMission.idm}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      nomm: this.editMission.nomm,
+      dated: datedFormatted,  // Utilisation de la date formatée
+      datef: datefFormatted,  // Utilisation de la date formatée
+      competences: this.competencesSelectionnees,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Réponse du serveur:', data);
+      this.fetchMissions();
+      this.closeEditMissionPopup();
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la mise à jour de la mission :', error);
+      alert('Erreur lors de la modification de la mission.');
+    });
+}
+
+  
+
 
 
   toggleCompetence(code_skill: string) {

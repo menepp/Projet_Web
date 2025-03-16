@@ -24,6 +24,9 @@ export class CreerMissionComponent {
   get isFormValid(): boolean {
     return this.nomm.trim() !== '' && this.dated.trim() !== '' && this.datef.trim() !== '';
   }
+  ngOnInit() {
+    this.addMission();
+  }
 //Ajoute une mission en envoyant une requête http
   addMission() {
     fetch('http://localhost:3000/api/missions', { //requête post vers api

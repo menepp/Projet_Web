@@ -15,8 +15,10 @@ router.get('/', async (req, res) => {
       LEFT JOIN liste_competences C ON CP.code_skill = C.code_skill
       GROUP BY P.identifiant, P.nom, P.prenom, P.date_entree, P.email, P.mot_de_passe, P.role_employe
     `);
+    const result2 = await pool.query("SELECT code_skill, description_competence_fr FROM liste_competences");
 
-    res.status(200).json({ employes: result.rows });
+
+    res.status(200).json({ employes: result.rows, competences: result2.rows, });
   } catch (err) {
     console.error("Erreur serveur :", err);
     res.status(500).send("Erreur serveur lors de la récupération des employés");
@@ -24,6 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  const { nom, prenom, date_entree, email, mot_de_passe, role_employe, competences } = req.body;
   try {
     // Vérifier si l'email existe déjà
     const emailExists = await req.pool.query(
@@ -37,8 +40,8 @@ router.post('/', async (req, res) => {
 
     // Insertion de l'employé
     const employeResult = await req.pool.query(
-      'INSERT INTO liste_personnel (nom, prenom, email, mot_de_passe, role_employe, date_entree) VALUES ($1, $2, $3, $4, $5, $6) RETURNING identifiant',
-      [nom, prenom, email, mot_de_passe, role_employe, date_entree]
+      'INSERT INTO liste_personnel (nom, prenom, date_entree, email, mot_de_passe, role_employe) VALUES ($1, $2, $3, $4, $5, $6) RETURNING identifiant',
+      [nom, prenom,date_entree, email, mot_de_passe, role_employe]
     );
     const employeId = employeResult.rows[0].identifiant;
 

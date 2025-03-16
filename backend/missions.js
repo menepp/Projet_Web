@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const { Pool } = require('pg');
 
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'menep',
+  port: 5432,
+});
 // On récupère toutes les missions avec leurs compétences
 router.get('/', async (req, res) => {
   try {
@@ -149,7 +157,9 @@ router.post('/', async (req, res) => {
 
     if (Array.isArray(competences) && competences.length > 0) {
       const values = competences.map(skillId => `(${missionId}, '${skillId}')`).join(',');
-      await client.query(`INSERT INTO mission_competences (idm, code_skill) VALUES ${values}`);
+      const query = `INSERT INTO mission_competences (idm, code_skill) VALUES ${values}`;
+      await client.query(query);
+
     }
 
 
