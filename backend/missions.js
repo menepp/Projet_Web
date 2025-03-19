@@ -13,8 +13,6 @@ const pool = new Pool({
 router.get('/', async (req, res) => {
   try {
     console.log('📡 Requête reçue : GET /api/missions');
-    const pool = req.pool;
-
     const result = await pool.query(`
       SELECT M.idm, M.nomm, M.dated, M.datef,
              COALESCE(STRING_AGG(C.description_competence_fr, ', '), '') AS competences
@@ -23,14 +21,82 @@ router.get('/', async (req, res) => {
       LEFT JOIN liste_competences C ON MC.code_skill = C.code_skill
       GROUP BY M.idm, M.nomm, M.dated, M.datef
     `);
-
     const result2 = await pool.query("SELECT code_skill, description_competence_fr FROM liste_competences");
-    res.status(200).json({ missions: result.rows, competences: result2.rows });
+   
+    console.log(" Missions récupérées :", result.rows);
+    console.log(" Compétences disponibles :", result2.rows);
+    res.status(200).json({
+      missions: result.rows,
+      competences: result2.rows,
+    });
+  } catch (err) {
+    console.error(" Erreur lors de la récupération des missions :", err);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
+router.get('/count', async (req, res) => {
+  try {
+    console.log('📡 Requête reçue : GET /api/missions');
+    const pool = req.pool;
+
+    const result = await pool.query(`
+      SELECT M.idm, M.nomm, M.dated, M.datef,
+             COALESCE(STRING_AGG(C.description_competence_fr, ', '), '') AS competences,
+             COUNT(ME.code_employe) AS employes_count  -- Nombre d'employés pour chaque mission
+      FROM mission M
+      LEFT JOIN mission_competences MC ON M.idm = MC.idm
+      LEFT JOIN liste_competences C ON MC.code_skill = C.code_skill
+      LEFT JOIN mission_employes ME ON M.idm = ME.idm  -- Joindre la table des employés affectés aux missions
+      GROUP BY M.idm, M.nomm, M.dated, M.datef
+    `);
+
+    res.status(200).json({ missions: result.rows });
   } catch (err) {
     console.error("Erreur lors de la récupération des missions :", err);
     res.status(500).send("Erreur serveur");
   }
 });
+// Récupère les détails d'une mission avec ses compétences pour la modification
+router.get('/:id', async (req, res) => {
+  try {
+    const missionId = req.params.id;
+
+    // Récupérer les détails de la mission (nom, dates)
+    const missionResult = await pool.query(
+      'SELECT idm, nomm, dated, datef FROM mission WHERE idm = $1',
+      [missionId]
+    );
+
+    if (missionResult.rowCount === 0) {
+      return res.status(404).send('Mission non trouvée');
+    }
+
+    // Récupérer les compétences associées à la mission
+    const competencesResult = await pool.query(
+      `SELECT C.code_skill, C.description_competence_fr
+       FROM mission_competences MC
+       JOIN liste_competences C ON MC.code_skill = C.code_skill
+       WHERE MC.idm = $1`,
+      [missionId]
+    );
+
+    const competences = competencesResult.rows.map(row => ({
+      code_skill: row.code_skill,
+      description_competence_fr: row.description_competence_fr,
+    }));
+
+    // Renvoyer les données de la mission avec ses compétences
+    res.status(200).json({
+      mission: missionResult.rows[0],
+      competences: competences,
+    });
+  } catch (err) {
+    console.error('Erreur lors de la récupération des détails de la mission:', err);
+    res.status(500).send('Erreur serveur');
+  }
+});
+
 
 // On récupère les employés dont les compétences correspondent aux missions
 router.get('/employes', async (req, res) => {

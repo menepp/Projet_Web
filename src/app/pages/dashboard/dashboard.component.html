@@ -1,5 +1,5 @@
 <div style="max-width: 600px; margin: auto;">
-    <h2>Répartition des compétences nutilisées lors des missions</h2>
+    <h2>Répartition des compétences utilisées lors des missions</h2>
     <label for="stateSelect">Choisissez un état de mission :</label>
   <select id="stateSelect" (change)="onStateChange($event)">
     <option value="all">Toutes les missions</option>
@@ -11,5 +11,8 @@
 
   <!-- Canvas pour afficher le Doughnut Chart -->
   <canvas id="myChart"></canvas>
+
+  <h2>Nombre d'Employés par Mission</h2>
+  <canvas id="barChart"></canvas>
 </div>
   

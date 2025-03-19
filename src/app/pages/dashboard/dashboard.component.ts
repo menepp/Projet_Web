@@ -19,6 +19,19 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
+  public barChartData: any = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Nombre d\'Employés',
+        data: [],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }
+    ]
+  };
+
   public missions: any[] = [];  // Contiendra toutes les missions
   public competencesMap: { [key: string]: number } = {}; // Compte des compétences
   public currentState: string = 'all'; // État actuel de la mission sélectionné
@@ -32,10 +45,11 @@ export class DashboardComponent implements OnInit {
 
   // Méthode pour charger les données des missions et compétences
   loadCompetencesData(): void {
-    this.http.get<{ missions: any[], competences: any[] }>('http://localhost:3000/api/missions')
+    this.http.get<{ missions: any[], competences: any[] }>('http://localhost:3000/api/missions/count')
       .subscribe(response => {
         this.missions = response.missions;  // Récupère les missions
         this.updateChartData();  // Met à jour les données du graphique
+        this.updateBarChartData();  // Met à jour les données du bar chart
       });
   }
 
@@ -47,7 +61,7 @@ export class DashboardComponent implements OnInit {
     return this.missions.filter(mission => mission.etat === state);  // Filtrer par état
   }
 
-  // Met à jour les données du graphique en fonction des missions filtrées
+  // Met à jour les données du Doughnut chart
   updateChartData(): void {
     const filteredMissions = this.filterMissionsByState(this.currentState);
     const competenceCountMap: { [key: string]: number } = {};
@@ -65,8 +79,25 @@ export class DashboardComponent implements OnInit {
     this.doughnutChartData.labels = competenceLabels;
     this.doughnutChartData.datasets[0].data = competenceValues;
     this.doughnutChartData.datasets[0].backgroundColor = this.generateColors(competenceLabels.length);
-    this.createChart();
+    this.createDoughnutChart();
   }
+
+  // Met à jour les données du Bar chart avec le nombre d'employés par mission
+  updateBarChartData(): void {
+    const filteredMissions = this.filterMissionsByState(this.currentState);
+    const missionNames: string[] = [];
+    const employeeCounts: number[] = [];
+  
+    filteredMissions.forEach(mission => {
+      missionNames.push(mission.nomm);  // Nom de la mission
+      employeeCounts.push(mission.employes_count || 0);  // Utilise le nombre d'employés récupéré depuis l'API
+    });
+  
+    this.barChartData.labels = missionNames;
+    this.barChartData.datasets[0].data = employeeCounts;
+    this.createBarChart();
+  }
+  
 
   // Méthode pour générer des couleurs aléatoires pour chaque compétence
   generateColors(count: number): string[] {
@@ -77,19 +108,46 @@ export class DashboardComponent implements OnInit {
     return colors;
   }
 
-  // Méthode pour créer ou mettre à jour le graphique
-  createChart(): void {
+  // Crée le Doughnut chart
+  createDoughnutChart(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-    
     new Chart(ctx, {
       type: 'doughnut',
       data: this.doughnutChartData  // Utilise les données mises à jour
     });
   }
 
+  // Crée le Bar chart
+  createBarChart(): void {
+    const ctx = document.getElementById('barChart') as HTMLCanvasElement;
+    new Chart(ctx, {
+      type: 'bar',
+      data: this.barChartData,  // Utilise les données mises à jour
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Missions'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Nombre d\'Employés'
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
   // Méthode pour gérer le changement d'état sélectionné dans le select
   onStateChange(event: any): void {
     this.currentState = event.target.value;  // Met à jour l'état sélectionné
-    this.updateChartData();  // Met à jour les données du graphique en fonction de l'état
+    this.updateChartData();  // Met à jour le Doughnut chart
+    this.updateBarChartData();  // Met à jour le Bar chart
   }
 }

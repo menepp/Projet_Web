@@ -166,19 +166,21 @@ export class CarteMissionComponent implements OnInit {
       datef: mission.datef,
       competences: mission.competences
     };
-
+  
+    // Initialiser la sélection des compétences avec les compétences de la mission
     this.competencesSelectionnees = mission.competences
       ? mission.competences.map((desc: string) => {
-        const found = this.competences.find(c => c.description_competence_fr === desc);
-        return found ? found.code_skill : null;
-      }).filter((skill: string | null): skill is string => skill !== null)
+          const found = this.competences.find(c => c.description_competence_fr === desc);
+          return found ? found.code_skill : null;
+        }).filter((skill: string | null): skill is string => skill !== null)
       : [];
-
+  
     console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
     console.log("Compétences disponibles :", this.competences);
-
+  
     this.isEditMissionPopupOpen = true;
   }
+
 
 
   closeEditMissionPopup() {
@@ -221,7 +223,7 @@ saveMission() {
       nomm: this.editMission.nomm,
       dated: datedFormatted,  // Utilisation de la date formatée
       datef: datefFormatted,  // Utilisation de la date formatée
-      competences: this.competencesSelectionnees,
+      competences: this.competencesSelectionnees,  // Envoie des compétences sélectionnées
     }),
   })
     .then((response) => response.json())
@@ -234,6 +236,7 @@ saveMission() {
       console.error('Erreur lors de la mise à jour de la mission :', error);
     });
 }
+
 
   
 
