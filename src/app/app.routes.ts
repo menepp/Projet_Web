@@ -6,6 +6,7 @@ import { EmployeComponent } from './pages/employes/employes.component';
 import { ConnexionComponent } from './pages/inscription-connexion/connexion/connexion.component';
 import { InscriptionComponent } from './pages/inscription-connexion/inscription/inscription.component';
 import { InscriptionConnexionComponent } from './pages/inscription-connexion/inscription-connexion.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 //import { ForumComponent } from './pages/forum/forum.component';
 import { AuthGuard } from './services/auth.guard';
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'accueil', component: AccueilComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
   { path: 'missions', component: MissionComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
   { path: 'employes', component: EmployeComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
   //{ path: 'forum', component: ForumComponent, canActivate: [AuthGuard], data: { role: 'Employé' } },
 ];
 

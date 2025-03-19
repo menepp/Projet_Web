@@ -232,7 +232,6 @@ saveMission() {
     })
     .catch((error) => {
       console.error('Erreur lors de la mise à jour de la mission :', error);
-      alert('Erreur lors de la modification de la mission.');
     });
 }
 
