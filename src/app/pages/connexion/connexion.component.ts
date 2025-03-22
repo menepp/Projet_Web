@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { EmployeService } from '../../../services/employe.service';
-import { AuthService } from '../../../services/auth.service';
+import { EmployeService } from '../../services/employe.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-connexion',
@@ -28,7 +28,7 @@ export class ConnexionComponent {
         const user = employes.find((emp: any) => emp.email === this.email && emp.mot_de_passe === this.password);
         if (user) {
           console.log("Utilisateur trouvé :", user);
-          this.authService.login(user);
+          this.authService.login(user); // Connexion de l'utilisateur
           this.router.navigate([user.role_employe === 'RH' ? '/accueil' : '/forum']);
         } else {
           alert('Identifiants incorrects');

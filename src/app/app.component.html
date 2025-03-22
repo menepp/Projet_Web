@@ -1,8 +1,15 @@
-<app-header *ngIf="!isInscriptionConnexionPage"></app-header>
-<app-menu *ngIf="!isInscriptionConnexionPage"></app-menu>
+<app-header [isLoginPage]="isLoginPage">
+  <div *ngIf="!isLoginPage" class="logout-container">
+    <button (click)="logout()" class="btn-logout">Déconnexion</button>
+  </div>
+</app-header>
 
-<div class="page-content">
+<div *ngIf="!isLoginPage">
+  <app-menu></app-menu>
+</div>
+
+<div [ngClass]="{'page-content': !isLoginPage}">
   <router-outlet></router-outlet>
 </div>
 
-<app-footer *ngIf="!isInscriptionConnexionPage"></app-footer>
+<app-footer></app-footer>

@@ -6,27 +6,33 @@ import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
 import { OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router'; 
-
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MenuComponent, FooterComponent, HeaderComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']  
+  styleUrls: ['./app.component.css'],
+  imports:[CommonModule, RouterOutlet, MenuComponent, FooterComponent, HeaderComponent]
 })
 
 export class AppComponent implements OnInit {
   title = "ProjetWeb";
-  isInscriptionConnexionPage: boolean = false;
+  isLoginPage: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isInscriptionConnexionPage = event.urlAfterRedirects === '/inscription/connexion';
+        this.isLoginPage = event.urlAfterRedirects === '/connexion';
       }
     });
+  }
+
+  logout() {
+    console.log("Déconnexion");
+    this.authService.logout();
+    this.router.navigate(['/connexion']);
   }
 }

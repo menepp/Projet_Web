@@ -1,12 +1,14 @@
-import {Component} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';  
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css'],
+  imports: [CommonModule]
 })
 export class HeaderComponent {
+  @Input() isLoginPage: boolean = false;  
 
 }

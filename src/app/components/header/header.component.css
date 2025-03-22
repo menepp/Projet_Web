@@ -1,85 +1,54 @@
 /* Header */
 header {
-  /* Auto layout */
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 10px;
-
-  position: fixed;
-  width: 100%;
-  height: 100px;
-  left: 0px;
-  top: 0px;
-
-  background: #3C4658;
-  z-index: 99;
-
-}
-
-/* Logo + nom */
-
-.logo-nom {
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
+  flex-direction: row;           /* Passage en ligne */
   align-items: center;
-  padding: 0px 26px;
-  gap: 25px;
-
-  width: 375px;
-  height: 99px;
-
-
-  /* Inside auto layout */
-  flex: none;
-  order: 0;
-  flex-grow: 0;
+  justify-content: space-between;/* Le logo à gauche et le contenu projeté à droite */
+  padding: 0 26px;
+  height: 100px;
+  width: 100%;
+  background: #3C4658;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
 }
 
+/* Logo et nom */
+.logo-nom {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
 
 .logo {
-  /* logo */
-
   width: 100px;
   height: auto;
-  /* Inside auto layout */
-  flex: none;
-  order: 0;
-  flex-grow: 0;
   background-color: transparent;
   filter: drop-shadow(0 0 0 white);
-
-
 }
 
-
 .nom {
-
-  /* Skill’QUEST */
-
-  width: 187px;
-  height: 58px;
-
   font-family: 'Barlow Condensed', serif;
   font-style: italic;
   font-weight: 700;
   font-size: 40px;
   line-height: 58px;
-  /* identical to box height */
-
   color: white;
-  z-index: 100;
-
-
-  /* Inside auto layout */
-  flex: none;
-  order: 1;
-  flex-grow: 0;
 }
 
-p {
-  margin: 0;
+/* Styles du bouton Déconnexion */
+.btn-logout {
+  padding: 10px 20px;
+  background-color: #e74c3c; 
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+.btn-logout:hover {
+  background-color: #c0392b;
+}
