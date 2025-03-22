@@ -6,19 +6,21 @@ import { AjouterComponent } from './ajouter/ajouter.component';
 import { TrierComponent } from './trier/trier.component';
 import { CadreEmployeComponent } from './cadre-employe/cadre-employe.component';
 import { EmployeInscription } from '../../models/employes.interface';
+import { EmployeService } from '../../services/employe.service';
 
 @Component({
   selector: 'app-employes',
+  standalone: true,
   imports: [CommonModule, FormsModule, AjouterComponent, TrierComponent, CadreEmployeComponent],
   templateUrl: './employes.component.html',
-  styleUrls: ['./employes.component.css'],
-  standalone: true
+  styleUrls: ['./employes.component.css']
 })
 export class EmployeComponent implements OnInit {
-  // Utilisation du type EmployeInscription[]
   employes: EmployeInscription[] = [];
   isLoading = true;
   filteredEmployees: EmployeInscription[] = [];
+
+  constructor(private employeService: EmployeService) {}
 
   ngOnInit(): void {
     this.fetchEmployees();
@@ -27,33 +29,27 @@ export class EmployeComponent implements OnInit {
   fetchEmployees() {
     this.isLoading = true;
     console.log("📡 EmployeComponent : Récupération des employés...");
-    fetch('http://localhost:3000/api/employes')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des employés');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("📥 Employés récupérés dans EmployeComponent :", data);
-        // Adapter la structure pour qu'elle corresponde à EmployeInscription
+    this.employeService.getEmployes().subscribe({
+      next: data => {
+        console.log("📥 Employés récupérés :", data);
         this.employes = data.employes.map((emp: any) => ({
           identifiant: emp.identifiant,
           nom: emp.nom,
           prenom: emp.prenom,
-          email: emp.email,               // Ajout de l'email
-          mot_de_passe: emp.mot_de_passe, // Ajout du mot de passe
-          role_employe: emp.role_employe, // Ajout du role
+          email: emp.email,
+          mot_de_passe: emp.mot_de_passe,
+          role_employe: emp.role_employe,
           date_entree: new Date(emp.date_entree),
           competences: emp.competences ? emp.competences.split(', ') : []
         }));
         this.filteredEmployees = [...this.employes];
         this.isLoading = false;
-      })
-      .catch(error => {
+      },
+      error: error => {
         console.error("❌ Erreur dans fetchEmployees:", error);
         this.isLoading = false;
-      });
+      }
+    });
   }
 
   onSortChanged(criterion: string) {

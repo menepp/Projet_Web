@@ -6,23 +6,26 @@ import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { CreerMissionComponent } from './creer-mission/creer-mission.component';
 import { HistoriqueMissionComponent } from './historique-mission/historique-mission.component';
+import { MissionService } from '../../services/mission.service';
 
 @Component({
   selector: 'app-mission',
+  standalone: true,
   imports: [CarteMissionComponent, FormsModule, CommonModule, SearchBarComponent, CreerMissionComponent, HistoriqueMissionComponent],
   templateUrl: './mission.component.html',
   styleUrls: ['./mission.component.css']
 })
-
 export class MissionComponent implements OnInit {
   missions: Mission[] = [];
   filteredMissions: Mission[] = [];
-  isLoading: Boolean = true;
+  isLoading: boolean = true;
   isAddMissionPopupOpen: boolean = false;
   competences: { code_skill: string, description_competence_fr: string }[] = [];
-  afficherHistoriqueMissions = false;
+  afficherHistoriqueMissions: boolean = false;
   missionsActuelles: Mission[] = [];
   missionsTerminees: Mission[] = [];
+
+  constructor(private missionService: MissionService) {}
 
   ngOnInit(): void {
     this.fetchMissions();
@@ -30,29 +33,26 @@ export class MissionComponent implements OnInit {
 
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
-
-    fetch('http://localhost:3000/api/missions')
-      .then(response => response.json())
-      .then(data => {
+    this.missionService.getMissions().subscribe({
+      next: data => {
         console.log("Réponse API missions :", data);
-
         this.missions = data.missions.map((mission: any) => ({
           idm: mission.idm,
           nomm: mission.nomm,
-          dated: mission.dated,
-          datef: mission.datef,
+          dated: new Date(mission.dated),
+          datef: new Date(mission.datef),
           competences: mission.competences ? mission.competences.split(', ') : [],
         }));
         this.filteredMissions = [...this.missions];
         this.separerMissions();
         this.competences = data.competences || [];
-
         this.isLoading = false;
-      })
-      .catch(error => {
+      },
+      error: error => {
         console.error("Erreur dans fetchMissions:", error);
         this.isLoading = false;
-      });
+      }
+    });
   }
 
   filterMissions(searchTerm: string) {

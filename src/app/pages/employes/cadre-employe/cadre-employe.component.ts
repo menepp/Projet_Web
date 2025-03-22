@@ -1,24 +1,23 @@
-
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SearchBarComponent } from '../../../components/search-bar/search-bar.component';
 import { Employes } from '../../../models/employes.interface';
+import { EmployeService } from '../../../services/employe.service';
 
 @Component({
   selector: 'app-cadre-employe',
+  standalone: true,
   imports: [CommonModule, FormsModule, SearchBarComponent],
   templateUrl: './cadre-employe.component.html',
-  styleUrl: './cadre-employe.component.css'
+  styleUrls: ['./cadre-employe.component.css']
 })
-
 export class CadreEmployeComponent implements OnInit {
   @Input() employes!: Employes[];
   isLoading = true;
-  selectedEmployee: any = null;
-  delEmployee: any = null;
   filteredEmployees: Employes[] = [];
   isDeletePopupOpen: boolean = false;
+  delEmployee: any = null;
 
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
@@ -26,28 +25,24 @@ export class CadreEmployeComponent implements OnInit {
   isEditEmployeePopupOpen = false;
   editEmployee: Employes = { identifiant: 0, nom: '', prenom: '', date_entree: new Date(), competences: [''] };
 
+  constructor(private employeService: EmployeService) {}
+
   ngOnInit(): void {
     this.fetchEmployees();
   }
-  fetchEmployees() {
-    fetch('http://localhost:3000/api/employes')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des employés');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Données des employés reçues : ", data);
 
+  fetchEmployees() {
+    this.employeService.getEmployes().subscribe({
+      next: data => {
+        console.log("Données des employés reçues :", data);
         if (data && Array.isArray(data.employes)) {
           this.employes = data.employes.map((employe: any) => ({
             identifiant: employe.identifiant,
             nom: employe.nom,
             prenom: employe.prenom,
-            date_entree: employe.date_entree,
-            competences: employe.competences ? employe.competences.split(', ') : [], 
-            description: employe.description || 'Pas de description disponible.',
+            date_entree: new Date(employe.date_entree),
+            competences: employe.competences ? employe.competences.split(', ') : [],
+            description: employe.description || 'Pas de description disponible.'
           }));
           this.filteredEmployees = [...this.employes];
         } else {
@@ -57,15 +52,15 @@ export class CadreEmployeComponent implements OnInit {
         if (data.competences) {
           this.competences = data.competences;
         }
-  
         this.isLoading = false;
-      })
-      .catch((error) => {
+      },
+      error: error => {
         console.error('Erreur :', error);
         this.isLoading = false;
-      });
+      }
+    });
   }
-//Permet de filtrer les employés que l'on souhaite trouver en fonction de leur nom ou prénom
+
   filterEmployees(searchTerm: string) {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     this.filteredEmployees = this.employes.filter((employe) =>
@@ -74,48 +69,55 @@ export class CadreEmployeComponent implements OnInit {
   }
 
   openDeleteEmployeePopup(employee: Employes) {
-    this.delEmployee = { ...employee }; 
+    this.delEmployee = { ...employee };
     this.isDeletePopupOpen = true;
   }
 
   closeDeleteEmployeePopup() {
     this.isDeletePopupOpen = false;
   }
-//Permet de supprimer un employé
-  deleteEmployee() {
-    console.log('Tentative de suppression avec ID :', this.delEmployee.identifiant);
-    fetch(`http://localhost:3000/api/employes/${this.delEmployee.identifiant}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la suppression de l employé 1 ');
-        }
-        this.employes = this.employes.filter((employe) => employe.identifiant !== this.delEmployee.identifiant);
-        this.filteredEmployees = [...this.employes];
-        alert('Employé supprimé avec succès.');
-      })
-      .catch((error) => {
-        console.error('Erreur :', error);
-        alert('Erreur lors de la suppression de l employé 2 .');
-      });
-    this.closeDeleteEmployeePopup();
-  }
 
+  deleteEmployee() {
+    if (this.delEmployee) {
+      const identifiant = this.delEmployee.identifiant;
+      console.log('Suppression de l\'employé avec l\'identifiant:', identifiant);
+  
+      this.employeService.deleteEmploye(identifiant).subscribe({
+        next: (response: string) => {
+          console.log('Réponse du serveur:', response);
+          
+          if (response === "Employé supprimé avec succès") {
+            this.filteredEmployees = this.filteredEmployees.filter(emp => emp.identifiant !== identifiant);
+            this.closeDeleteEmployeePopup();
+  
+            alert('Employé supprimé avec succès');
+            this.fetchEmployees();
+          } else {
+            alert("Erreur lors de la suppression de l'employé.");
+          }
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression de l\'employé', error);
+          alert('Erreur lors de la suppression de l\'employé');
+        }
+      });
+    }
+  }
+  
   openEditEmployeePopup(employee: any) {
     this.editEmployee = {
       identifiant: employee.identifiant,
       nom: employee.nom,
       prenom: employee.prenom,
-      date_entree: employee.date_entree,
-      competences: employee.competences 
+      date_entree: new Date(employee.date_entree),
+      competences: employee.competences
     };
     this.competencesSelectionnees = employee.competences
       .map((desc: string) => {
         const found = this.competences.find(c => c.description_competence_fr === desc);
         return found ? found.code_skill : null;
       })
-      .filter((skill: string | null): skill is string => skill !== null); 
+      .filter((skill: string | null): skill is string => skill !== null);
   
     console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
     this.isEditEmployeePopupOpen = true;
@@ -124,40 +126,35 @@ export class CadreEmployeComponent implements OnInit {
   closeEditEmployeePopup() {
     this.isEditEmployeePopupOpen = false;
   }
-//Permet de modifier un employé en enregistrant les changements
+
   saveEmployee() {
-    
-    fetch(`http://localhost:3000/api/employes/${this.editEmployee.identifiant}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    const updatedEmployee = {
+      identifiant: this.editEmployee.identifiant,
+      nom: this.editEmployee.nom,
+      prenom: this.editEmployee.prenom,
+      date_entree: this.editEmployee.date_entree,
+      competences: this.competencesSelectionnees
+    };
+
+    this.employeService.updateEmploye(updatedEmployee).subscribe({
+      next: data => {
+        console.log('Réponse du serveur:', data);
+        this.fetchEmployees();
+        this.closeEditEmployeePopup();
       },
-      body: JSON.stringify({
-        nom: this.editEmployee.nom,
-        prenom: this.editEmployee.prenom,
-        date_entree: this.editEmployee.date_entree,
-        competences: this.competencesSelectionnees, 
-      }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Réponse du serveur:', data);
-      this.fetchEmployees();
-      this.closeEditEmployeePopup();
-    })
-    .catch((error) => {
-      console.error('Erreur lors de la mise à jour de l employé :', error);
-      alert('Erreur lors de la modification de l employé.');
+      error: error => {
+        console.error('Erreur lors de la mise à jour de l\'employé :', error);
+        alert("Erreur lors de la modification de l'employé.");
+      }
     });
   }
-  // Permet d'ajouter ou de supprimer des compétences aux employés
+
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
     } else {
       this.competencesSelectionnees.push(code_skill);
     }
-    console.log(" Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
+    console.log("Compétences sélectionnées :", this.competencesSelectionnees);
   }
-  
 }

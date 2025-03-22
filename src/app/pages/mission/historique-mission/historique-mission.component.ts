@@ -4,6 +4,7 @@ import { CarteMissionComponent } from '../carte-mission/carte-mission.component'
 
 @Component({
   selector: 'app-historique-mission',
+  standalone: true,
   imports: [CarteMissionComponent],
   templateUrl: './historique-mission.component.html',
   styleUrls: ['./historique-mission.component.css']

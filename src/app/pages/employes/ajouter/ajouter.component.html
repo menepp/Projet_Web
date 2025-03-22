@@ -1,31 +1,32 @@
-<!-- Formulaire d'ajout (votre code existant) -->
+<!-- Bouton d'ouverture de la pop-up d'ajout -->
 <div class="search-add">
   <button class="btn-ajouter" (click)="openAddEmployeePopup()">Ajouter (+)</button>
 </div>
 
+<!-- Pop-up d'ajout d'employé -->
 <div *ngIf="isAddEmployeePopupOpen" class="add-employee-popup">
   <div class="popup-content">
     <h3>Ajouter un Employé</h3>
     <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
       <div>
         <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required/>
+        <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required />
       </div>
       <div>
         <label for="nom">Nom :</label>
-        <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required/>
+        <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required />
       </div>
       <div>
         <label for="email">Email :</label>
-        <input type="email" id="email" [(ngModel)]="newEmployee.email" name="email" required/>
+        <input type="email" id="email" [(ngModel)]="newEmployee.email" name="email" required />
       </div>
       <div>
         <label for="mot_de_passe">Mot de passe :</label>
-        <input type="password" id="mot_de_passe" [(ngModel)]="newEmployee.mot_de_passe" name="mot_de_passe" required/>
+        <input type="password" id="mot_de_passe" [(ngModel)]="newEmployee.mot_de_passe" name="mot_de_passe" required />
       </div>
       <div>
         <label for="date_entree">Date d'entrée :</label>
-        <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required/>
+        <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required />
       </div>
       <div>
         <label for="competences">Compétences :</label>
@@ -43,9 +44,8 @@
       </div>
       <div class="double-bouton">
         <button type="button" class="btn-fermer" (click)="closeAddEmployeePopup()">Fermer</button>
-        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid" (click)="addEmployee()">Ajouter</button>
+        <button type="submit" class="btn-appliquer" [disabled]="!employeeForm.form.valid">Ajouter</button>
       </div>
     </form>
   </div>
 </div>
-
