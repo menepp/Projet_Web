@@ -26,8 +26,12 @@ export class ConnexionComponent {
         const employes = response.employes;
         const user = employes.find((emp: any) => emp.email === this.email && emp.mot_de_passe === this.password);
         if (user) {
-          this.authService.login(user); // Connexion de l'utilisateur
-          this.router.navigate(['/accueil']); // Redirection vers l'accueil
+          this.authService.login(user);
+          if(user.role_employe === 'RH') {
+            this.router.navigate(['/accueil']);
+          } else {
+            this.router.navigate(['/salon']);
+          }
         } else {
           alert('Identifiants incorrects');
         }
@@ -37,5 +41,4 @@ export class ConnexionComponent {
       });
     }
   }
-  
 }
