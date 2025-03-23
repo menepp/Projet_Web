@@ -23,14 +23,11 @@ export class ConnexionComponent {
   onSubmit() {
     if (this.email && this.password) {
       this.employeService.getEmployes().subscribe(response => {
-        console.log("Réponse API :", response);
         const employes = response.employes;
         const user = employes.find((emp: any) => emp.email === this.email && emp.mot_de_passe === this.password);
         if (user) {
-          console.log("Utilisateur trouvé :", user);
           this.authService.login(user); // Connexion de l'utilisateur
-          this.router.navigate([user.role_employe === 'RH' ? '/accueil' : '/forum']);
-
+          this.router.navigate(['/accueil']); // Redirection vers l'accueil
         } else {
           alert('Identifiants incorrects');
         }
@@ -39,5 +36,6 @@ export class ConnexionComponent {
         alert('Erreur lors de la connexion');
       });
     }
-  }  
+  }
+  
 }

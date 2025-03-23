@@ -34,4 +34,16 @@ export class AuthService {
   getUser() {
     return this.user;
   }
+
+  // Optionnel: méthode pour forcer une actualisation de l'état d'authentification.
+  checkAuthentication() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+      this.authenticated = true;
+    } else {
+      this.authenticated = false;
+      this.user = null;
+    }
+  }
 }

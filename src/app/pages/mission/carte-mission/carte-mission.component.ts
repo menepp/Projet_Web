@@ -429,7 +429,7 @@ removeEmployeFromMission(missionId: number, employeId: number) {
   })
   .catch(error => {
     console.error('Erreur :', error);
-    alert('Erreur lors de la suppression de l\'employé de la mission.');
+    
   });
 }
 
