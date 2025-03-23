@@ -1,7 +1,6 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');  // Ajouter cookie-parser ici
+const cookieParser = require('cookie-parser');
 const { Pool } = require('pg');
 const employeRoutes = require('./employes');
 const missionRoutes = require('./missions');
@@ -31,11 +30,11 @@ pool.connect((err, client, release) => {
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());  // Ajoutez cookie-parser ici
+app.use(cookieParser());
 
 // Ajouter pool à req pour les routes
 app.use((req, res, next) => {
-  req.pool = pool;  // Ajoutez le pool à chaque requête
+  req.pool = pool;
   next();
 });
 
@@ -50,4 +49,4 @@ app.listen(PORT, () => {
   console.log(`Serveur backend lancé sur http://localhost:${PORT}`);
 });
 
-module.exports = { pool };  // Exporter le pool
+module.exports = { pool };

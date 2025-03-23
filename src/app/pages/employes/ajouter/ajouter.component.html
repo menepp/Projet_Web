@@ -29,6 +29,13 @@
         <input type="date" id="date_entree" [(ngModel)]="newEmployee.date_entree" name="date_entree" required />
       </div>
       <div>
+        <label for="role_employe">Rôle :</label>
+        <select id="role_employe" [(ngModel)]="newEmployee.role_employe" name="role_employe" required>
+          <option value="Employé">Employé</option>
+          <option value="RH">RH</option>
+        </select>
+      </div>      
+      <div>
         <label for="competences">Compétences :</label>
         <div class="competences-list">
           <div *ngFor="let competence of competences">

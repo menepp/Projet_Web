@@ -37,6 +37,7 @@ export class CreerMissionComponent {
       next: () => {
         this.missionAdded.emit();
         this.closeAddMissionPopup();
+        alert(`La mission a bien était ajouté.`);
       },
       error: error => console.error('Erreur lors de l\'ajout de la mission :', error)
     });

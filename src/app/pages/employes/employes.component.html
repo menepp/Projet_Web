@@ -7,7 +7,6 @@
       <app-trier (sortChanged)="onSortChanged($event)"></app-trier>
     </div>
     <div class="btn-ajout">
-      <!-- L'événement employeeAdded appellera fetchEmployees() -->
       <app-ajouter (employeeAdded)="fetchEmployees()" [employes]="employes"></app-ajouter>
     </div>
   </div>

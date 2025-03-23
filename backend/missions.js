@@ -1,36 +1,9 @@
-
 const express = require('express');
 const router = express.Router();
-const {Pool} = require('pg');
-
-
-
-
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: '291004',
-  port: 5432,
-});
-pool.connect((err, client, release) => {
-  if (err) {
-    return console.error('Erreur de connexion à la base de données :', err);
-  }
-  console.log('Connexion à PostgreSQL réussie');
-  release();
-});
-
-
-
 
 router.get('/', async (req, res) => {
   try {
-    console.log('📡 Requête reçue : GET /api/missions');
-
-
-
-
+    const pool = req.pool;
     const result = await pool.query(`
       SELECT M.idm, M.nomm, M.dated, M.datef,
              COALESCE(STRING_AGG(C.description_competence_fr, ', '), '') AS competences
@@ -40,26 +13,19 @@ router.get('/', async (req, res) => {
       GROUP BY M.idm, M.nomm, M.dated, M.datef
     `);
 
-
-
-
     const result2 = await pool.query("SELECT code_skill, description_competence_fr FROM liste_competences");
-   
-    console.log(" Missions récupérées :", result.rows);
-    console.log(" Compétences disponibles :", result2.rows);
-
-
-
 
     res.status(200).json({
       missions: result.rows,
       competences: result2.rows,
     });
   } catch (err) {
-    console.error(" Erreur lors de la récupération des missions :", err);
+    console.error("Erreur lors de la récupération des missions :", err);
     res.status(500).send("Erreur serveur");
   }
 });
+
+
 
 router.get('/count', async (req, res) => {
   try {

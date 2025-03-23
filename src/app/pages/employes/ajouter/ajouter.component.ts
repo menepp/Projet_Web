@@ -14,8 +14,8 @@ import { EmployeService } from '../../../services/employe.service';
 export class AjouterComponent implements OnInit {
   newEmployee: EmployeInscription = { 
     nom: '', prenom: '', email: '', 
-    mot_de_passe: '', role_employe: '', date_entree: new Date(), 
-    competences: [''] 
+    mot_de_passe: '', role_employe: 'Employé', 
+    date_entree: new Date(), competences: [''] 
   };
 
   @Input() employes!: EmployeInscription[];
@@ -25,7 +25,6 @@ export class AjouterComponent implements OnInit {
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
 
-  // Déclaration de la variable pour contrôler l'état de la pop-up
   isAddEmployeePopupOpen: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private employeService: EmployeService) {}
@@ -35,7 +34,6 @@ export class AjouterComponent implements OnInit {
   }
 
   fetchCompetences() {
-    // On récupère ici les compétences depuis l'API via l'appel de getEmployes (si l'API renvoie aussi les compétences)
     this.employeService.getEmployes().subscribe({
       next: data => {
         this.competences = data.competences || [];
@@ -62,9 +60,8 @@ export class AjouterComponent implements OnInit {
       competences: [''] 
     };
   }
-
+  
   addEmployee() {
-    // Vérifie si l'email existe déjà
     const emailExists = this.employes.some(emp => emp.email === this.newEmployee.email);
     if (emailExists) {
       alert('Un employé avec cet email existe déjà.');
@@ -77,16 +74,17 @@ export class AjouterComponent implements OnInit {
     }).subscribe({
       next: data => {
         console.log("✅ Employé ajouté :", data);
-        alert('Employé ajouté avec succès.');
+        alert(`Employé ajouté avec succès en tant que ${this.newEmployee.role_employe}.`);
         this.employeeAdded.emit();
         this.closeAddEmployeePopup();
       },
       error: error => {
-        console.error("❌ Erreur lors de l'ajout de l'employé :", error);
-        alert("Erreur lors de l'ajout de l'employé.");
+        console.error("❌ Erreur lors de l'ajout :", error);
+        alert("Erreur lors de l'ajout.");
       }
     });
   }
+
 
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
