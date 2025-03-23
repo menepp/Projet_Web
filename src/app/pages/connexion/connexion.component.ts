@@ -30,6 +30,7 @@ export class ConnexionComponent {
           console.log("Utilisateur trouvé :", user);
           this.authService.login(user); // Connexion de l'utilisateur
           this.router.navigate([user.role_employe === 'RH' ? '/accueil' : '/forum']);
+
         } else {
           alert('Identifiants incorrects');
         }

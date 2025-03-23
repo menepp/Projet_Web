@@ -1,0 +1,75 @@
+/* Container principal pour aligner les forums côte à côte */
+.forum-wrapper {
+    display: flex;
+    justify-content: space-between; /* Pour séparer les deux forums */
+    gap: 20px; /* Espacement entre les deux forums */
+    margin: 20px; /* Pour donner un peu de marge autour de la zone */
+  }
+  
+  /* Styles de base pour chaque forum */
+  .forum-container, .forum-container2 {
+    width: 48%; /* 48% pour donner de l'espace entre les forums */
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    background: #2f3136;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .messages-container {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #36393f;
+    color: white;
+  }
+  
+  .message {
+    padding: 10px;
+    border-radius: 5px;
+    background: #40444b;
+  }
+  
+  .message strong {
+    color: #fff;
+  }
+  
+  .date {
+    font-size: 12px;
+    color: #b9bbbe;
+    margin-left: 10px;
+  }
+  
+  .message-input {
+    display: flex;
+    padding: 10px;
+    background: #40444b;
+  }
+  
+  .message-input input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: #2f3136;
+    color: white;
+  }
+  
+  .message-input button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    background: #7289da;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .message-input button:hover {
+    background: #677bc4;
+  }
+  

@@ -38,7 +38,7 @@ img {
 }
 
 /* carte entiere */
-.carte-entiere1, .carte-entiere2, .carte-entiere3 {
+.carte-entiere1, .carte-entiere2, .carte-entiere3, .carte-entiere4 {
 
   display: flex;
   /*flex-direction: column;
@@ -54,7 +54,7 @@ img {
 
 }
 
-.carte-entiere1:hover, .carte-entiere2:hover, .carte-entiere3 {
+.carte-entiere1:hover, .carte-entiere2:hover, .carte-entiere3, .carte-entiere4 {
   transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
@@ -76,7 +76,9 @@ img {
   width: 100%;
   height: 100%;
 }
-
+.carte-entiere4 {
+  border-top: 5px solid #9858a8;
+}
 
 .titre-carte {
   display: flex;

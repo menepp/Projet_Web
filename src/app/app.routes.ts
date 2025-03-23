@@ -5,6 +5,7 @@ import { MissionComponent } from './pages/mission/mission.component';
 import { EmployeComponent } from './pages/employes/employes.component';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { SalonComponent } from './pages/salon/salon.component';
 //import { ForumComponent } from './pages/forum/forum.component';
 import { AuthGuard } from './services/auth.guard';
 
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'missions', component: MissionComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
   { path: 'employes', component: EmployeComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
+  { path: 'salon', component: SalonComponent, canActivate: [AuthGuard], data: { role: 'RH' } },
   //{ path: 'forum', component: ForumComponent, canActivate: [AuthGuard], data: { role: 'Employé' } },
 ];
 

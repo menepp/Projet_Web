@@ -1,12 +1,17 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges  } from '@angular/core';
 import { Mission } from '../../../models/mission.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MissionService } from '../../../services/mission.service';
+
+
+
+
+
+
+
 
 @Component({
   selector: 'app-carte-mission',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './carte-mission.component.html',
   styleUrls: ['./carte-mission.component.css'],
@@ -15,30 +20,43 @@ export class CarteMissionComponent implements OnInit {
   @Input() mission!: Mission;
   @Output() missionUpdated = new EventEmitter<void>();
 
-  isPrepared: boolean = false;
+
+  isPrepared: boolean = false; //
   currentDate: Date = new Date();
   isDeletePopupOpen: boolean = false;
   delMission: any = null;
-  isEditMissionPopupOpen: boolean = false;
 
-  editMission: Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: [] };
+
+  isEditMissionPopupOpen = false;
+
+
+
+
+
+
+
+
+  editMission : Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: [] };
   competences: { code_skill: string, description_competence_fr: string }[] = [];
   competencesSelectionnees: string[] = [];
-
   missions: Mission[] = [];
-  isLoading: boolean = true;
+  isLoading = true;
   employes: { identifiant: number, nom: string, prenom: string, competences: string }[] = [];
   employesSelectionnes: number[] = [];
   isEmployesPopupOpen: boolean = false;
-
-  constructor(private missionService: MissionService) {}
-
   ngOnInit(): void {
     this.convertMissionDates();
     this.fetchMissions();
     this.fetchEmployesAffectes(this.mission.idm);
-    this.saveMission(); // Appel initial pour la sauvegarde (selon votre logique)
+    this.fetchAllEmployes();
   }
+
+
+
+
+
+
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mission']) {
@@ -46,16 +64,35 @@ export class CarteMissionComponent implements OnInit {
     }
   }
 
+
+
+
+
+
+
+
   convertMissionDates() {
     this.mission.dated = new Date(this.mission.dated);
     this.mission.datef = new Date(this.mission.datef);
   }
 
+
+
+
   fetchMissions() {
     console.log("📡 Envoi de la requête GET /api/missions...");
-    this.missionService.getMissions().subscribe({
-      next: data => {
+
+
+
+
+    fetch('http://localhost:3000/api/missions')
+      .then(response => response.json())
+      .then(data => {
         console.log("Réponse API missions :", data);
+
+
+
+
         this.missions = data.missions.map((mission: any) => ({
           idm: mission.idm,
           nomm: mission.nomm,
@@ -64,81 +101,128 @@ export class CarteMissionComponent implements OnInit {
           competences: mission.competences ? mission.competences.split(', ') : [],
           employes: []
         }));
+
+
+
+
         this.competences = data.competences || [];
+        console.log("Compétences disponibles :", this.competences);
+
+
+
+
         this.missions.forEach(mission => {
           this.fetchEmployesAffectes(mission.idm);
         });
+
+
+
+
         this.isLoading = false;
-      },
-      error: error => {
+      })
+      .catch(error => {
         console.error("Erreur dans fetchMissions:", error);
         this.isLoading = false;
-      }
-    });
+      });
   }
-
   fetchEmployesAffectes(missionId: number) {
-    this.missionService.getMissionEmployees(missionId).subscribe({
-      next: data => {
+    fetch(`http://localhost:3000/api/missions/${missionId}/employes`)
+      .then(response => response.json())
+      .then(data => {
         console.log(`👷 Employés affectés à la mission ${missionId} :`, data.employes);
+
+
+
+
         if (this.mission.idm === missionId) {
           this.mission.employes = data.employes || [];
-          this.checkMissionPreparation();
         }
+
+
+
+
         const mission = this.missions.find(m => m.idm === missionId);
         if (mission) {
           mission.employes = data.employes || [];
-          this.checkMissionPreparation();
         }
-      },
-      error: error => {
+      })
+      .catch(error => {
         console.error("Erreur lors de la récupération des employés affectés", error);
-      }
-    });
-  }
-
-  checkMissionPreparation() {
-    if (this.mission.competences && this.mission.competences.length > 0) {
-      const missionCompetences = new Set(this.mission.competences);
-      const employesCompetences = new Set<string>();
-      this.mission.employes?.forEach((employe) => {
-        if (employe.competences) {
-          employe.competences.split(', ').forEach((competence: string) => {
-            employesCompetences.add(competence);
-          });
-        }
       });
-      this.isPrepared = [...missionCompetences].every(competence =>
-        employesCompetences.has(competence.toString())
-      );
-    } else {
-      this.isPrepared = true;
-    }
   }
+ 
+
+
+
+
+
+
+
 
   openDeleteMissionPopup(mission: Mission) {
     this.delMission = { ...mission };
     this.isDeletePopupOpen = true;
   }
 
+
+
+
+
+
+
+
   closeDeleteMissionPopup() {
     this.isDeletePopupOpen = false;
   }
 
+
+
+
+
+
+
+
   deleteMission() {
     console.log('Tentative de suppression avec ID :', this.delMission.idm);
-    this.missionService.deleteMission(this.delMission.idm).subscribe({
-      next: () => {
+
+
+
+
+
+
+
+
+    fetch(`http://localhost:3000/api/missions/${this.delMission.idm}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la suppression de la mission.');
+        }
         alert('Mission supprimée avec succès.');
         this.missionUpdated.emit();
-      },
-      error: error => {
-        console.error('Erreur lors de la suppression de la mission :', error);
+      })
+      .catch((error) => {
+        console.error('Erreur :', error);
         alert('Erreur lors de la suppression de la mission.');
-      }
-    });
+      });
+
+
+
+
+
+
+
+
     this.closeDeleteMissionPopup();
   }
+
+
+
+
+
+
+
 
   openEditMissionPopup(mission: any) {
     this.editMission = {
@@ -146,57 +230,83 @@ export class CarteMissionComponent implements OnInit {
       nomm: mission.nomm,
       dated: mission.dated,
       datef: mission.datef,
-      competences: mission.competences
+      competences: mission.competences // Assure-toi que cette ligne est correcte
     };
-
+ 
     this.competencesSelectionnees = mission.competences
       ? mission.competences.map((desc: string) => {
           const found = this.competences.find(c => c.description_competence_fr === desc);
           return found ? found.code_skill : null;
         }).filter((skill: string | null): skill is string => skill !== null)
       : [];
+ 
     console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
     console.log("Compétences disponibles :", this.competences);
+ 
     this.isEditMissionPopupOpen = true;
   }
+ 
+
+
+
 
   closeEditMissionPopup() {
     this.isEditMissionPopupOpen = false;
     this.competencesSelectionnees = [];
+   
+    // Rafraîchir les employés pour toutes les missions après la modification
+    this.fetchAllEmployes();  // Assure-toi que les employés sont bien mis à jour pour toutes les missions
   }
+ 
 
+
+
+
+
+
+  onMissionUpdated(updatedMission: Mission) {
+    const index = this.missions.findIndex(m => m.idm === updatedMission.idm);
+    if (index !== -1) {
+      this.missions[index] = updatedMission;
+    }
+  }
+ 
   saveMission() {
-    // Formatage des dates en yyyy-MM-dd
-    const formatDate = (date: Date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-
-    const datedFormatted = formatDate(new Date(this.editMission.dated));
-    const datefFormatted = formatDate(new Date(this.editMission.datef));
-
-    const updatedMission = {
-      idm: this.editMission.idm,
-      nomm: this.editMission.nomm,
-      dated: new Date(this.editMission.dated), 
-    datef: new Date(this.editMission.datef),
-      competences: this.competencesSelectionnees
-    };
-
-    this.missionService.updateMission(updatedMission).subscribe({
-      next: data => {
-        console.log('Réponse du serveur:', data);
-        this.fetchMissions();
-        this.closeEditMissionPopup();
+    fetch(`http://localhost:3000/api/missions/${this.editMission.idm}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      error: error => {
-        console.error('Erreur lors de la mise à jour de la mission :', error);
-        alert('Erreur lors de la modification de la mission.');
+      body: JSON.stringify({
+        nomm: this.editMission.nomm,
+        dated: this.editMission.dated,
+        datef: this.editMission.datef,
+        competences: this.competencesSelectionnees,
+      }),
+    })
+    .then((response) => response.json())
+    .then((updatedMission) => {
+      // Mettre à jour la mission dans le tableau local des missions
+      const index = this.missions.findIndex(m => m.idm === updatedMission.idm);
+      if (index !== -1) {
+        this.missions[index] = updatedMission;
       }
+ 
+      this.closeEditMissionPopup();  // Fermer le popup de modification
+      this.missionUpdated.emit();    // Émettre l'événement si tu as un composant parent qui l'écoute
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la mise à jour de la mission :', error);
+      alert('Erreur lors de la modification de la mission.');
     });
   }
+ 
+ 
+
+
+
+
+
 
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
@@ -207,60 +317,129 @@ export class CarteMissionComponent implements OnInit {
     console.log("Compétences sélectionnées (identifiants) :", this.competencesSelectionnees);
   }
 
+
+
+
+
+
+
+
   openEmployesPopup(missionId: number) {
     this.isEmployesPopupOpen = true;
-    this.missionService.getMissionEmployees(missionId).subscribe({
-      next: data => {
+ 
+    fetch(`http://localhost:3000/api/missions/employes?missionId=${missionId}`)
+      .then(response => response.json())
+      .then(data => {
         if (!data.employes) {
           this.employes = [];
         } else {
           this.employes = data.employes;
         }
+ 
         console.log("👷 Employés récupérés pour la pré-sélection :", this.employes);
-      },
-      error: error => {
+      })
+      .catch(error => {
         console.error("❌ Erreur lors de la récupération des employés", error);
-      }
-    });
+      });
   }
 
-  closeEmployesPopup() {
-    this.isEmployesPopupOpen = false;
-  }
 
-  toggleEmployeSelection(identifiant: number) {
-    if (this.employesSelectionnes.includes(identifiant)) {
-      this.employesSelectionnes = this.employesSelectionnes.filter(id => id !== identifiant);
-    } else {
-      this.employesSelectionnes.push(identifiant);
+
+
+
+
+
+
+closeEmployesPopup() {
+  this.isEmployesPopupOpen = false;
+}
+
+
+
+
+
+
+
+
+toggleEmployeSelection(identifiant: number) {
+  if (this.employesSelectionnes.includes(identifiant)) {
+    this.employesSelectionnes = this.employesSelectionnes.filter(id => id !== identifiant);
+  } else {
+    this.employesSelectionnes.push(identifiant);
+  }
+}
+
+
+
+
+
+
+saveEmployes() {
+  console.log("✅ Enregistrement des employés :", this.employesSelectionnes);
+
+
+  fetch(`http://localhost:3000/api/missions/${this.mission.idm}/employes`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      employes: this.employesSelectionnes
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("📩 Employés ajoutés avec succès :", data);
+    this.fetchAllEmployes(); // Met à jour les employés de toutes les missions
+    this.closeEmployesPopup();
+  })
+  .catch(error => {
+    console.error("❌ Erreur lors de l'ajout des employés :", error);
+    alert("Erreur lors de l'ajout des employés à la mission.");
+  });
+}
+
+
+// Fonction pour récupérer tous les employés affectés pour chaque mission
+fetchAllEmployes() {
+  // On parcourt toutes les missions et on actualise les employés pour chaque mission
+  this.missions.forEach(mission => {
+    this.fetchEmployesAffectes(mission.idm); // Met à jour la liste des employés pour chaque mission
+  });
+}
+
+
+
+
+removeEmployeFromMission(missionId: number, employeId: number) {
+  fetch(`http://localhost:3000/api/missions/${missionId}/employes/${employeId}`, {
+    method: 'DELETE',
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Erreur lors de la suppression de l\'employé de la mission.');
     }
-  }
+    return response.json(); // Récupère les données après suppression
+  })
+  .then((data) => {
+    console.log('Réponse après suppression de l\'employé :', data);
+    // Rafraîchir les employés affectés à la mission
+    this.fetchEmployesAffectes(missionId);
+    alert('Employé retiré de la mission avec succès.');
+  })
+  .catch(error => {
+    console.error('Erreur :', error);
+    alert('Erreur lors de la suppression de l\'employé de la mission.');
+  });
+}
 
-  saveEmployes() {
-    console.log("Enregistrement des employés :", this.employesSelectionnes);
-    this.missionService.addEmployeesToMission(this.mission.idm, this.employesSelectionnes).subscribe({
-      next: data => {
-        console.log("📩 Employés ajoutés avec succès :", data);
-        this.fetchEmployesAffectes(this.mission.idm);
-        this.closeEmployesPopup();
-      },
-      error: error => {
-        console.error("❌ Erreur lors de l'ajout des employés :", error);
-        alert("Erreur lors de l'ajout des employés à la mission.");
-      }
-    });
-  }
 
-  removeEmployeFromMission(missionId: number, employeId: number) {
-    this.missionService.removeEmployeeFromMission(missionId, employeId).subscribe({
-      next: () => {
-        alert('Employé retiré de la mission avec succès.');
-        this.fetchEmployesAffectes(missionId);
-      },
-      error: error => {
-        console.error('Erreur:', error);
-        alert('Erreur lors de la suppression de l\'employé de la mission.');
-      }
-    });
-  }
+
+
+
+
+
+
+
+
 }

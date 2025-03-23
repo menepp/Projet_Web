@@ -1,0 +1,41 @@
+<!-- Container principal avec flexbox -->
+<div class="forum-wrapper">
+  
+    <!-- Premier espace de discussion -->
+    <div class="forum-container">
+      <p> BLOG ENTREPRISE </p>
+      <div class="messages-container" #messagesContainer>
+        <div *ngFor="let blog of blogs" class="message">
+          <strong>{{ blog.employes.prenom }} {{ blog.employes.nom }}</strong>  
+          <span class="date">({{ blog.date_envoi | date: 'dd/MM/yyyy HH:mm' }})</span>
+          <p>{{ blog.message }}</p>
+        </div>
+      </div>
+    
+      <!-- Barre d'envoi -->
+      <div class="message-input">
+        <input [(ngModel)]="newMessage" type="text" placeholder="Écrire un message..." (keyup.enter)="sendMessage()">
+        <button (click)="sendMessage()">Envoyer</button>
+      </div>
+    </div>
+  
+    <!-- Deuxième espace de discussion -->
+    <div class="forum-container2">
+      
+        <div class="messages-container" #messagesContainer>
+          <div *ngFor="let missionMessage of missionMessages" class="message">
+            <strong>{{ missionMessage.employes.prenom }} {{ missionMessage.employes.nom }}</strong>
+            <span class="date">({{ missionMessage.date_envoi | date: 'dd/MM/yyyy HH:mm' }})</span>
+            <p>{{ missionMessage.message }}</p>
+          </div>
+        </div>
+    
+        <!-- Barre d'envoi pour la mission -->
+        <div class="message-input">
+          <input [(ngModel)]="newMissionMessage" type="text" placeholder="Écrire un message pour la mission..." (keyup.enter)="sendMissionMessage()">
+          <button (click)="sendMissionMessage()">Envoyer</button>
+        </div>
+      </div>
+    
+  </div>
+  
