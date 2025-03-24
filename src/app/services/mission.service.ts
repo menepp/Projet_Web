@@ -12,38 +12,38 @@ export class MissionService {
 
   constructor(private http: HttpClient) {}
 
-  // Récupérer la liste des missions (et éventuellement les compétences associées)
   getMissions(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
 
-  // Ajouter une nouvelle mission
   addMission(mission: Partial<Mission> & { competences?: string[] }): Observable<any> {
     return this.http.post<any>(this.apiUrl, mission);
   }
 
-  // Mettre à jour une mission existante
   updateMission(mission: Partial<Mission> & { idm: number }): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${mission.idm}`, mission);
+    return this.http.put<any>(`${this.apiUrl}/${mission.idm}`, mission, { responseType: 'json' });
   }
 
-  // Supprimer une mission
   deleteMission(idm: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${idm}`);
+    return this.http.delete(`${this.apiUrl}/${idm}`, { responseType: 'text' });
   }
 
-  // Récupérer les employés affectés à une mission donnée
   getMissionEmployees(missionId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${missionId}/employes`);
   }
 
-  // Ajouter des employés à une mission
+  getEmployesWithCompetences(missionId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/employes?missionId=${missionId}`);
+  }
+
   addEmployeesToMission(missionId: number, employes: number[]): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${missionId}/employes`, { employes });
   }
 
-  // Retirer un employé d'une mission
   removeEmployeeFromMission(missionId: number, employeId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${missionId}/employes/${employeId}`);
+    return this.http.delete<any>(`${this.apiUrl}/${missionId}/employes/${employeId}`, {
+      responseType: 'text' as 'json'
+    });
   }
+  
 }
