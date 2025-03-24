@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Chart, registerables } from 'chart.js';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Chart, registerables} from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +36,8 @@ export class DashboardComponent implements OnInit {
   public competencesMap: { [key: string]: number } = {}; // Compte des compétences
   public currentState: string = 'all'; // État actuel de la mission sélectionné
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   ngOnInit(): void {
     Chart.register(...registerables);  // Enregistre les composants nécessaires de chart.js
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
     if (state === 'all') {
       return this.missions;  // Si l'état est "all", toutes les missions sont retournées
     }
-    return this.missions.filter(mission => mission.etat === state);  // Filtrer par état
+    return this.missions.filter(mission => mission.etat === state);  // Filtrer par état selectionné
   }
 
   // Met à jour les données du Doughnut chart
@@ -87,17 +88,17 @@ export class DashboardComponent implements OnInit {
     const filteredMissions = this.filterMissionsByState(this.currentState);
     const missionNames: string[] = [];
     const employeeCounts: number[] = [];
-  
+
     filteredMissions.forEach(mission => {
       missionNames.push(mission.nomm);  // Nom de la mission
       employeeCounts.push(mission.employes_count || 0);  // Utilise le nombre d'employés récupéré depuis l'API
     });
-  
+
     this.barChartData.labels = missionNames;
     this.barChartData.datasets[0].data = employeeCounts;
     this.createBarChart();
   }
-  
+
 
   // Méthode pour générer des couleurs aléatoires pour chaque compétence
   generateColors(count: number): string[] {

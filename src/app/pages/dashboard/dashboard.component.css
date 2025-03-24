@@ -1,0 +1,13 @@
+.dashboard {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.comp-miss, .emp-miss {
+  width: 45%;
+}
+
+h2 {
+  text-align: center;
+}
