@@ -19,26 +19,25 @@
     </div>
   </div>
 
-
-  <!-- Deuxième espace de discussion -->
-
-  <div class="forum-container2">
-    <h2 class="titre-blog"> BLOG MISSION </h2>
-    <div class="messages-container" #messagesContainer>
-      <div *ngFor="let missionMessage of missionMessages" class="message">
-        <strong>{{ missionMessage.employes.prenom }} {{ missionMessage.employes.nom }}</strong>
-        <span class="date">({{ missionMessage.date_envoi | date: 'dd/MM/yyyy HH:mm' }})</span>
-        <p>{{ missionMessage.message }}</p>
-      </div>
-    </div>
-
-    <!-- Barre d'envoi pour la mission -->
-
-    <div class="message-input">
-      <input [(ngModel)]="newMissionMessage" type="text" placeholder="Écrire un message pour la mission..."
-             (keyup.enter)="sendMissionMessage()">
-      <button (click)="sendMissionMessage()" class="btn-ajouter">Envoyer</button>
-    </div>
-  </div>
 </div>
 
+<!-- Deuxième espace de discussion -->
+<!--
+<div class="forum-container2">
+  <h2 class="titre-blog"> BLOG MISSION </h2>
+  <div class="messages-container" #messagesContainer>
+    <div *ngFor="let missionMessage of missionMessages" class="message">
+      <strong>{{ missionMessage.employes.prenom }} {{ missionMessage.employes.nom }}</strong>
+      <span class="date">({{ missionMessage.date_envoi | date: 'dd/MM/yyyy HH:mm' }})</span>
+      <p>{{ missionMessage.message }}</p>
+    </div>
+  </div>
+  -->
+<!-- Barre d'envoi pour la mission -->
+<!--
+<div class="message-input">
+  <input [(ngModel)]="newMissionMessage" type="text" placeholder="Écrire un message pour la mission..."
+         (keyup.enter)="sendMissionMessage()">
+  <button (click)="sendMissionMessage()" class="btn-ajouter">Envoyer</button>
+</div>
+</div>-->
