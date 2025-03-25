@@ -32,7 +32,7 @@ img {
 .action {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   gap: 200px;
   padding-top: 30px;
 }
@@ -54,7 +54,7 @@ img {
 
 }
 
-.carte-entiere1:hover, .carte-entiere2:hover, .carte-entiere3, .carte-entiere4 {
+.carte-entiere1:hover, .carte-entiere2:hover, .carte-entiere3:hover, .carte-entiere4:hover {
   transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
@@ -66,9 +66,15 @@ img {
 .carte-entiere2 {
   border-top: 5px solid #bd8542;
 }
-.carte-entiere3{
+
+.carte-entiere3 {
   border-top: 5px solid #42bd42;
 }
+
+.carte-entiere4 {
+  border-top: 5px solid #9858a8;
+}
+
 .contenu-carte {
   display: flex;
   flex-direction: column;
@@ -76,9 +82,7 @@ img {
   width: 100%;
   height: 100%;
 }
-.carte-entiere4 {
-  border-top: 5px solid #9858a8;
-}
+
 
 .titre-carte {
   display: flex;
@@ -116,4 +120,20 @@ h4 {
   align-items: center;
   padding: 10px;
   order: 2;
+}
+
+.btn-dash {
+  background-color: #28a745;
+}
+
+.btn-dash:hover {
+  background-color: #218838;
+}
+
+.btn-salon {
+  background-color: #9858a8;
+}
+
+.btn-salon:hover {
+  background-color: #6a3d75;
 }

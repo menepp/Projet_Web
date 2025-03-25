@@ -33,8 +33,8 @@
   padding: 0px;
   gap: 83px;
 
-  width: 68px;
-  height: 307.6px;
+  width: 80px;
+  height: 100%;
 
 
   /* Inside auto layout */
@@ -55,7 +55,7 @@
   align-items: center;
   padding: 0px;
 
-  width: 58px;
+  width: 100%;
   height: 48px;
 
 
@@ -123,9 +123,11 @@
 
 .menu-text,
 .personnel-text,
-.mission-text {
+.mission-text,
+.dashboard-text,
+.salon-text {
   /* text */
-  width: 58px;
+  width: 100%;
   height: 24px;
 
 
@@ -146,3 +148,7 @@
 
 }
 
+img {
+  max-width: 30px;
+  max-height: 30px;
+}
