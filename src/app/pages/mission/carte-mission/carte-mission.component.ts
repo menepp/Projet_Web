@@ -3,6 +3,7 @@ import { Mission } from '../../../models/mission.interface';
 import { MissionService } from '../../../services/mission.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Competence } from '../../../models/competence.interface';
 
 @Component({
   selector: 'app-carte-mission',
@@ -21,7 +22,7 @@ export class CarteMissionComponent implements OnInit {
   isEditMissionPopupOpen = false;
 
   editMission: Mission = { idm: 0, nomm: '', dated: new Date(), datef: new Date(), competences: [] };
-  competences: { code_skill: string, description_competence_fr: string }[] = [];
+  competences: Competence[] = [];
   competencesSelectionnees: string[] = [];
   missions: Mission[] = [];
   isLoading = true;
@@ -43,17 +44,29 @@ export class CarteMissionComponent implements OnInit {
     }
   }
 
-  formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
+  formatDate(date: any): string {
+    const parsedDate = new Date(date); // Assure que date est bien un objet Date
+    if (isNaN(parsedDate.getTime())) {
+      console.error("formatDate: Date invalide", date);
+      return ""; // Retourne une chaîne vide ou une valeur par défaut
+    }
+    const year = parsedDate.getFullYear();
+    const month = ('0' + (parsedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + parsedDate.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
+  
 
   convertMissionDates() {
-    this.mission.dated = new Date(this.mission.dated);
-    this.mission.datef = new Date(this.mission.datef);
+    if (typeof this.mission.dated === "string") {
+      this.mission.dated = new Date(this.mission.dated);
+    }
+    if (typeof this.mission.datef === "string") {
+      this.mission.datef = new Date(this.mission.datef);
+    }
+    console.log("Dates converties :", this.mission.dated, this.mission.datef);
   }
+  
 
   fetchMissions() {
     this.missionService.getMissions().subscribe(
