@@ -129,31 +129,23 @@ router.get('/getMissionMessages', authenticate, async (req, res) => {
   }
 });
 
-
-
-
-  
-  
-// Envoyer un message
-
 router.post('/send', authenticate, (req, res) => {
+  const pool = req.pool;  // Récupération du pool depuis la requête
   const { message } = req.body;
-  const userId = req.userId;  // Récupère l'ID de l'utilisateur validé par le middleware
-
+  const userId = req.userId;
   if (!message || !userId) {
     return res.status(400).json({ error: 'Message ou utilisateur manquant' });
   }
-
-  // Enregistrement du message dans la base de données
   const query = 'INSERT INTO blog_entreprise (code_employe, message) VALUES ($1, $2)';
-  pool.query(query, [userId, message], (err, result) => {  // Utilisez `pool.query` pour l'insertion
+  pool.query(query, [userId, message], (err, result) => {
     if (err) {
       return res.status(500).json({ error: 'Erreur lors de l\'enregistrement du message' });
     }
-
     res.status(200).json({ success: 'Message envoyé avec succès' });
   });
 });
+
+
 
 // Envoyer un message dans une mission
 router.post('/sendMissionMessage', authenticate, async (req, res) => {

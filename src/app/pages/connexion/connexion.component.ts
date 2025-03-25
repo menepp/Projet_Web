@@ -27,6 +27,7 @@ export class ConnexionComponent {
         const user = employes.find((emp: any) => emp.email === this.email && emp.mot_de_passe === this.password);
         if (user) {
           this.authService.login(user);
+          localStorage.setItem('userId', user.identifiant);
           if(user.role_employe === 'RH') {
             this.router.navigate(['/accueil']);
           } else {

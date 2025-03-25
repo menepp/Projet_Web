@@ -63,12 +63,13 @@ export class SalonComponent implements OnInit {
   sendMessage(): void {
     if (!this.newMessage.trim()) return;
   
-    const userId = localStorage.getItem('userId');  // Récupérer l'ID de l'utilisateur
-  
-    if (!userId) {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
       alert('Vous devez être connecté pour envoyer un message.');
       return;
     }
+    const user = JSON.parse(storedUser);
+    const userId = user.identifiant;  // Assure-toi que 'identifiant' est bien la propriété contenant l'ID de l'utilisateur
   
     const messageData = { message: this.newMessage, code_employe: userId };
   
