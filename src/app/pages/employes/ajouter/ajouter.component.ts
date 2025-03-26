@@ -33,11 +33,11 @@ export class AjouterComponent implements OnInit {
     this.fetchCompetences();
   }
 
-  fetchCompetences() {
+   // Méthode pour récupérer les compétences depuis le service
+   fetchCompetences() {
     this.employeService.getEmployes().subscribe({
       next: data => {
-        this.competences = data.competences || [];
-        console.log("Compétences disponibles :", this.competences);
+        this.competences = data.competences || []; // Stocke les compétences récupérées
       },
       error: error => {
         console.error("Erreur lors de la récupération des compétences :", error);
@@ -61,22 +61,24 @@ export class AjouterComponent implements OnInit {
     };
   }
   
+  // Méthode pour ajouter un nouvel employé
   addEmployee() {
+    // Vérifie si l'email de l'employé existe déjà dans la liste
     const emailExists = this.employes.some(emp => emp.email === this.newEmployee.email);
     if (emailExists) {
       alert('Un employé avec cet email existe déjà.');
-      return;
+      return; // Stoppe l'exécution si l'email est déjà pris
     }
 
+    // Appel du service pour ajouter un employé avec ses compétences sélectionnées
     this.employeService.addEmploye({
       ...this.newEmployee,
-      competences: this.competencesSelectionnees
+      competences: this.competencesSelectionnees // Assigne les compétences sélectionnées à l'employé
     }).subscribe({
       next: data => {
-        console.log("✅ Employé ajouté :", data);
         alert(`Employé ajouté avec succès en tant que ${this.newEmployee.role_employe}.`);
-        this.employeeAdded.emit();
-        this.closeAddEmployeePopup();
+        this.employeeAdded.emit(); // Émet un événement pour informer le composant parent de l'ajout
+        this.closeAddEmployeePopup(); // Ferme la pop-up après l'ajout
       },
       error: error => {
         console.error("❌ Erreur lors de l'ajout :", error);
@@ -85,12 +87,15 @@ export class AjouterComponent implements OnInit {
     });
   }
 
-
+  // Méthode pour ajouter ou retirer une compétence de la liste des compétences sélectionnées
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
+      // Si la compétence est déjà sélectionnée, on la retire
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
     } else {
+      // Sinon, on l'ajoute à la liste
       this.competencesSelectionnees.push(code_skill);
     }
   }
 }
+

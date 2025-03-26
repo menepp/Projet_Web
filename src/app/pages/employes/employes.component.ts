@@ -23,15 +23,15 @@ export class EmployeComponent implements OnInit {
   constructor(private employeService: EmployeService) {}
 
   ngOnInit(): void {
-    this.fetchEmployees();
+    this.fetchEmployees(); // Appelle la fonction pour récupérer la liste des employés
   }
 
+  // Fonction permettant de récupérer la liste des employés depuis le service
   fetchEmployees() {
-    this.isLoading = true;
-    console.log("📡 EmployeComponent : Récupération des employés...");
-    this.employeService.getEmployes().subscribe({
-      next: data => {
-        console.log("📥 Employés récupérés :", data);
+    this.isLoading = true; // Active l'indicateur de chargement
+    this.employeService.getEmployes().subscribe({ // Appel API pour récupérer les employés
+      next: data => { // Callback en cas de succès
+        // Transformation des données reçues pour correspondre à l'interface EmployeInscription
         this.employes = data.employes.map((emp: any) => ({
           identifiant: emp.identifiant,
           nom: emp.nom,
@@ -39,26 +39,30 @@ export class EmployeComponent implements OnInit {
           email: emp.email,
           mot_de_passe: emp.mot_de_passe,
           role_employe: emp.role_employe,
-          date_entree: new Date(emp.date_entree),
-          competences: emp.competences ? emp.competences.split(', ') : []
+          date_entree: new Date(emp.date_entree), // Conversion de la date en objet Date
+          competences: emp.competences ? emp.competences.split(', ') : [] // Conversion des compétences en tableau
         }));
-        this.filteredEmployees = [...this.employes];
-        this.isLoading = false;
+
+        this.filteredEmployees = [...this.employes]; // Copie des employés pour le tri/filtrage
+        this.isLoading = false; // Désactive l'indicateur de chargement
       },
-      error: error => {
+      error: error => { // Callback en cas d'erreur
         console.error("❌ Erreur dans fetchEmployees:", error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactive l'indicateur de chargement même en cas d'erreur
       }
     });
   }
 
+  // Fonction permettant de trier la liste des employés selon un critère donné
   onSortChanged(criterion: string) {
-    console.log(`Tri par : ${criterion}`);
     if (criterion === 'nom') {
+      // Trie les employés par nom dans l'ordre alphabétique
       this.filteredEmployees.sort((a, b) => a.nom.localeCompare(b.nom));
     } else if (criterion === 'prenom') {
+      // Trie les employés par prénom dans l'ordre alphabétique
       this.filteredEmployees.sort((a, b) => a.prenom.localeCompare(b.prenom));
     } else if (criterion === 'date_entree') {
+      // Trie les employés par date d'entrée dans l'entreprise (ordre chronologique)
       this.filteredEmployees.sort((a, b) => a.date_entree.getTime() - b.date_entree.getTime());
     }
   }

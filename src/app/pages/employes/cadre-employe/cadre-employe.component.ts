@@ -31,10 +31,10 @@ export class CadreEmployeComponent implements OnInit {
     this.fetchEmployees();
   }
 
+  // Méthode pour récupérer la liste des employés depuis le service
   fetchEmployees() {
     this.employeService.getEmployes().subscribe({
       next: data => {
-        console.log("Données des employés reçues :", data);
         if (data && Array.isArray(data.employes)) {
           this.employes = data.employes.map((employe: any) => ({
             identifiant: employe.identifiant,
@@ -44,15 +44,15 @@ export class CadreEmployeComponent implements OnInit {
             competences: employe.competences ? employe.competences.split(', ') : [],
             description: employe.description || 'Pas de description disponible.'
           }));
-          this.filteredEmployees = [...this.employes];
+          this.filteredEmployees = [...this.employes]; // Initialise la liste des employés filtrés
         } else {
           console.error("Les données des employés ne sont pas un tableau :", data.employes);
           this.employes = [];
         }
         if (data.competences) {
-          this.competences = data.competences;
+          this.competences = data.competences; // Stocke la liste des compétences
         }
-        this.isLoading = false;
+        this.isLoading = false; // Désactive l'indicateur de chargement
       },
       error: error => {
         console.error('Erreur :', error);
@@ -61,6 +61,7 @@ export class CadreEmployeComponent implements OnInit {
     });
   }
 
+  // Méthode pour filtrer les employés en fonction d'un terme de recherche
   filterEmployees(searchTerm: string) {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     this.filteredEmployees = this.employes.filter((employe) =>
@@ -68,30 +69,29 @@ export class CadreEmployeComponent implements OnInit {
     );
   }
 
+  // Ouvre la pop-up de confirmation pour supprimer un employé
   openDeleteEmployeePopup(employee: Employes) {
-    this.delEmployee = { ...employee };
+    this.delEmployee = { ...employee }; // Stocke les informations de l'employé à supprimer
     this.isDeletePopupOpen = true;
   }
 
+// Ferme la pop-up de suppression
   closeDeleteEmployeePopup() {
     this.isDeletePopupOpen = false;
   }
 
+// Supprime un employé
   deleteEmployee() {
     if (this.delEmployee) {
-      const identifiant = this.delEmployee.identifiant;
-      console.log('Suppression de l\'employé avec l\'identifiant:', identifiant);
-  
+      const identifiant = this.delEmployee.identifiant;  
       this.employeService.deleteEmploye(identifiant).subscribe({
-        next: (response: string) => {
-          console.log('Réponse du serveur:', response);
-          
+        next: (response: string) => {          
           if (response === "Employé supprimé avec succès") {
+            // Mise à jour de la liste des employés après suppression
             this.filteredEmployees = this.filteredEmployees.filter(emp => emp.identifiant !== identifiant);
             this.closeDeleteEmployeePopup();
-  
             alert('Employé supprimé avec succès');
-            this.fetchEmployees();
+            this.fetchEmployees();// Rafraîchit la liste des employés
           } else {
             alert("Erreur lors de la suppression de l'employé.");
           }
@@ -104,6 +104,7 @@ export class CadreEmployeComponent implements OnInit {
     }
   }
   
+  // Ouvre la pop-up d'édition d'un employé
   openEditEmployeePopup(employee: any) {
     this.editEmployee = {
       identifiant: employee.identifiant,
@@ -112,21 +113,22 @@ export class CadreEmployeComponent implements OnInit {
       date_entree: new Date(employee.date_entree),
       competences: employee.competences
     };
+    // Récupère les codes de compétences correspondants
     this.competencesSelectionnees = employee.competences
       .map((desc: string) => {
         const found = this.competences.find(c => c.description_competence_fr === desc);
         return found ? found.code_skill : null;
       })
       .filter((skill: string | null): skill is string => skill !== null);
-  
-    console.log("Compétences sélectionnées (code_skill) :", this.competencesSelectionnees);
-    this.isEditEmployeePopupOpen = true;
+      this.isEditEmployeePopupOpen = true;
   }
 
+  // Ferme la pop-up d'édition
   closeEditEmployeePopup() {
     this.isEditEmployeePopupOpen = false;
   }
 
+  // Sauvegarde les modifications apportées à un employé
   saveEmployee() {
     const updatedEmployee = {
       identifiant: this.editEmployee.identifiant,
@@ -139,7 +141,7 @@ export class CadreEmployeComponent implements OnInit {
     this.employeService.updateEmploye(updatedEmployee).subscribe({
       next: data => {
         console.log('Réponse du serveur:', data);
-        this.fetchEmployees();
+        this.fetchEmployees();// Rafraîchit la liste des employés après modification
         this.closeEditEmployeePopup();
       },
       error: error => {
@@ -149,12 +151,14 @@ export class CadreEmployeComponent implements OnInit {
     });
   }
 
-  toggleCompetence(code_skill: string) {
-    if (this.competencesSelectionnees.includes(code_skill)) {
-      this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
-    } else {
-      this.competencesSelectionnees.push(code_skill);
-    }
-    console.log("Compétences sélectionnées :", this.competencesSelectionnees);
+ // Ajoute ou supprime une compétence de la liste des compétences sélectionnées
+ toggleCompetence(code_skill: string) {
+  if (this.competencesSelectionnees.includes(code_skill)) {
+    // Si la compétence est déjà sélectionnée, on la retire
+    this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
+  } else {
+    // Sinon, on l'ajoute à la liste
+    this.competencesSelectionnees.push(code_skill);
   }
+}
 }

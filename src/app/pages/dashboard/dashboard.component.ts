@@ -9,6 +9,7 @@ import {Chart, registerables} from 'chart.js';
 })
 export class DashboardComponent implements OnInit {
 
+  // Données pour le Doughnut (répartition des compétences)
   public doughnutChartData: any = {
     labels: [],
     datasets: [
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
+  // Données pour le diagramme en baton (nombre d'employés par mission)
   public barChartData: any = {
     labels: [],
     datasets: [
@@ -32,98 +34,86 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  public missions: any[] = [];  // Contiendra toutes les missions
-  public competencesMap: { [key: string]: number } = {}; // Compte des compétences
-  public currentState: string = 'all'; // État actuel de la mission sélectionné
+  public missions: any[] = [];  // Liste des missions récupérées depuis l'API
+  public currentState: string = 'all'; // État actuel des missions affichées
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    Chart.register(...registerables);  // Enregistre les composants nécessaires de chart.js
-    this.loadCompetencesData(); // Charge les données des missions et compétences
+    Chart.register(...registerables);  // Enregistrement des composants Chart.js nécessaires
+    this.loadCompetencesData(); // Charge les données des compétences
+    this.loadEmployeeData(); // Charge les données des employés
   }
 
-  // Méthode pour charger les données des missions et compétences
+  // Charge les compétences et les missions depuis l'API
   loadCompetencesData(): void {
-    this.http.get<{ missions: any[], competences: any[] }>('http://localhost:3000/api/missions/count')
+    this.http.get<{ missions: any[] }>('http://localhost:3000/api/missions/count')
       .subscribe(response => {
-        this.missions = response.missions;  // Récupère les missions
-        this.updateChartData();  // Met à jour les données du graphique
-        this.updateBarChartData();  // Met à jour les données du bar chart
+        this.missions = response.missions; // Stocke les missions récupérées
+        this.updateChartData(); // Met à jour le Doughnut Chart
       });
   }
 
-  // Méthode qui filtre les missions en fonction de l'état sélectionné
-  filterMissionsByState(state: string): any[] {
-    if (state === 'all') {
-      return this.missions;  // Si l'état est "all", toutes les missions sont retournées
-    }
-    return this.missions.filter(mission => mission.etat === state);  // Filtrer par état selectionné
+  // Charge les données des employés pour chaque mission
+  loadEmployeeData(): void {
+    this.http.get<{ missions: any[] }>('http://localhost:3000/api/missions/count/employes')
+      .subscribe(response => {
+        // Fusionne les données du nombre d'employés avec les missions déjà chargées
+        this.missions.forEach(mission => {
+          const match = response.missions.find(m => m.idm === mission.idm);
+          if (match) {
+            mission.employes_count = match.employes_count;
+          }
+        });
+        this.updateBarChartData(); // Met à jour le Bar Chart
+      });
   }
 
-  // Met à jour les données du Doughnut chart
+  // Met à jour les données du Doughnut
   updateChartData(): void {
-    const filteredMissions = this.filterMissionsByState(this.currentState);
     const competenceCountMap: { [key: string]: number } = {};
-
-    filteredMissions.forEach(mission => {
-      const competences = mission.competences ? mission.competences.split(', ') : [];
-      competences.forEach((comp: string) => {
+    
+    this.missions.forEach(mission => {
+      const competences: string[] = mission.competences ? mission.competences.split(', ') : []; 
+      competences.forEach((comp: string) => {  // Ajout explicite du type "string"
         competenceCountMap[comp] = (competenceCountMap[comp] || 0) + 1;
       });
     });
+  
 
-    const competenceLabels = Object.keys(competenceCountMap);
-    const competenceValues = Object.values(competenceCountMap);
-
-    this.doughnutChartData.labels = competenceLabels;
-    this.doughnutChartData.datasets[0].data = competenceValues;
-    this.doughnutChartData.datasets[0].backgroundColor = this.generateColors(competenceLabels.length);
+    this.doughnutChartData.labels = Object.keys(competenceCountMap);
+    this.doughnutChartData.datasets[0].data = Object.values(competenceCountMap);
+    this.doughnutChartData.datasets[0].backgroundColor = this.generateColors(Object.keys(competenceCountMap).length);
     this.createDoughnutChart();
   }
 
-  // Met à jour les données du Bar chart avec le nombre d'employés par mission
+  // Met à jour les données du diagramme en baton
   updateBarChartData(): void {
-    const filteredMissions = this.filterMissionsByState(this.currentState);
-    const missionNames: string[] = [];
-    const employeeCounts: number[] = [];
-
-    filteredMissions.forEach(mission => {
-      missionNames.push(mission.nomm);  // Nom de la mission
-      employeeCounts.push(mission.employes_count || 0);  // Utilise le nombre d'employés récupéré depuis l'API
-    });
-
-    this.barChartData.labels = missionNames;
-    this.barChartData.datasets[0].data = employeeCounts;
+    this.barChartData.labels = this.missions.map(mission => mission.nomm);
+    this.barChartData.datasets[0].data = this.missions.map(mission => mission.employes_count || 0);
     this.createBarChart();
   }
 
-
-  // Méthode pour générer des couleurs aléatoires pour chaque compétence
+  // Génère des couleurs aléatoires pour le Doughnut 
   generateColors(count: number): string[] {
-    const colors: string[] = [];
-    for (let i = 0; i < count; i++) {
-      colors.push(`hsl(${Math.random() * 360}, 70%, 50%)`);
-    }
-    return colors;
+    return Array.from({ length: count }, () => `hsl(${Math.random() * 360}, 70%, 50%)`);
   }
 
-  // Crée le Doughnut chart
+  // Crée et affiche le Doughnut 
   createDoughnutChart(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     new Chart(ctx, {
       type: 'doughnut',
-      data: this.doughnutChartData  // Utilise les données mises à jour
+      data: this.doughnutChartData
     });
   }
 
-  // Crée le Bar chart
+  // Crée et affiche le  diagramme en baton
   createBarChart(): void {
     const ctx = document.getElementById('barChart') as HTMLCanvasElement;
     new Chart(ctx, {
       type: 'bar',
-      data: this.barChartData,  // Utilise les données mises à jour
+      data: this.barChartData,
       options: {
         responsive: true,
         scales: {
@@ -145,10 +135,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Méthode pour gérer le changement d'état sélectionné dans le select
+  // Gère le changement d'état sélectionné (filtrage des missions)
   onStateChange(event: any): void {
-    this.currentState = event.target.value;  // Met à jour l'état sélectionné
-    this.updateChartData();  // Met à jour le Doughnut chart
-    this.updateBarChartData();  // Met à jour le Bar chart
+    this.currentState = event.target.value;
+    this.updateChartData(); // Met à jour le Doughnut
+    this.updateBarChartData(); // Met à jour le  diagramme en baton
   }
 }

@@ -3,21 +3,13 @@
   <div class="comp-miss">
     <!--Liste de filtre disponibles pour changer les parametres du graphique-->
     <h2>Répartition des compétences utilisées lors des missions</h2>
-    <label for="stateSelect">Choisissez un état de mission :</label>
-    <select id="stateSelect" (change)="onStateChange($event)">
-      <option value="all">Toutes les missions</option>
-      <option value="en_cours">En cours</option>
-      <option value="preparation">Préparation</option>
-      <option value="planifiee">Planifiée</option>
-      <option value="terminee">Terminée</option>
-    </select>
-    <!-- Canevas pour afficher le diagramme sur le la répartition des compétences -->
+    <!-- Canvas pour afficher le diagramme sur le la répartition des compétences -->
     <canvas id="myChart"></canvas>
   </div>
 
   <div class="emp-miss">
     <h2>Nombre d'Employés par Mission</h2>
-    <!-- Canevas pour afficher le diagramme sur le nombre d'employés par mission -->
+    <!-- Canvas pour afficher le diagramme sur le nombre d'employés par mission -->
     <canvas id="barChart"></canvas>
   </div>
 

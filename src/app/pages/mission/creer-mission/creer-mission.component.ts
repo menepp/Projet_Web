@@ -27,35 +27,42 @@ export class CreerMissionComponent {
     return this.nomm.trim() !== '' && this.dated.trim() !== '' && this.datef.trim() !== '';
   }
 
+  // Méthode pour ajouter une mission
   addMission() {
+    // Appel du service pour ajouter la mission en passant les données du formulaire
     this.missionService.addMission({
-      nomm: this.nomm,
-      dated: new Date(this.dated), 
-      datef: new Date(this.datef),
-      competences: this.competencesSelectionnees
+      nomm: this.nomm, // Nom de la mission
+      dated: new Date(this.dated), // Date de début convertie en objet Date
+      datef: new Date(this.datef), // Date de fin convertie en objet Date
+      competences: this.competencesSelectionnees // Compétences sélectionnées pour la mission
     }).subscribe({
       next: () => {
-        this.missionAdded.emit();
-        this.closeAddMissionPopup();
-        alert(`La mission a bien était ajouté.`);
+        this.missionAdded.emit(); // Émet un événement pour signaler l'ajout de la mission
+        this.closeAddMissionPopup(); // Ferme la pop-up d'ajout
+        alert(`La mission a bien été ajoutée.`); // Affiche un message de succès
       },
-      error: error => console.error('Erreur lors de l\'ajout de la mission :', error)
+      error: error => console.error('Erreur lors de l\'ajout de la mission :', error) // Gère l'erreur en cas d'échec
     });
   }
 
+  // Méthode pour fermer la pop-up d'ajout de mission
   closeAddMissionPopup() {
+    // Réinitialise les champs du formulaire
     this.nomm = '';
     this.dated = '';
     this.datef = '';
+    // Émet l'événement pour fermer la pop-up
     this.closePopup.emit();
   }
 
+  // Méthode pour ajouter ou supprimer une compétence sélectionnée
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
+      // Si la compétence est déjà sélectionnée, on la retire de la liste
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
     } else {
+      // Sinon, on l'ajoute à la liste des compétences sélectionnées
       this.competencesSelectionnees.push(code_skill);
     }
-    console.log("Compétences sélectionnées :", this.competencesSelectionnees);
   }
 }

@@ -30,12 +30,10 @@ export class SalonComponent implements OnInit {
   ngOnInit(): void {
     this.getBlogs();  // Récupérer les messages généraux
     this.missionId = this.getMissionId();  // Récupérer l'ID de la mission
-    this.getMissionMessages(); 
     this.loadCompanyMessages();
     this.loadMissionMessages(); // Récupérer les messages pour la mission spécifique
     setInterval(() => {
       this.getBlogs();
-      this.getMissionMessages();  // Rafraîchir les messages de la mission toutes les 5s
     }, 5000);
   }
 
@@ -85,52 +83,6 @@ export class SalonComponent implements OnInit {
       }
     );
   }
-  
-  // Correction des URLs dans les appels API
-getMissionMessages(): void {
-  this.http.get<MessageData[]>(`http://localhost:3000/api/blog/getMissionMessages`, {
-    params: { missionId: this.missionId }
-  }).subscribe(
-    data => {
-      this.missionMessages = data;
-    },
-    error => {
-      console.error('Erreur lors de la récupération des messages', error);
-    }
-  );
-}
-
-sendMissionMessage(): void {
-  if (this.newMissionMessage.trim() === '') return;
-
-  const userId = localStorage.getItem('userId');
-
-  if (!userId) {
-    alert('Vous devez être connecté pour envoyer un message.');
-    return;
-  }
-
-  const messageData = { message: this.newMissionMessage, missionId: this.missionId };
-
-  this.http.post('http://localhost:3000/api/blog/sendMissionMessage', messageData, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${userId}`  // Utilisation correcte de la syntaxe
-    }
-  }).subscribe(
-    () => {
-      this.newMissionMessage = '';
-      this.loadMissionMessages();
-    },
-    (error) => {
-      console.error('Erreur lors de l\'envoi du message', error);
-      alert('Erreur lors de l\'envoi du message');
-    }
-  );
-}
-
-  
-
 
 
   getMissionId(): number {

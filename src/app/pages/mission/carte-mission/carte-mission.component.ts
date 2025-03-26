@@ -1,3 +1,4 @@
+
 import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Mission } from '../../../models/mission.interface';
 import { MissionService } from '../../../services/mission.service';
@@ -44,6 +45,10 @@ export class CarteMissionComponent implements OnInit {
     }
   }
 
+
+
+// Formate une date en chaîne de caractères (format YYYY-MM-DD)
+
   formatDate(date: any): string {
     const parsedDate = new Date(date); // Assure que date est bien un objet Date
     if (isNaN(parsedDate.getTime())) {
@@ -55,7 +60,8 @@ export class CarteMissionComponent implements OnInit {
     const day = ('0' + parsedDate.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
-  
+ 
+// Convertit les dates de début et de fin d'une mission en objets Date
 
   convertMissionDates() {
     if (typeof this.mission.dated === "string") {
@@ -66,8 +72,8 @@ export class CarteMissionComponent implements OnInit {
     }
     console.log("Dates converties :", this.mission.dated, this.mission.datef);
   }
-  
 
+ // Récupère la liste des missions 
   fetchMissions() {
     this.missionService.getMissions().subscribe(
       data => {
@@ -92,6 +98,7 @@ export class CarteMissionComponent implements OnInit {
     );
   }
 
+ // Récupère les employés affectés à une mission
   fetchEmployesAffectes(missionId: number) {
     this.missionService.getMissionEmployees(missionId).subscribe(
       data => {
@@ -108,16 +115,16 @@ export class CarteMissionComponent implements OnInit {
       }
     );
   }
-
+ // Ouvre la popup de confirmation pour supprimer une mission
   openDeleteMissionPopup(mission: Mission) {
     this.delMission = { ...mission };
     this.isDeletePopupOpen = true;
   }
-
+// Ferme la popup de suppression
   closeDeleteMissionPopup() {
     this.isDeletePopupOpen = false;
   }
-
+ // Supprime une mission
   deleteMission() {
     this.missionService.deleteMission(this.delMission.idm).subscribe(
       () => {
@@ -131,7 +138,7 @@ export class CarteMissionComponent implements OnInit {
       }
     );
   }
-
+ // Ouvre la popup d'édition d'une mission
   openEditMissionPopup(mission: any) {
     this.editMission = {
       idm: mission.idm,
@@ -156,6 +163,7 @@ export class CarteMissionComponent implements OnInit {
     this.competencesSelectionnees = [];
   }
 
+    // Sauvegarde les modifications d'une mission
   saveMission() {
     const missionPayload = {
       idm: this.editMission.idm,
@@ -187,6 +195,7 @@ export class CarteMissionComponent implements OnInit {
     );
   }
 
+  // Ajoute ou retire une compétence sélectionnée
   toggleCompetence(code_skill: string) {
     if (this.competencesSelectionnees.includes(code_skill)) {
       this.competencesSelectionnees = this.competencesSelectionnees.filter(c => c !== code_skill);
@@ -211,6 +220,7 @@ export class CarteMissionComponent implements OnInit {
     this.isEmployesPopupOpen = false;
   }
 
+  // Ajoute ou retire des employés dans une mission
   toggleEmployeSelection(identifiant: number) {
     if (this.employesSelectionnes.includes(identifiant)) {
       this.employesSelectionnes = this.employesSelectionnes.filter(id => id !== identifiant);
@@ -218,7 +228,7 @@ export class CarteMissionComponent implements OnInit {
       this.employesSelectionnes.push(identifiant);
     }
   }
-
+// Sauvegarde un employé dans une mission 
   saveEmployes() {
     this.missionService.addEmployeesToMission(this.mission.idm, this.employesSelectionnes).subscribe(
       data => {
@@ -233,6 +243,7 @@ export class CarteMissionComponent implements OnInit {
     );
   }
 
+// Supprime un employé d'une mission 
   removeEmployeFromMission(missionId: number, employeId: number) {
     this.missionService.removeEmployeeFromMission(missionId, employeId).subscribe(
       response => {
